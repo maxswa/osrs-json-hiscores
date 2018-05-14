@@ -1,0 +1,21 @@
+{
+  "name": "osrs-json-hiscores",
+  "version": "1.0.0",
+  "description": "",
+  "main": "hiscores.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node hiscores.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxswa/osrs-json-hiscores.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maxswa/osrs-json-hiscores/issues"
+  },
+  "homepage": "https://github.com/maxswa/osrs-json-hiscores#readme"
+}
