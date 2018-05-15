@@ -188,7 +188,7 @@ async function getHiscores (mode, category, page) {
       players.push({
         category: category,
         rank: attributes[0].innerHTML.slice(1, -1),
-        rsn: attributes[1].childNodes[1].innerHTML,
+        rsn: attributes[1].childNodes[1].innerHTML.replace(/\uFFFD/g, ' '),
         level: attributes[2].innerHTML.slice(1, -1),
         xp: attributes[3].innerHTML.slice(1, -1),
         mode: mode
@@ -198,7 +198,7 @@ async function getHiscores (mode, category, page) {
       players.push({
         category: category,
         rank: attributes[0].innerHTML.slice(1, -1),
-        rsn: attributes[1].childNodes[1].innerHTML,
+        rsn: attributes[1].childNodes[1].innerHTML.replace(/\uFFFD/g, ' '),
         score: attributes[2].innerHTML.slice(1, -1),
         mode: mode
       })
@@ -290,5 +290,8 @@ let parseStats = (csv) => {
 
   return stats
 }
+
+getHiscores('main', 'overall', 1)
+  .then(res => console.log(res))
 
 module.exports = {getStats, getHiscores}
