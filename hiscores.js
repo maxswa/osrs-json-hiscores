@@ -173,45 +173,39 @@ async function getHiscores (mode, category, page) {
 
   if(hiscores.skills.includes(category.toLowerCase())) {
     url += 'table=' + hiscores.skills.indexOf(category.toLowerCase()) + '&page=' + page
-    const response = await fetch(url)
-    let playersHTML, players = [], element = document.createElement('html')
-    element.innerHTML = await response.text()
-    playersHTML = element.querySelectorAll('.personal-hiscores__row')
+  }
+  else if(hiscores.other.includes(category.toLowerCase())) {
+    url += 'category_type=1' + '&table=' + hiscores.other.indexOf(category.toLowerCase()) + '&page=' + page
+  }
+  const response = await fetch(url)
+  let playersHTML, players = [], element = document.createElement('html')
+  element.innerHTML = await response.text()
+  playersHTML = element.querySelectorAll('.personal-hiscores__row')
 
-    for(let player of playersHTML) {
-      let attributes = player.querySelectorAll('td')
+  for(let player of playersHTML) {
+    let attributes = player.querySelectorAll('td')
+    if(hiscores.skills.includes(category.toLowerCase())) {
       players.push({
         category: category,
         rank: attributes[0].innerHTML.slice(1, -1),
-        rsn: attributes[1].childNodes[1].innerHTML.replace(/&nbsp;/g, ' '),
+        rsn: attributes[1].childNodes[1],
         level: attributes[2].innerHTML.slice(1, -1),
         xp: attributes[3].innerHTML.slice(1, -1),
         mode: mode
       })
     }
-
-    return players
-  }
-  else if(hiscores.other.includes(category.toLowerCase())) {
-    url += 'category_type=1' + '&table=' + hiscores.other.indexOf(category.toLowerCase()) + '&page=' + page
-    const response = await fetch(url)
-    let playersHTML, players = [], element = document.createElement('html')
-    element.innerHTML = await response.text()
-    playersHTML = element.querySelectorAll('.personal-hiscores__row')
-
-    for(let player of playersHTML) {
-      let attributes = player.querySelectorAll('td')
+    else {
       players.push({
         category: category,
         rank: attributes[0].innerHTML.slice(1, -1),
-        rsn: attributes[1].childNodes[1].innerHTML.replace(/&nbsp;/g, ' '),
+        rsn: attributes[1].childNodes[1],
         score: attributes[2].innerHTML.slice(1, -1),
         mode: mode
       })
     }
-
-    return players
   }
+
+  return players
 }
 
 let parseStats = (csv) => {
