@@ -1,6 +1,6 @@
 {
   "name": "osrs-json-hiscores",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "hiscores.js",
   "scripts": {
