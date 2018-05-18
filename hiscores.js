@@ -1,14 +1,10 @@
-const statsURL = {
-  main: 'http://services.runescape.com/m=hiscore_oldschool/index_lite.ws?player=',
-  iron: 'http://services.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws?player=',
-  ult: 'http://services.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws?player=',
-  hc: 'http://services.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws?player='
-},
-  scoresURL = {
-  main: 'http://services.runescape.com/m=hiscore_oldschool/overall.ws?',
-  iron: 'http://services.runescape.com/m=hiscore_oldschool_ironman/overall.ws?',
-  ult: 'http://services.runescape.com/m=hiscore_oldschool_ultimate/overall.ws?',
-  hc: 'http://services.runescape.com/m=hiscore_oldschool_hardcore_ironman/overall.ws?'
+const URLs = {
+  main: 'http://services.runescape.com/m=hiscore_oldschool/',
+  iron: 'http://services.runescape.com/m=hiscore_oldschool_ironman/',
+  ult: 'http://services.runescape.com/m=hiscore_oldschool_ultimate/',
+  hc: 'http://services.runescape.com/m=hiscore_oldschool_hardcore_ironman/',
+  stats: 'index_lite.ws?player=',
+  scores: 'overall.ws?'
 },
   hiscores = {
     skills: [
@@ -83,16 +79,16 @@ async function getPlayerStats (rsn, mode) {
     const responses = []
     let csv
 
-    responses[0] = await fetch(statsURL.main + encodeURIComponent(rsn))
+    responses[0] = await fetch(URLs.main + URLs.stats + encodeURIComponent(rsn))
     if (responses[0].ok) {
-      responses[1] = await fetch(statsURL.iron + encodeURIComponent(rsn))
+      responses[1] = await fetch(URLs.iron + URLs.stats + encodeURIComponent(rsn))
       if (responses[1].ok) {
-        responses[2] = await fetch(statsURL.hc + encodeURIComponent(rsn))
+        responses[2] = await fetch(URLs.hc + URLs.stats + encodeURIComponent(rsn))
         if (responses[2].ok) {
           player.mode = 'hc'
         }
         else {
-          responses[3] = await fetch(statsURL.ult + encodeURIComponent(rsn))
+          responses[3] = await fetch(URLs.ult + URLs.stats + encodeURIComponent(rsn))
           if (responses[3].ok) {
             player.mode = 'ult'
           }
@@ -109,7 +105,6 @@ async function getPlayerStats (rsn, mode) {
       throw Error('Player not found')
     }
 
-    //TODO make a function to handle the csv
     switch (player.mode) {
       case 'main':
         csv = await responses[0].text()
@@ -158,7 +153,7 @@ async function getPlayerStats (rsn, mode) {
     return player
   }
   else {
-    const response = await fetch(statsURL[mode] + encodeURIComponent(rsn))
+    const response = await fetch(URLs[mode] + URLs.stats + encodeURIComponent(rsn))
     if(!response.ok) {
       throw Error('Player not found')
     }
@@ -168,41 +163,49 @@ async function getPlayerStats (rsn, mode) {
   }
 }
 
-async function getHiscores (mode, category, page) {
-  let url = scoresURL[mode.toLowerCase()]
+async function getHiscores (mode, category = 'overall', page = 1) {
+  if(!validModes.includes(mode.toLowerCase()) || mode.toLowerCase() === 'full') {
+    throw Error('Invalid game mode')
+  }
+  else if(!Number.isInteger(page) || page < 1) {
+    throw Error('Page must be an integer greater than 0')
+  }
+  else if(!hiscores.skills.includes(category.toLowerCase()) && !hiscores.other.includes(category.toLowerCase())) {
+    throw Error('Invalid category')
+  }
+  else {
+    return await getHiscoresPage(mode.toLowerCase(), category.toLowerCase(), page)
+  }
+}
 
-  if(hiscores.skills.includes(category.toLowerCase())) {
-    url += 'table=' + hiscores.skills.indexOf(category.toLowerCase()) + '&page=' + page
-  }
-  else if(hiscores.other.includes(category.toLowerCase())) {
-    url += 'category_type=1' + '&table=' + hiscores.other.indexOf(category.toLowerCase()) + '&page=' + page
-  }
+async function getHiscoresPage(mode, category, page) {
+  const url = URLs[mode] + URLs.scores +
+    (hiscores.skills.includes(category) ?
+      'table=' + hiscores.skills.indexOf(category) :
+      'category_type=1' + '&table=' + hiscores.other.indexOf(category)) +
+    '&page=' + page
+
   const response = await fetch(url)
-  let playersHTML, players = [], element = document.createElement('html')
+  let players = [], element = document.createElement('html')
   element.innerHTML = await response.text()
-  playersHTML = element.querySelectorAll('.personal-hiscores__row')
+  const playersHTML = element.querySelectorAll('.personal-hiscores__row')
 
   for(let player of playersHTML) {
-    let attributes = player.querySelectorAll('td')
-    if(hiscores.skills.includes(category.toLowerCase())) {
-      players.push({
-        category: category,
-        rank: attributes[0].innerHTML.slice(1, -1),
-        rsn: attributes[1].childNodes[1].innerHTML.replace(/\uFFFD/g, ' '),
-        level: attributes[2].innerHTML.slice(1, -1),
-        xp: attributes[3].innerHTML.slice(1, -1),
-        mode: mode
-      })
+    const attributes = player.querySelectorAll('td')
+    let playerInfo = {
+      mode: mode,
+      category: category,
+      rank: attributes[0].innerHTML.slice(1, -1),
+      rsn: attributes[1].childNodes[1].innerHTML.replace(/\uFFFD/g, ' ')
     }
-    else {
-      players.push({
-        category: category,
-        rank: attributes[0].innerHTML.slice(1, -1),
-        rsn: attributes[1].childNodes[1].innerHTML.replace(/\uFFFD/g, ' '),
-        score: attributes[2].innerHTML.slice(1, -1),
-        mode: mode
-      })
-    }
+
+    hiscores.skills.includes(category.toLowerCase()) ?
+      playerInfo = Object.assign(
+        {level: attributes[2].innerHTML.slice(1, -1),
+          xp: attributes[3].innerHTML.slice(1, -1)}, playerInfo) :
+      playerInfo.score = attributes[2].innerHTML.slice(1, -1)
+
+    players.push(playerInfo)
   }
 
   return players
@@ -290,8 +293,5 @@ let parseStats = (csv) => {
 
   return stats
 }
-
-getHiscores('main', 'overall', 1)
-  .then(res => console.log(res))
 
 module.exports = {getStats, getHiscores}
