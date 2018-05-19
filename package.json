@@ -11,7 +11,16 @@
     "type": "git",
     "url": "git+https://github.com/maxswa/osrs-json-hiscores.git"
   },
-  "keywords": [],
+  "keywords": [
+    "oldschool",
+    "runescape",
+    "osrs",
+    "api",
+    "json",
+    "hiscores",
+    "stats",
+    "skills"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
