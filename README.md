@@ -1,5 +1,5 @@
 # OSRS .json Hiscores
-#### The Oldschool Runescape API wrapper that does more!
+**The Oldschool Runescape API wrapper that does more!**
 ## What it does
 The official hiscores API for Oldschool Runescape (OSRS) returns CSV.
 This wrapper converts it to json and provides extra information about the given player. By comparing player info it infers the player's game mode, as well as any previous modes (de-ironed or died as a hardcore ironman).
