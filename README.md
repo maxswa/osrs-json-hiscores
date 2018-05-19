@@ -13,7 +13,7 @@ $ npm install osrs-json-hiscores
 ## How to use
 Install the package via npm and then import it into your project:
 ```javascript
-import hiscores from 'osrs-json-hiscores'
+const hiscores = require('osrs-json-hiscores')
 ```
 Once you import it you can call the functions asynchronously:
 ```javascript
