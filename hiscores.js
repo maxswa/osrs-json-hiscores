@@ -294,4 +294,4 @@ let parseStats = (csv) => {
   return stats
 }
 
-module.exports = {getStats, getHiscores}
+export default {getStats, getHiscores}
