@@ -29,6 +29,9 @@ Regular | `main`
 Ironman | `iron`
 Hardcore Ironman | `hc`
 Ultimate Ironman | `ult`
+Deadman Mode | `dmm`
+Seasonal Deadman | `sdmm`
+DMM Tournament | `dmmt`
 
 `getHiscores` requires a game mode and optionally a category and page:
 ```javascript

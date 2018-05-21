@@ -3,6 +3,9 @@ const URLs = {
   iron: 'http://services.runescape.com/m=hiscore_oldschool_ironman/',
   ult: 'http://services.runescape.com/m=hiscore_oldschool_ultimate/',
   hc: 'http://services.runescape.com/m=hiscore_oldschool_hardcore_ironman/',
+  dmm: 'http://services.runescape.com/m=hiscore_oldschool_deadman/',
+  sdmm: 'http://services.runescape.com/m=hiscore_oldschool_seasonal/',
+  dmmt: 'http://services.runescape.com/m=hiscore_oldschool_tournament/',
   stats: 'index_lite.ws?player=',
   scores: 'overall.ws?'
 },
@@ -44,7 +47,7 @@ const URLs = {
       'masterclues'
     ]
   },
-  validModes = ['full', 'main', 'iron', 'hc', 'ult']
+  validModes = ['full', 'main', 'iron', 'hc', 'ult', 'dmm', 'sdmm', 'dmmt']
 
 async function getStats (rsn, mode = 'full') {
   if(typeof rsn !== 'string') {
@@ -204,6 +207,10 @@ async function getHiscoresPage(mode, category, page) {
         {level: attributes[2].innerHTML.slice(1, -1),
           xp: attributes[3].innerHTML.slice(1, -1)}, playerInfo) :
       playerInfo.score = attributes[2].innerHTML.slice(1, -1)
+
+    if(mode === 'hc') {
+      playerInfo.dead = attributes[1].childElementCount > 1
+    }
 
     players.push(playerInfo)
   }
