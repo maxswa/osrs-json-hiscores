@@ -1,14 +1,14 @@
 const URLs = {
-  main: 'http://services.runescape.com/m=hiscore_oldschool/',
-  iron: 'http://services.runescape.com/m=hiscore_oldschool_ironman/',
-  ult: 'http://services.runescape.com/m=hiscore_oldschool_ultimate/',
-  hc: 'http://services.runescape.com/m=hiscore_oldschool_hardcore_ironman/',
-  dmm: 'http://services.runescape.com/m=hiscore_oldschool_deadman/',
-  sdmm: 'http://services.runescape.com/m=hiscore_oldschool_seasonal/',
-  dmmt: 'http://services.runescape.com/m=hiscore_oldschool_tournament/',
-  stats: 'index_lite.ws?player=',
-  scores: 'overall.ws?'
-},
+    main: 'http://services.runescape.com/m=hiscore_oldschool/',
+    iron: 'http://services.runescape.com/m=hiscore_oldschool_ironman/',
+    ult: 'http://services.runescape.com/m=hiscore_oldschool_ultimate/',
+    hc: 'http://services.runescape.com/m=hiscore_oldschool_hardcore_ironman/',
+    dmm: 'http://services.runescape.com/m=hiscore_oldschool_deadman/',
+    sdmm: 'http://services.runescape.com/m=hiscore_oldschool_seasonal/',
+    dmmt: 'http://services.runescape.com/m=hiscore_oldschool_tournament/',
+    stats: 'index_lite.ws?player=',
+    scores: 'overall.ws?'
+  },
   hiscores = {
     skills: [
       'overall',
@@ -49,6 +49,18 @@ const URLs = {
   },
   validModes = ['full', 'main', 'iron', 'hc', 'ult', 'dmm', 'sdmm', 'dmmt']
 
+/**
+ * Gets a player's stats.
+ *
+ * Gets CSV from OSRS API and converts to JS object.
+ *
+ * @access public
+ *
+ * @param {string} rsn    The player's username.
+ * @param {string} [mode] The game mode.
+ *
+ * @returns {Object} A player object.
+ */
 async function getStats (rsn, mode = 'full') {
   if(typeof rsn !== 'string') {
     throw Error('RSN must be a string')
@@ -67,37 +79,54 @@ async function getStats (rsn, mode = 'full') {
   }
 }
 
+/**
+ * Gets a player's stats.
+ *
+ * Gets CSV from OSRS API and converts to JS object.
+ *
+ * @access private
+ *
+ * @param {string} rsn  The player's username.
+ * @param {string} mode The game mode.
+ *
+ * @returns {Object} A player object.
+ */
 async function getPlayerStats (rsn, mode) {
   let player = {
     rsn: rsn,
     mode: mode,
     dead: false,
-    deironed: false,
-    main: {},
-    iron: {},
-    hc: {},
-    ult: {}
+    deironed: false
   }
+
   if(mode === 'full') {
     const responses = []
     let csv
 
     responses[0] = await fetch(URLs.main + URLs.stats + encodeURIComponent(rsn))
     if (responses[0].ok) {
-      responses[1] = await fetch(URLs.iron + URLs.stats + encodeURIComponent(rsn))
+      const otherResponses = await Promise.all([
+        fetch(URLs.iron + URLs.stats + encodeURIComponent(rsn)),
+        fetch(URLs.hc + URLs.stats + encodeURIComponent(rsn)),
+        fetch(URLs.ult + URLs.stats + encodeURIComponent(rsn)),
+        getRSNFormat(rsn)
+      ])
+
+      player.rsn = otherResponses.pop()
+
+      for (let res of otherResponses) {
+        responses.push(res)
+      }
+
       if (responses[1].ok) {
-        responses[2] = await fetch(URLs.hc + URLs.stats + encodeURIComponent(rsn))
         if (responses[2].ok) {
           player.mode = 'hc'
         }
+        else if (responses[3].ok) {
+          player.mode = 'ult'
+        }
         else {
-          responses[3] = await fetch(URLs.ult + URLs.stats + encodeURIComponent(rsn))
-          if (responses[3].ok) {
-            player.mode = 'ult'
-          }
-          else {
-            player.mode = 'iron'
-          }
+          player.mode = 'iron'
         }
       }
       else {
@@ -166,6 +195,19 @@ async function getPlayerStats (rsn, mode) {
   }
 }
 
+/**
+ * Gets a hiscore page.
+ *
+ * Scrapes OSRS hiscores and converts to objects.
+ *
+ * @access public
+ *
+ * @param {string} mode       The game mode.
+ * @param {string} [category] The category of hiscores.
+ * @param {number} [page]     The page of players.
+ *
+ * @returns {Object[]} Array of player objects.
+ */
 async function getHiscores (mode, category = 'overall', page = 1) {
   if(!validModes.includes(mode.toLowerCase()) || mode.toLowerCase() === 'full') {
     throw Error('Invalid game mode')
@@ -181,6 +223,19 @@ async function getHiscores (mode, category = 'overall', page = 1) {
   }
 }
 
+/**
+ * Gets a hiscore page.
+ *
+ * Scrapes OSRS hiscores and converts to objects.
+ *
+ * @access private
+ *
+ * @param {string} mode       The game mode.
+ * @param {string} category   The category of hiscores.
+ * @param {number} page       The page of players.
+ *
+ * @returns {Object[]} Array of player objects.
+ */
 async function getHiscoresPage(mode, category, page) {
   const url = URLs[mode] + URLs.scores +
     (hiscores.skills.includes(category) ?
@@ -216,6 +271,33 @@ async function getHiscoresPage(mode, category, page) {
   }
 
   return players
+}
+
+/**
+ * Returns proper capitalization and punctuation in a username.
+ *
+ * Searches hiscores table with rsn and returns the text from the username cell.
+ *
+ * @access public
+ *
+ * @param {string} rsn The player's username.
+ *
+ * @returns {string}   The player's formatted username.
+ */
+async function getRSNFormat(rsn) {
+  const url = URLs.main + URLs.scores + 'table=0&user=' + rsn
+
+  const response = await fetch(url)
+  let element = document.createElement('html')
+  element.innerHTML = await response.text()
+  const cells = element.querySelectorAll('[style="color:#AA0022;"]')
+
+  if(cells.length >= 2) {
+    return cells[1].innerHTML.replace(/\uFFFD/g, ' ')
+  }
+  else {
+    throw Error('Player not found')
+  }
 }
 
 let parseStats = (csv) => {
@@ -301,4 +383,4 @@ let parseStats = (csv) => {
   return stats
 }
 
-export default {getStats, getHiscores}
+export default {getStats, getHiscores, getRSNFormat}
