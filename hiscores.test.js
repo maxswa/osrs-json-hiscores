@@ -5,10 +5,11 @@ test('Get Lynx Titans stats', async done => {
     expect(data.main.stats.overall.level).toBe('2277');
     expect(data.main.stats.overall.rank).toBe('1');
     expect(data.main.stats.overall.xp).toBe('4600000000');
+    expect(data.rsn).toBe('Lynx Titan');
     done();
   };
 
-  hiscores.getStats('Lynx Titan', 'main').then(callback);
+  hiscores.getStats('lYnX tiTaN').then(callback);
 });
 
 test('Ensure correct lengths', async done => {

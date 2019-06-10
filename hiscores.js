@@ -1,4 +1,5 @@
 const axios = require('axios');
+const cheerio = require('cheerio');
 
 const URLs = {
     main: 'http://services.runescape.com/m=hiscore_oldschool/',
@@ -40,6 +41,18 @@ const URLs = {
     ],
     clues: ['all', 'beginner', 'easy', 'medium', 'hard', 'elite', 'master'],
     bh: ['rouge', 'hunter'],
+    other: [
+      'hunterbh',
+      'roguebh',
+      'lms',
+      'allclues',
+      'beginnerclues',
+      'easyclues',
+      'mediumclues',
+      'hardclues',
+      'eliteclues',
+      'masterclues',
+    ],
   },
   validModes = ['full', 'main', 'iron', 'hc', 'ult', 'dmm', 'sdmm', 'dmmt'];
 
@@ -105,7 +118,10 @@ async function getPlayerStats(rsn, mode) {
         axios(URLs.ult + URLs.stats + encodeURIComponent(rsn)).catch(
           res => res
         ),
+        getRSNFormat(rsn),
       ]);
+
+      player.rsn = otherResponses.pop();
 
       for (let res of otherResponses) {
         responses.push(res);
@@ -233,33 +249,33 @@ async function getHiscoresPage(mode, category, page) {
     '&page=' +
     page;
 
+  const players = [];
   const response = await axios(url);
-  let players = [],
-    element = document.createElement('html');
-  element.innerHTML = await response.text();
-  const playersHTML = element.querySelectorAll('.personal-hiscores__row');
+  const $ = cheerio.load(response.data);
+  const playersHTML = $('.personal-hiscores__row').toArray();
 
   for (let player of playersHTML) {
-    const attributes = player.querySelectorAll('td');
+    const attributes = player.children.filter(node => node.name === 'td');
+    console.log();
     let playerInfo = {
       mode: mode,
       category: category,
-      rank: attributes[0].innerHTML.slice(1, -1),
-      rsn: attributes[1].childNodes[1].innerHTML.replace(/\uFFFD/g, ' '),
+      rank: attributes[0].children[0].data.slice(1, -1),
+      rsn: attributes[1].children[1].children[0].data.replace(/\uFFFD/g, ' '),
     };
 
     hiscores.skills.includes(category.toLowerCase())
       ? (playerInfo = Object.assign(
           {
-            level: attributes[2].innerHTML.slice(1, -1),
-            xp: attributes[3].innerHTML.slice(1, -1),
+            level: attributes[2].children[0].data.slice(1, -1),
+            xp: attributes[3].children[0].data.slice(1, -1),
           },
           playerInfo
         ))
-      : (playerInfo.score = attributes[2].innerHTML.slice(1, -1));
+      : (playerInfo.score = attributes[2].children[0].data.slice(1, -1));
 
     if (mode === 'hc') {
-      playerInfo.dead = attributes[1].childElementCount > 1;
+      playerInfo.dead = attributes[1].children.length > 1;
     }
 
     players.push(playerInfo);
@@ -280,16 +296,17 @@ async function getHiscoresPage(mode, category, page) {
  * @returns {string}   The player's formatted username.
  */
 async function getRSNFormat(rsn) {
-  const url = URLs.main + URLs.scores + 'table=0&user=' + rsn;
+  const url =
+    URLs.main + URLs.scores + 'table=0&user=' + encodeURIComponent(rsn);
 
-  const response = await axios(url);
-  let element = document.createElement('html');
-  element.innerHTML = await response.text();
-  const cells = element.querySelectorAll('[style="color:#AA0022;"]');
-
-  if (cells.length >= 2) {
-    return cells[1].innerHTML.replace(/\uFFFD/g, ' ');
-  } else {
+  try {
+    const response = await axios(url);
+    const $ = cheerio.load(response.data);
+    return $('[style="color:#AA0022;"]')[1].children[0].data.replace(
+      /\uFFFD/g,
+      ' '
+    );
+  } catch {
     throw Error('Player not found');
   }
 }
