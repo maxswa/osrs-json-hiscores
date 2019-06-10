@@ -4,8 +4,7 @@
   "description": "The Oldschool Runescape API wrapper that does more!",
   "main": "hiscores.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node hiscores.js"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -26,5 +25,11 @@
   "bugs": {
     "url": "https://github.com/maxswa/osrs-json-hiscores/issues"
   },
-  "homepage": "https://github.com/maxswa/osrs-json-hiscores#readme"
+  "homepage": "https://github.com/maxswa/osrs-json-hiscores#readme",
+  "dependencies": {
+    "axios": "^0.19.0"
+  },
+  "devDependencies": {
+    "jest": "^24.8.0"
+  }
 }
