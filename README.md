@@ -1,5 +1,8 @@
 # OSRS .json Hiscores
 
+[![npm](https://img.shields.io/npm/v/osrs-json-hiscores.svg?style=flat-square)](https://www.npmjs.com/package/osrs-json-hiscores)
+[![npm](https://img.shields.io/npm/dm/osrs-json-hiscores.svg?style=flat-square)](https://npm-stat.com/charts.html?package=osrs-json-hiscores)
+
 **The Oldschool Runescape API wrapper that does more!**
 
 ## What it does
