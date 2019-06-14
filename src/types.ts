@@ -56,6 +56,19 @@ export type BHType = 'rogue' | 'hunter';
 
 export type BH = { [Type in BHType]: Activity };
 
+export type Category =
+  | SkillName
+  | 'hunterbh'
+  | 'roguebh'
+  | 'lms'
+  | 'allclues'
+  | 'beginnerclues'
+  | 'easyclues'
+  | 'mediumclues'
+  | 'hardclues'
+  | 'eliteclues'
+  | 'masterclues';
+
 export interface Stats {
   skills: Skills;
   clues: Clues;
