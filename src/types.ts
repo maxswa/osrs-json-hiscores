@@ -56,8 +56,7 @@ export type BHType = 'rogue' | 'hunter';
 
 export type BH = { [Type in BHType]: Activity };
 
-export type Category =
-  | SkillName
+export type ActivityName =
   | 'hunterbh'
   | 'roguebh'
   | 'lms'

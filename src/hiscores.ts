@@ -10,22 +10,24 @@ import {
   BH as BHStats,
   Clues,
   Gamemode,
-  Category,
   SkillName,
   PlayerSkillRow,
+  ActivityName,
+  PlayerActivityRow,
 } from './types';
 import {
   getStatsURL,
   SKILLS,
-  BH,
+  BH_MODES,
   CLUES,
   MODES,
   getPlayerTableURL,
   getSkillPageURL,
   GAMEMODES,
-  OTHER,
+  ACTIVITIES,
   numberFromElement,
   rsnFromElement,
+  getActivityPageURL,
 } from './utils';
 
 export async function getStats(
@@ -115,11 +117,11 @@ export async function getStats(
   }
 }
 
-export const getSkillPage = async (
-  mode: Gamemode,
+export async function getSkillPage(
   skill: SkillName,
-  page: number
-): Promise<PlayerSkillRow[]> => {
+  mode: Gamemode = 'main',
+  page: number = 1
+): Promise<PlayerSkillRow[]> {
   if (!GAMEMODES.includes(mode)) {
     throw Error('Invalid game mode');
   } else if (!Number.isInteger(page) || page < 1) {
@@ -148,11 +150,44 @@ export const getSkillPage = async (
   });
 
   return players;
-};
+}
 
-export const getRSNFormat = async (rsn: string): Promise<string> => {
+export async function getActivityPage(
+  activity: ActivityName,
+  mode: Gamemode = 'main',
+  page: number = 1
+): Promise<PlayerActivityRow[]> {
+  if (!GAMEMODES.includes(mode)) {
+    throw Error('Invalid game mode');
+  } else if (!Number.isInteger(page) || page < 1) {
+    throw Error('Page must be an integer greater than 0');
+  } else if (!ACTIVITIES.includes(activity)) {
+    throw Error('Invalid activity');
+  }
+  const url = getActivityPageURL(mode, activity, page);
+
+  const response = await axios(url);
+  const $ = cheerio.load(response.data);
+  const playersHTML = $('.personal-hiscores__row').toArray();
+
+  const players: PlayerActivityRow[] = playersHTML.map(row => {
+    const cells = row.children.filter(el => el.name === 'td');
+    const [rankEl, nameCell, scoreEl] = cells;
+    const [nameEl] = nameCell.children.filter(el => el.name === 'a');
+
+    return {
+      rsn: rsnFromElement(nameEl),
+      rank: numberFromElement(rankEl),
+      score: numberFromElement(scoreEl),
+      dead: nameCell.children.length === 4,
+    };
+  });
+
+  return players;
+}
+
+export async function getRSNFormat(rsn: string): Promise<string> {
   const url = getPlayerTableURL('main', rsn);
-
   try {
     const response = await axios(url);
     const $ = cheerio.load(response.data);
@@ -164,9 +199,9 @@ export const getRSNFormat = async (rsn: string): Promise<string> => {
   } catch {
     throw Error('Player not found');
   }
-};
+}
 
-export const parseStats = (csv: string): Stats => {
+export function parseStats(csv: string): Stats {
   const splitCSV = csv
     .split('\n')
     .filter(entry => !!entry)
@@ -193,7 +228,7 @@ export const parseStats = (csv: string): Stats => {
       return activity;
     });
 
-  const bhObjects = activityObjects.splice(0, BH.length);
+  const bhObjects = activityObjects.splice(0, BH_MODES.length);
   const [lms] = activityObjects.splice(0, 1);
   const clueObjects = activityObjects.splice(0, CLUES.length);
 
@@ -209,7 +244,7 @@ export const parseStats = (csv: string): Stats => {
   const bh: BHStats = bhObjects.reduce<BHStats>(
     (prev, curr, index) => {
       const newBH = { ...prev };
-      newBH[BH[index]] = curr;
+      newBH[BH_MODES[index]] = curr;
       return newBH;
     },
     {} as BHStats
@@ -232,4 +267,4 @@ export const parseStats = (csv: string): Stats => {
   };
 
   return stats;
-};
+}

@@ -1,11 +1,11 @@
-import { Gamemode, Category, SkillName } from '../types';
+import { Gamemode, SkillName, ActivityName } from '../types';
 import {
   BASE_URL,
   GAMEMODE_URL,
   STATS_URL,
   SCORES_URL,
   SKILLS,
-  OTHER,
+  ACTIVITIES,
 } from './constants';
 
 export const getStatsURL = (gamemode: Gamemode, rsn: string) =>
@@ -23,6 +23,17 @@ export const getSkillPageURL = (
 ) =>
   `${BASE_URL}${GAMEMODE_URL[gamemode]}${SCORES_URL}table=${SKILLS.indexOf(
     skill
+  )}&page=${page}`;
+
+export const getActivityPageURL = (
+  gamemode: Gamemode,
+  activity: ActivityName,
+  page: number
+) =>
+  `${BASE_URL}${
+    GAMEMODE_URL[gamemode]
+  }${SCORES_URL}category_type=1&table=${ACTIVITIES.indexOf(
+    activity
   )}&page=${page}`;
 
 export const numberFromElement = (el: CheerioElement) => {
