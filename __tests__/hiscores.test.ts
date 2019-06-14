@@ -206,5 +206,5 @@ test('Get attack top page', async done => {
     done();
   };
 
-  getSkillPage('main', 'attack', 1).then(callback);
+  getSkillPage('attack').then(callback);
 });
