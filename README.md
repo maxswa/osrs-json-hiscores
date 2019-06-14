@@ -8,9 +8,11 @@
 ## What it does
 
 The official hiscores API for Oldschool Runescape (OSRS) returns CSV.
-This wrapper converts it to json and provides extra information about the given player. By comparing player info it infers the player's game mode, as well as any previous modes (de-ironed or died as a hardcore ironman).
+This wrapper converts it to json and provides extra information about the given player. By comparing player info it infers the player's game mode, as well as any previous modes (de-ultimated, de-ironed and/or died as a hardcore ironman).
 
-An additional function is provided which screen-scrapes the OSRS leaderboards and returns the list of players as json
+Additional functions are provided that screen-scrape the OSRS leaderboards and return a list of players as json.
+
+`osrs-json-hiscores` has Typescript support, with full definitions for all functions and custom data types.
 
 ## Installation
 
@@ -20,12 +22,18 @@ With npm:
 $ npm install osrs-json-hiscores
 ```
 
+With Yarn:
+
+```
+$ yarn add osrs-json-hiscores
+```
+
 ## How to use
 
-Install the package via npm and then import it into your project:
+Install the package and then import it into your project:
 
 ```javascript
-import hiscores from 'osrs-json-hiscores';
+const hiscores = require('osrs-json-hiscores');
 ```
 
 Once you import it you can call the functions asynchronously:
@@ -35,6 +43,17 @@ hiscores
   .getStats('Lynx Titan', 'full')
   .then(res => console.log(res))
   .catch(err => console.error(err));
+```
+
+If you are using Typescript or transpiling your JS you can use ES6 syntax:
+
+```javascript
+import hiscores, { getSkillPage } from 'osrs-json-hiscores';
+
+// ...
+
+const stats = await hiscores.getStats('Lynx Titan');
+const topPage = await getSkillPage('overall');
 ```
 
 `getStats` will return a `full` player object with game mode by default, but it will also accept any of the following game modes:
@@ -49,17 +68,16 @@ hiscores
 | Seasonal Deadman | `sdmm` |
 | DMM Tournament   | `dmmt` |
 
-`getHiscores` requires a game mode and optionally a category and page:
+`getSkillPage` and `getActivityPage` require a skill/activity and optionally a gamemode and page:
 
 ```javascript
 hiscores
-  .getHiscores('main', 'overall', 1)
+  .getSkillPage('attack', 'main', 1)
   .then(res => console.log(res))
   .catch(err => console.error(err));
 ```
 
-The default values for category and page are `overall` and `1` respectively.
-Categories include all OSRS skills as well as:
+Activities consist of all levels of clue scrolls as well as minigames:
 
 ### Clue Scrolls
 
@@ -90,31 +108,29 @@ Categories include all OSRS skills as well as:
   rsn: 'Lynx Titan',
   mode: 'main',
   dead: false,
+  deulted: false,
   deironed: false,
   main: {
-    stats: {
+    skills: {
       overall: {rank: 1, level: 2277, xp: 4600000000},
       attack: {},
       defence: {},
-      ...
+      // ...
     },
     clues: {},
     bh: {},
     lms: {}
-  },
-  iron: {},
-  hc: {},
-  ult: {}
+  }
 }
 ```
 
-`getHiscores` returns and array of 25 players (This represents a page on the hiscores):
+`getSkillPage` returns and array of 25 players (This represents a page on the hiscores):
 
 ```javascript
 [
-  {mode: 'main', category: 'overall', rank: 1, rsn: 'Lynx Titan', level: 2277, xp: 4600000000},
+  { rank: 1, rsn: 'Lynx Titan', level: 2277, xp: 4600000000, dead: false },
   {},
   {},
-  ...
-]
+  // ...
+];
 ```
