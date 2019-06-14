@@ -85,3 +85,13 @@ export interface Player extends Modes {
   deulted: boolean;
   deironed: boolean;
 }
+
+export interface PlayerSkillRow extends Skill {
+  rsn: string;
+  dead: boolean;
+}
+
+export interface PlayerActivityRow extends Activity {
+  rsn: string;
+  dead: boolean;
+}

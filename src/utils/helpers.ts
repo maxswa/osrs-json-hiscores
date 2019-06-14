@@ -1,4 +1,4 @@
-import { Gamemode, Category } from '../types';
+import { Gamemode, Category, SkillName } from '../types';
 import {
   BASE_URL,
   GAMEMODE_URL,
@@ -16,15 +16,22 @@ export const getPlayerTableURL = (gamemode: Gamemode, rsn: string) =>
     GAMEMODE_URL[gamemode]
   }${SCORES_URL}table=0&user=${encodeURIComponent(rsn)}`;
 
-export const getHiscoresPageURL = (
+export const getSkillPageURL = (
   gamemode: Gamemode,
-  category: Category,
+  skill: SkillName,
   page: number
-) => {
-  const table = [...SKILLS, ...OTHER];
-  return `${BASE_URL}${GAMEMODE_URL[gamemode]}${SCORES_URL}${
-    table.includes(category)
-      ? `table=${table.indexOf(category)}`
-      : `category_type=1&table=${OTHER.indexOf(category)}`
-  }&page=${page}`;
+) =>
+  `${BASE_URL}${GAMEMODE_URL[gamemode]}${SCORES_URL}table=${SKILLS.indexOf(
+    skill
+  )}&page=${page}`;
+
+export const numberFromElement = (el: CheerioElement) => {
+  const innerText = el.firstChild.data;
+  const number = innerText ? innerText.replace(/[\n|,]/g, '') : '-1';
+  return parseInt(number, 10);
+};
+
+export const rsnFromElement = (el: CheerioElement) => {
+  const innerText = el.firstChild.data;
+  return innerText ? innerText.replace(/\uFFFD/g, ' ') : '';
 };

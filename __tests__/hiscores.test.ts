@@ -1,4 +1,5 @@
-import { parseStats, getRSNFormat } from '../src/index';
+import { parseStats, getRSNFormat, getSkillPage } from '../src/index';
+import { PlayerSkillRow } from '../src/types';
 
 test('Parse CSV to json', () => {
   const csv = `40258,2063,218035714
@@ -87,4 +88,123 @@ test('Get rsn format', async done => {
   };
 
   getRSNFormat('lYnX tiTaN').then(callback);
+});
+
+test('Get attack top page', async done => {
+  const callback = (data: PlayerSkillRow[]) => {
+    expect(data).toStrictEqual([
+      { rsn: 'Heur', rank: 1, level: 99, xp: 200000000, dead: false },
+      {
+        rsn: 'Unohdettu2',
+        rank: 2,
+        level: 99,
+        xp: 200000000,
+        dead: false,
+      },
+      { rsn: 'Drakon', rank: 3, level: 99, xp: 200000000, dead: false },
+      {
+        rsn: 'Ame Umehara',
+        rank: 4,
+        level: 99,
+        xp: 200000000,
+        dead: false,
+      },
+      { rsn: 'Jakee', rank: 5, level: 99, xp: 200000000, dead: false },
+      { rsn: 'Hitsuji', rank: 6, level: 99, xp: 200000000, dead: false },
+      { rsn: 'Howson', rank: 7, level: 99, xp: 200000000, dead: false },
+      { rsn: 'Dr PFAFF', rank: 8, level: 99, xp: 200000000, dead: false },
+      {
+        rsn: 'Malt Lickeys',
+        rank: 9,
+        level: 99,
+        xp: 200000000,
+        dead: false,
+      },
+      { rsn: 'Burned', rank: 10, level: 99, xp: 200000000, dead: false },
+      {
+        rsn: 'Blue Limes',
+        rank: 11,
+        level: 99,
+        xp: 200000000,
+        dead: false,
+      },
+      {
+        rsn: 'Mini Finbarr',
+        rank: 12,
+        level: 99,
+        xp: 200000000,
+        dead: false,
+      },
+      {
+        rsn: 'Unohdettu3',
+        rank: 13,
+        level: 99,
+        xp: 200000000,
+        dead: false,
+      },
+      {
+        rsn: 'Eslihero',
+        rank: 14,
+        level: 99,
+        xp: 200000000,
+        dead: false,
+      },
+      {
+        rsn: 'Lynx Titan',
+        rank: 15,
+        level: 99,
+        xp: 200000000,
+        dead: false,
+      },
+      {
+        rsn: 'AndrewWigins',
+        rank: 16,
+        level: 99,
+        xp: 200000000,
+        dead: false,
+      },
+      { rsn: 'iMelee', rank: 17, level: 99, xp: 200000000, dead: false },
+      {
+        rsn: 'Portuguese',
+        rank: 18,
+        level: 99,
+        xp: 200000000,
+        dead: false,
+      },
+      {
+        rsn: 'MarkoOSRS',
+        rank: 19,
+        level: 99,
+        xp: 200000000,
+        dead: false,
+      },
+      { rsn: 'Cairo', rank: 20, level: 99, xp: 200000000, dead: false },
+      {
+        rsn: 'Hey Jase',
+        rank: 21,
+        level: 99,
+        xp: 200000000,
+        dead: false,
+      },
+      {
+        rsn: 'Sleighur',
+        rank: 22,
+        level: 99,
+        xp: 200000000,
+        dead: false,
+      },
+      {
+        rsn: 'KMSat200mALL',
+        rank: 23,
+        level: 99,
+        xp: 200000000,
+        dead: false,
+      },
+      { rsn: 'Yumemi', rank: 24, level: 99, xp: 200000000, dead: false },
+      { rsn: 'Fiiggy', rank: 25, level: 99, xp: 200000000, dead: false },
+    ]);
+    done();
+  };
+
+  getSkillPage('main', 'attack', 1).then(callback);
 });

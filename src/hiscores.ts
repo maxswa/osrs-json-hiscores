@@ -11,6 +11,8 @@ import {
   Clues,
   Gamemode,
   Category,
+  SkillName,
+  PlayerSkillRow,
 } from './types';
 import {
   getStatsURL,
@@ -19,9 +21,11 @@ import {
   CLUES,
   MODES,
   getPlayerTableURL,
-  getHiscoresPageURL,
+  getSkillPageURL,
   GAMEMODES,
   OTHER,
+  numberFromElement,
+  rsnFromElement,
 } from './utils';
 
 export async function getStats(
@@ -111,59 +115,42 @@ export async function getStats(
   }
 }
 
-// export async function getHiscores(
-//   mode: Gamemode,
-//   category: Category,
-//   page: number
-// ) {
-//   if (GAMEMODES.includes(mode) || mode.toLowerCase() === 'full') {
-//     throw Error('Invalid game mode');
-//   } else if (!Number.isInteger(page) || page < 1) {
-//     throw Error('Page must be an integer greater than 0');
-//   } else if ([...SKILLS, ...OTHER].includes(category)) {
-//     throw Error('Invalid category');
-//   }
-//   const url = getHiscoresPageURL(mode, category, page);
+export const getSkillPage = async (
+  mode: Gamemode,
+  skill: SkillName,
+  page: number
+): Promise<PlayerSkillRow[]> => {
+  if (!GAMEMODES.includes(mode)) {
+    throw Error('Invalid game mode');
+  } else if (!Number.isInteger(page) || page < 1) {
+    throw Error('Page must be an integer greater than 0');
+  } else if (!SKILLS.includes(skill)) {
+    throw Error('Invalid skill');
+  }
+  const url = getSkillPageURL(mode, skill, page);
 
-//   const players = [];
-//   const response = await axios(url);
-//   const $ = cheerio.load(response.data);
-//   const playersHTML = $('.personal-hiscores__row').toArray();
+  const response = await axios(url);
+  const $ = cheerio.load(response.data);
+  const playersHTML = $('.personal-hiscores__row').toArray();
 
-//   for (const player of playersHTML) {
-//     const attributes = player.children.filter(node => node.name === 'td');
+  const players: PlayerSkillRow[] = playersHTML.map(row => {
+    const cells = row.children.filter(el => el.name === 'td');
+    const [rankEl, nameCell, levelEl, xpEl] = cells;
+    const [nameEl] = nameCell.children.filter(el => el.name === 'a');
 
-//     let playerInfo = {
-//       mode,
-//       category,
-//       rank: (attributes[0].children[0].data || '').slice(1, -1),
-//       rsn: (attributes[1].children[1].children[0].data || '').replace(
-//         /\uFFFD/g,
-//         ' '
-//       ),
-//     };
+    return {
+      rsn: rsnFromElement(nameEl),
+      rank: numberFromElement(rankEl),
+      level: numberFromElement(levelEl),
+      xp: numberFromElement(xpEl),
+      dead: nameCell.children.length === 4,
+    };
+  });
 
-//     SKILLS.includes(category)
-//       ? (playerInfo = Object.assign(
-//           {
-//             level: attributes[2].children[0].data.slice(1, -1),
-//             xp: attributes[3].children[0].data.slice(1, -1),
-//           },
-//           playerInfo
-//         ))
-//       : (playerInfo.score = attributes[2].children[0].data.slice(1, -1));
+  return players;
+};
 
-//     if (mode === 'hc') {
-//       playerInfo.dead = attributes[1].children.length > 1;
-//     }
-
-//     players.push(playerInfo);
-//   }
-
-//   return players;
-// }
-
-export const getRSNFormat = async (rsn: string) => {
+export const getRSNFormat = async (rsn: string): Promise<string> => {
   const url = getPlayerTableURL('main', rsn);
 
   try {
