@@ -82,5 +82,6 @@ export interface Player extends Modes {
   rsn: string;
   mode: Gamemode;
   dead: boolean;
+  deulted: boolean;
   deironed: boolean;
 }

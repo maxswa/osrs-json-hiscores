@@ -20,6 +20,8 @@ import {
   MODES,
   getPlayerTableURL,
   getHiscoresPageURL,
+  GAMEMODES,
+  OTHER,
 } from './utils';
 
 export async function getStats(
@@ -45,40 +47,21 @@ export async function getStats(
         getRSNFormat(rsn),
       ]);
 
-      let gameMode: Gamemode = 'main';
       const [ironRes, hcRes, ultRes, formattedName] = otherResponses;
 
-      if (ironRes.status === 200) {
-        if (hcRes.status === 200) {
-          gameMode = 'hc';
-        } else if (ultRes.status === 200) {
-          gameMode = 'ult';
-        } else {
-          gameMode = 'iron';
-        }
-      } else {
-        gameMode = 'main';
-      }
-
       const player: Player = {
-        rsn,
-        mode: gameMode,
+        rsn: formattedName,
+        mode: 'main',
         dead: false,
+        deulted: false,
         deironed: false,
       };
+      player.main = parseStats(mainRes.data);
 
-      switch (gameMode) {
-        case 'iron':
-          player.main = parseStats(mainRes.data);
-          player.iron = parseStats(ironRes.data);
-          if (player.main.skills.overall.xp !== player.iron.skills.overall.xp) {
-            player.deironed = true;
-            player.mode = 'main';
-          }
-          break;
-        case 'hc':
-          player.main = parseStats(mainRes.data);
-          player.iron = parseStats(ironRes.data);
+      if (ironRes.status === 200) {
+        player.iron = parseStats(ironRes.data);
+        if (hcRes.status === 200) {
+          player.mode = 'hc';
           player.hc = parseStats(hcRes.data);
           if (player.iron.skills.overall.xp !== player.hc.skills.overall.xp) {
             player.dead = true;
@@ -88,16 +71,24 @@ export async function getStats(
             player.deironed = true;
             player.mode = 'main';
           }
-          break;
-        case 'ult':
-          player.main = parseStats(mainRes.data);
-          player.iron = parseStats(ironRes.data);
+        } else if (ultRes.status === 200) {
+          player.mode = 'ult';
           player.ult = parseStats(ultRes.data);
+          if (player.iron.skills.overall.xp !== player.ult.skills.overall.xp) {
+            player.deulted = true;
+            player.mode = 'iron';
+          }
           if (player.main.skills.overall.xp !== player.iron.skills.overall.xp) {
             player.deironed = true;
             player.mode = 'main';
           }
-          break;
+        } else {
+          player.mode = 'iron';
+          if (player.main.skills.overall.xp !== player.iron.skills.overall.xp) {
+            player.deironed = true;
+            player.mode = 'main';
+          }
+        }
       }
 
       return player;
@@ -112,6 +103,7 @@ export async function getStats(
       rsn,
       mode,
       dead: false,
+      deulted: false,
       deironed: false,
       [mode]: parseStats(response.data),
     };
@@ -119,46 +111,18 @@ export async function getStats(
   }
 }
 
-// /**
-//  * Gets a hiscore page.
-//  *
-//  * Scrapes OSRS hiscores and converts to objects.
-//  *
-//  * @access public
-//  *
-//  * @param {string} mode       The game mode.
-//  * @param {string} [category] The category of hiscores.
-//  * @param {number} [page]     The page of players.
-//  *
-//  * @returns {Object[]} Array of player objects.
-//  */
-// async function getHiscores(mode, category = 'overall', page = 1) {
-//   if (
-//     !validModes.includes(mode.toLowerCase()) ||
-//     mode.toLowerCase() === 'full'
-//   ) {
-//     throw Error('Invalid game mode');
-//   } else if (!Number.isInteger(page) || page < 1) {
-//     throw Error('Page must be an integer greater than 0');
-//   } else if (
-//     !hiscores.skills.includes(category.toLowerCase()) &&
-//     !hiscores.other.includes(category.toLowerCase())
-//   ) {
-//     throw Error('Invalid category');
-//   } else {
-//     return await getHiscoresPage(
-//       mode.toLowerCase(),
-//       category.toLowerCase(),
-//       page
-//     );
-//   }
-// }
-
-// async function getHiscoresPage(
+// export async function getHiscores(
 //   mode: Gamemode,
 //   category: Category,
 //   page: number
 // ) {
+//   if (GAMEMODES.includes(mode) || mode.toLowerCase() === 'full') {
+//     throw Error('Invalid game mode');
+//   } else if (!Number.isInteger(page) || page < 1) {
+//     throw Error('Page must be an integer greater than 0');
+//   } else if ([...SKILLS, ...OTHER].includes(category)) {
+//     throw Error('Invalid category');
+//   }
 //   const url = getHiscoresPageURL(mode, category, page);
 
 //   const players = [];
