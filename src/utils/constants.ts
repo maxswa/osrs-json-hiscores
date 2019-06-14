@@ -6,7 +6,7 @@ export const SCORES_URL = 'overall.ws?';
 export const GAMEMODE_URL = {
   dmm: '_deadman/',
   dmmt: '_tournament/',
-  hc: '_ironman/',
+  hc: '_hardcore_ironman/',
   iron: '_ironman/',
   main: '/',
   sdmm: '_seasonal/',
@@ -47,8 +47,8 @@ export const CLUES: ClueType[] = [
   'elite',
   'master',
 ];
-export const BH: BHType[] = ['rogue', 'hunter'];
-export const OTHER = [
+export const BH_MODES: BHType[] = ['rogue', 'hunter'];
+export const ACTIVITIES = [
   'hunterbh',
   'roguebh',
   'lms',
