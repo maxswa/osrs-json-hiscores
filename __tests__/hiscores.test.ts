@@ -1,5 +1,6 @@
-import { parseStats, getRSNFormat, getSkillPage } from '../src/index';
-import { PlayerSkillRow } from '../src/types';
+import { parseStats, getRSNFormat, getSkillPage, getStats } from '../src/index';
+import { PlayerSkillRow, Player } from '../src/types';
+import axios, { AxiosError } from 'axios';
 
 test('Parse CSV to json', () => {
   const csv = `40258,2063,218035714
@@ -207,4 +208,15 @@ test('Get attack top page', async done => {
   };
 
   getSkillPage('attack').then(callback);
+});
+
+test('Get non-existant player', async done => {
+  const callback = (err: AxiosError) => {
+    if (err.response) {
+      expect(err.response.status).toBe(404);
+    }
+    done();
+  };
+
+  getStats('fishy').catch(callback);
 });
