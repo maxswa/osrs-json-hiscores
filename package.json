@@ -1,6 +1,6 @@
 {
   "name": "osrs-json-hiscores",
-  "version": "1.1.3",
+  "version": "1.2.0",
   "description": "The Oldschool Runescape API wrapper that does more!",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
