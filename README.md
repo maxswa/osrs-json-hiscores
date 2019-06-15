@@ -1,7 +1,8 @@
 # OSRS .json Hiscores
 
 [![npm](https://img.shields.io/npm/v/osrs-json-hiscores.svg?style=flat-square)](https://www.npmjs.com/package/osrs-json-hiscores)
-[![npm](https://img.shields.io/npm/dm/osrs-json-hiscores.svg?style=flat-square)](https://npm-stat.com/charts.html?package=osrs-json-hiscores)
+[![downloads](https://img.shields.io/npm/dm/osrs-json-hiscores.svg?style=flat-square)](https://npm-stat.com/charts.html?package=osrs-json-hiscores)
+[![types](https://img.shields.io/npm/types/osrs-json-hiscores.svg?style=flat-square)](https://github.com/maxswa/osrs-json-hiscores/src/types.ts)
 
 **The Oldschool Runescape API wrapper that does more!**
 
@@ -12,7 +13,7 @@ This wrapper converts it to json and provides extra information about the given 
 
 Additional functions are provided that screen-scrape the OSRS leaderboards and return a list of players as json.
 
-`osrs-json-hiscores` has Typescript support, with full definitions for all functions and custom data types.
+`osrs-json-hiscores` has TypeScript support, with full definitions for all functions and custom data types.
 
 ## Installation
 
@@ -45,7 +46,7 @@ hiscores
   .catch(err => console.error(err));
 ```
 
-If you are using Typescript or transpiling your JS you can use ES6 syntax:
+If you are using TypeScript or transpiling your JS you can use ES6 syntax:
 
 ```javascript
 import hiscores, { getSkillPage } from 'osrs-json-hiscores';
