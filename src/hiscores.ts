@@ -43,6 +43,7 @@ export async function getStats(
   } else if (!MODES.includes(mode)) {
     throw Error('Invalid game mode');
   }
+
   if (mode === 'full') {
     const mainRes = await axios(getStatsURL('main', rsn));
     if (mainRes.status === 200) {
@@ -187,6 +188,14 @@ export async function getActivityPage(
 }
 
 export async function getRSNFormat(rsn: string): Promise<string> {
+  if (typeof rsn !== 'string') {
+    throw Error('RSN must be a string');
+  } else if (!/^[a-zA-Z0-9 _]+$/.test(rsn)) {
+    throw Error('RSN contains invalid character');
+  } else if (rsn.length > 12 || rsn.length < 1) {
+    throw Error('RSN must be between 1 and 12 characters');
+  }
+
   const url = getPlayerTableURL('main', rsn);
   try {
     const response = await axios(url);
