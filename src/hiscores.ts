@@ -6,7 +6,7 @@ import {
   Skill,
   Stats,
   Skills,
-  BH as BHStats,
+  BH,
   Clues,
   Gamemode,
   SkillName,
@@ -251,13 +251,13 @@ export function parseStats(csv: string): Stats {
     {} as Skills
   );
 
-  const bh: BHStats = bhObjects.reduce<BHStats>(
+  const bh: BH = bhObjects.reduce<BH>(
     (prev, curr, index) => {
       const newBH = { ...prev };
       newBH[BH_MODES[index]] = curr;
       return newBH;
     },
-    {} as BHStats
+    {} as BH
   );
 
   const clues: Clues = clueObjects.reduce<Clues>(
