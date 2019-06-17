@@ -1,7 +1,5 @@
 export type Gamemode = 'main' | 'iron' | 'hc' | 'ult' | 'dmm' | 'sdmm' | 'dmmt';
 
-export type Mode = Gamemode | 'full';
-
 export interface Skill {
   rank: number;
   level: number;

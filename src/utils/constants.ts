@@ -1,4 +1,4 @@
-import { SkillName, ClueType, BHType, Gamemode, Mode } from '../types';
+import { SkillName, ClueType, BHType, Gamemode } from '../types';
 
 export const BASE_URL = 'http://services.runescape.com/m=hiscore_oldschool';
 export const STATS_URL = 'index_lite.ws?player=';
@@ -69,4 +69,3 @@ export const GAMEMODES: Gamemode[] = [
   'sdmm',
   'dmmt',
 ];
-export const MODES: Mode[] = [...GAMEMODES, 'full'];
