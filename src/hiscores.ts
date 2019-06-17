@@ -2,7 +2,6 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import {
   Player,
-  Mode,
   Activity,
   Skill,
   Stats,
@@ -20,7 +19,6 @@ import {
   SKILLS,
   BH_MODES,
   CLUES,
-  MODES,
   getPlayerTableURL,
   getSkillPageURL,
   GAMEMODES,
@@ -30,92 +28,93 @@ import {
   getActivityPageURL,
 } from './utils';
 
-export async function getStats(
-  rsn: string,
-  mode: Mode = 'full'
-): Promise<Player> {
+export async function getStats(rsn: string): Promise<Player> {
   if (typeof rsn !== 'string') {
     throw Error('RSN must be a string');
   } else if (!/^[a-zA-Z0-9 _]+$/.test(rsn)) {
     throw Error('RSN contains invalid character');
   } else if (rsn.length > 12 || rsn.length < 1) {
     throw Error('RSN must be between 1 and 12 characters');
-  } else if (!MODES.includes(mode)) {
-    throw Error('Invalid game mode');
   }
 
-  if (mode === 'full') {
-    const mainRes = await axios(getStatsURL('main', rsn));
-    if (mainRes.status === 200) {
-      const otherResponses = await Promise.all([
-        axios(getStatsURL('iron', rsn)).catch(err => err),
-        axios(getStatsURL('hc', rsn)).catch(err => err),
-        axios(getStatsURL('ult', rsn)).catch(err => err),
-        getRSNFormat(rsn),
-      ]);
+  const mainRes = await axios(getStatsURL('main', rsn));
+  if (mainRes.status === 200) {
+    const otherResponses = await Promise.all([
+      axios(getStatsURL('iron', rsn)).catch(err => err),
+      axios(getStatsURL('hc', rsn)).catch(err => err),
+      axios(getStatsURL('ult', rsn)).catch(err => err),
+      getRSNFormat(rsn),
+    ]);
 
-      const [ironRes, hcRes, ultRes, formattedName] = otherResponses;
+    const [ironRes, hcRes, ultRes, formattedName] = otherResponses;
 
-      const player: Player = {
-        rsn: formattedName,
-        mode: 'main',
-        dead: false,
-        deulted: false,
-        deironed: false,
-      };
-      player.main = parseStats(mainRes.data);
-
-      if (ironRes.status === 200) {
-        player.iron = parseStats(ironRes.data);
-        if (hcRes.status === 200) {
-          player.mode = 'hc';
-          player.hc = parseStats(hcRes.data);
-          if (player.iron.skills.overall.xp !== player.hc.skills.overall.xp) {
-            player.dead = true;
-            player.mode = 'iron';
-          }
-          if (player.main.skills.overall.xp !== player.iron.skills.overall.xp) {
-            player.deironed = true;
-            player.mode = 'main';
-          }
-        } else if (ultRes.status === 200) {
-          player.mode = 'ult';
-          player.ult = parseStats(ultRes.data);
-          if (player.iron.skills.overall.xp !== player.ult.skills.overall.xp) {
-            player.deulted = true;
-            player.mode = 'iron';
-          }
-          if (player.main.skills.overall.xp !== player.iron.skills.overall.xp) {
-            player.deironed = true;
-            player.mode = 'main';
-          }
-        } else {
-          player.mode = 'iron';
-          if (player.main.skills.overall.xp !== player.iron.skills.overall.xp) {
-            player.deironed = true;
-            player.mode = 'main';
-          }
-        }
-      }
-
-      return player;
-    }
-    throw Error('Player not found');
-  } else {
-    const response = await axios(getStatsURL(mode, rsn));
-    if (response.status !== 200) {
-      throw Error('Player not found');
-    }
     const player: Player = {
-      rsn,
-      mode,
+      rsn: formattedName,
+      mode: 'main',
       dead: false,
       deulted: false,
       deironed: false,
-      [mode]: parseStats(response.data),
     };
+    player.main = parseStats(mainRes.data);
+
+    if (ironRes.status === 200) {
+      player.iron = parseStats(ironRes.data);
+      if (hcRes.status === 200) {
+        player.mode = 'hc';
+        player.hc = parseStats(hcRes.data);
+        if (player.iron.skills.overall.xp !== player.hc.skills.overall.xp) {
+          player.dead = true;
+          player.mode = 'iron';
+        }
+        if (player.main.skills.overall.xp !== player.iron.skills.overall.xp) {
+          player.deironed = true;
+          player.mode = 'main';
+        }
+      } else if (ultRes.status === 200) {
+        player.mode = 'ult';
+        player.ult = parseStats(ultRes.data);
+        if (player.iron.skills.overall.xp !== player.ult.skills.overall.xp) {
+          player.deulted = true;
+          player.mode = 'iron';
+        }
+        if (player.main.skills.overall.xp !== player.iron.skills.overall.xp) {
+          player.deironed = true;
+          player.mode = 'main';
+        }
+      } else {
+        player.mode = 'iron';
+        if (player.main.skills.overall.xp !== player.iron.skills.overall.xp) {
+          player.deironed = true;
+          player.mode = 'main';
+        }
+      }
+    }
+
     return player;
   }
+  throw Error('Player not found');
+}
+
+export async function getStatsByGamemode(
+  rsn: string,
+  mode: Gamemode = 'main'
+): Promise<Stats> {
+  if (typeof rsn !== 'string') {
+    throw Error('RSN must be a string');
+  } else if (!/^[a-zA-Z0-9 _]+$/.test(rsn)) {
+    throw Error('RSN contains invalid character');
+  } else if (rsn.length > 12 || rsn.length < 1) {
+    throw Error('RSN must be between 1 and 12 characters');
+  } else if (!GAMEMODES.includes(mode)) {
+    throw Error('Invalid game mode');
+  }
+  const response = await axios(getStatsURL(mode, rsn));
+  if (response.status !== 200) {
+    throw Error('Player not found');
+  }
+  const stats: Stats = parseStats(response.data);
+
+  return stats;
 }
 
 export async function getSkillPage(
@@ -219,10 +218,11 @@ export function parseStats(csv: string): Stats {
   const skillObjects: Skill[] = splitCSV
     .filter(stat => stat.length === 3)
     .map(stat => {
+      const [rank, level, xp] = stat;
       const skill: Skill = {
-        rank: parseInt(stat[0], 10),
-        level: parseInt(stat[1], 10),
-        xp: parseInt(stat[2], 10),
+        rank: parseInt(rank, 10),
+        level: parseInt(level, 10),
+        xp: parseInt(xp, 10),
       };
       return skill;
     });
@@ -230,9 +230,10 @@ export function parseStats(csv: string): Stats {
   const activityObjects: Activity[] = splitCSV
     .filter(stat => stat.length === 2)
     .map(stat => {
+      const [rank, score] = stat;
       const activity: Activity = {
-        rank: parseInt(stat[0], 10),
-        score: parseInt(stat[1], 10),
+        rank: parseInt(rank, 10),
+        score: parseInt(score, 10),
       };
       return activity;
     });
