@@ -1,5 +1,11 @@
-import { parseStats, getRSNFormat, getSkillPage, getStats } from '../src/index';
-import { PlayerSkillRow, Player } from '../src/types';
+import {
+  parseStats,
+  getRSNFormat,
+  getSkillPage,
+  getStats,
+  getStatsByGamemode,
+} from '../src/index';
+import { PlayerSkillRow, Player, Stats } from '../src/types';
 import axios, { AxiosError } from 'axios';
 
 test('Parse CSV to json', () => {
@@ -219,4 +225,38 @@ test('Get non-existant player', async done => {
   };
 
   getStats('fishy').catch(callback);
+});
+
+test('Get stats by gamemode', async done => {
+  const callback = (stats: Stats) => {
+    expect(stats.skills).toStrictEqual({
+      overall: { rank: 1, level: 2277, xp: 4600000000 },
+      attack: { rank: 15, level: 99, xp: 200000000 },
+      defence: { rank: 27, level: 99, xp: 200000000 },
+      strength: { rank: 18, level: 99, xp: 200000000 },
+      hitpoints: { rank: 7, level: 99, xp: 200000000 },
+      ranged: { rank: 7, level: 99, xp: 200000000 },
+      prayer: { rank: 11, level: 99, xp: 200000000 },
+      magic: { rank: 32, level: 99, xp: 200000000 },
+      cooking: { rank: 158, level: 99, xp: 200000000 },
+      woodcutting: { rank: 15, level: 99, xp: 200000000 },
+      fletching: { rank: 12, level: 99, xp: 200000000 },
+      fishing: { rank: 9, level: 99, xp: 200000000 },
+      firemaking: { rank: 49, level: 99, xp: 200000000 },
+      crafting: { rank: 4, level: 99, xp: 200000000 },
+      smithing: { rank: 3, level: 99, xp: 200000000 },
+      mining: { rank: 25, level: 99, xp: 200000000 },
+      herblore: { rank: 5, level: 99, xp: 200000000 },
+      agility: { rank: 24, level: 99, xp: 200000000 },
+      thieving: { rank: 12, level: 99, xp: 200000000 },
+      slayer: { rank: 2, level: 99, xp: 200000000 },
+      farming: { rank: 19, level: 99, xp: 200000000 },
+      runecraft: { rank: 7, level: 99, xp: 200000000 },
+      hunter: { rank: 4, level: 99, xp: 200000000 },
+      construction: { rank: 4, level: 99, xp: 200000000 },
+    });
+    done();
+  };
+
+  getStatsByGamemode('Lynx Titan').then(callback);
 });
