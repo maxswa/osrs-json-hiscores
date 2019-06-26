@@ -15,6 +15,14 @@ Additional functions are provided that screen-scrape the OSRS leaderboards and r
 
 `osrs-json-hiscores` has TypeScript support, with full definitions for all functions and custom data types.
 
+---
+
+### Disclaimer
+
+Jagex does not provide `Access-Control-Allow-Origin` headers in their responses. This means that [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) will block all browser requests to their hiscores API. In order to get around this, osrs-json-hiscores should be installed on the server side and exposed to the front end via a simple API. Here is an example of this in use: [codesandbox.io/s/osrs-json-hiscores-demo](https://codesandbox.io/s/osrs-json-hiscores-demo-qz656)
+
+---
+
 ## Installation
 
 With npm:
@@ -41,7 +49,7 @@ Once you import it you can call the functions asynchronously:
 
 ```javascript
 hiscores
-  .getStats('Lynx Titan', 'full')
+  .getStats('Lynx Titan')
   .then(res => console.log(res))
   .catch(err => console.error(err));
 ```
@@ -57,7 +65,8 @@ const stats = await hiscores.getStats('Lynx Titan');
 const topPage = await getSkillPage('overall');
 ```
 
-`getStats` will return a `full` player object with game mode by default, but it will also accept any of the following game modes:
+`getStats` will return a full player object with gamemode.  
+`getStatsByGameMode` will return a stats object and accepts a gamemode parameter:
 
 | Game mode        | Param  |
 | ---------------- | :----: |
