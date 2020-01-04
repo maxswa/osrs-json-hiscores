@@ -68,15 +68,15 @@ const topPage = await getSkillPage('overall');
 `getStats` will return a full player object with gamemode.  
 `getStatsByGameMode` will return a stats object and accepts a gamemode parameter:
 
-| Game mode        | Param  |
-| ---------------- | :----: |
-| Regular          | `main` |
-| Ironman          | `iron` |
-| Hardcore Ironman |  `hc`  |
-| Ultimate Ironman | `ult`  |
-| Deadman Mode     | `dmm`  |
-| Seasonal Deadman | `sdmm` |
-| DMM Tournament   | `dmmt` |
+| Game mode        |   Param   |
+| ---------------- | :-------: |
+| Regular          |  `main`   |
+| Ironman          |  `iron`   |
+| Hardcore Ironman |   `hc`    |
+| Ultimate Ironman |   `ult`   |
+| Deadman Mode     |   `dmm`   |
+| DMM Tournament   |  `dmmt`   |
+| Leagues          | `leagues` |
 
 `getSkillPage` and `getActivityPage` require a skill/activity and optionally a gamemode and page:
 
@@ -109,6 +109,60 @@ Activities consist of all levels of clue scrolls as well as minigames:
 | Bounty Hunter (Hunter) | `hunterbh` |
 | Last Man Standing      |   `lms`    |
 
+### Leagues
+
+| Name          | Param |
+| ------------- | :---: |
+| League Points | `lp`  |
+
+### Bosses
+
+| Boss Name                        |             Param              |
+| -------------------------------- | :----------------------------: |
+| Abyssal Sire                     |         `abyssalsire`          |
+| Alchemical Hydra                 |       `alchemicalhydra`        |
+| Barrows Chests                   |        `barrowschests`         |
+| Bryophyta                        |          `bryophyta`           |
+| Callisto                         |           `callisto`           |
+| Cerberus                         |           `cerberus`           |
+| Chambers Of Xeric                |       `chambersofxeric`        |
+| Chambers Of Xeric Challenge Mode | `chambersofxericchallengemode` |
+| Chaos Elemental                  |        `chaoselemental`        |
+| Chaos Fanatic                    |         `chaosfanatic`         |
+| Commander Zilyana                |       `commanderzilyana`       |
+| Corporeal Beast                  |        `corporealbeast`        |
+| Crazy Archaeologist              |      `crazyarchaeologist`      |
+| Dagannoth Prime                  |        `dagannothprime`        |
+| Dagannoth Rex                    |         `dagannothrex`         |
+| Dagannoth Supreme                |       `dagannothsupreme`       |
+| Deranged Archaeologist           |    `derangedarchaeologist`     |
+| General Graardor                 |       `generalgraardor`        |
+| Giant Mole                       |          `giantmole`           |
+| Grotesque Guardians              |      `grotesqueguardians`      |
+| Hespori                          |           `hespori`            |
+| Kalphite Queen                   |        `kalphitequeen`         |
+| King Black Dragon                |       `kingblackdragon`        |
+| Kraken                           |            `kraken`            |
+| Kreearra                         |           `kreearra`           |
+| K'ril Tsutsaroth                 |        `kriltsutsaroth`        |
+| Mimic                            |            `mimic`             |
+| Obor                             |             `obor`             |
+| Sarachnis                        |          `sarachnis`           |
+| Scorpia                          |           `scorpia`            |
+| Skotizo                          |           `skotizo`            |
+| Gauntlet                         |           `gauntlet`           |
+| Corrupted Gauntlet               |      `corruptedgauntlet`       |
+| Theatre Of Blood                 |        `theatreofblood`        |
+| Thermonuclear Smoke Devil        |   `thermonuclearsmokedevil`    |
+| TzKal-Zuk                        |           `tzkalzuk`           |
+| TzTok-Jad                        |           `tztokjad`           |
+| Venenatis                        |          `venenatis`           |
+| Vetion                           |            `vetion`            |
+| Vorkath                          |           `vorkath`            |
+| Wintertodt                       |          `wintertodt`          |
+| Zalcano                          |           `zalcano`            |
+| Zulrah                           |            `zulrah`            |
+
 ## What you'll get
 
 `getStats` returns a player object that looks like this:
@@ -129,7 +183,8 @@ Activities consist of all levels of clue scrolls as well as minigames:
     },
     clues: {},
     bh: {},
-    lms: {}
+    lms: {},
+    bosses: {}
   }
 }
 ```

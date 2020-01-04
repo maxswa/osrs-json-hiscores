@@ -1,4 +1,11 @@
-export type Gamemode = 'main' | 'iron' | 'hc' | 'ult' | 'dmm' | 'sdmm' | 'dmmt';
+export type Gamemode =
+  | 'main'
+  | 'iron'
+  | 'hc'
+  | 'ult'
+  | 'dmm'
+  | 'dmmt'
+  | 'leagues';
 
 export interface Skill {
   rank: number;
@@ -54,6 +61,53 @@ export type BHType = 'rogue' | 'hunter';
 
 export type BH = { [Type in BHType]: Activity };
 
+export type Boss =
+  | 'abyssalsire'
+  | 'alchemicalhydra'
+  | 'barrowschests'
+  | 'bryophyta'
+  | 'callisto'
+  | 'cerberus'
+  | 'chambersofxeric'
+  | 'chambersofxericchallengemode'
+  | 'chaoselemental'
+  | 'chaosfanatic'
+  | 'commanderzilyana'
+  | 'corporealbeast'
+  | 'crazyarchaeologist'
+  | 'dagannothprime'
+  | 'dagannothrex'
+  | 'dagannothsupreme'
+  | 'derangedarchaeologist'
+  | 'generalgraardor'
+  | 'giantmole'
+  | 'grotesqueguardians'
+  | 'hespori'
+  | 'kalphitequeen'
+  | 'kingblackdragon'
+  | 'kraken'
+  | 'kreearra'
+  | 'kriltsutsaroth'
+  | 'mimic'
+  | 'obor'
+  | 'sarachnis'
+  | 'scorpia'
+  | 'skotizo'
+  | 'gauntlet'
+  | 'corruptedgauntlet'
+  | 'theatreofblood'
+  | 'thermonuclearsmokedevil'
+  | 'tzkalzuk'
+  | 'tztokjad'
+  | 'venenatis'
+  | 'vetion'
+  | 'vorkath'
+  | 'wintertodt'
+  | 'zalcano'
+  | 'zulrah';
+
+export type Bosses = { [Type in Boss]: Activity };
+
 export type ActivityName =
   | 'hunterbh'
   | 'roguebh'
@@ -64,13 +118,19 @@ export type ActivityName =
   | 'mediumclues'
   | 'hardclues'
   | 'eliteclues'
-  | 'masterclues';
+  | 'masterclues'
+  | Boss;
 
 export interface Stats {
   skills: Skills;
   clues: Clues;
   bh: BH;
   lms: Activity;
+  bosses: Bosses;
+}
+
+export interface LeagueStats extends Omit<Stats, 'bh' | 'lms'> {
+  lp: Activity;
 }
 
 export type Modes = { [M in Gamemode]?: Stats };

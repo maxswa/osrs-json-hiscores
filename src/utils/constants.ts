@@ -1,4 +1,4 @@
-import { SkillName, ClueType, BHType, Gamemode } from '../types';
+import { SkillName, ClueType, BHType, Gamemode, Boss } from '../types';
 
 export const BASE_URL = 'http://services.runescape.com/m=hiscore_oldschool';
 export const STATS_URL = 'index_lite.ws?player=';
@@ -9,7 +9,7 @@ export const GAMEMODE_URL = {
   hc: '_hardcore_ironman/',
   iron: '_ironman/',
   main: '/',
-  sdmm: '_seasonal/',
+  leagues: '_seasonal/',
   ult: '_ultimate/',
 };
 export const SKILLS: SkillName[] = [
@@ -66,6 +66,51 @@ export const GAMEMODES: Gamemode[] = [
   'hc',
   'ult',
   'dmm',
-  'sdmm',
   'dmmt',
+  'leagues',
+];
+export const BOSSES: Boss[] = [
+  'abyssalsire',
+  'alchemicalhydra',
+  'barrowschests',
+  'bryophyta',
+  'chambersofxeric',
+  'chambersofxericchallengemode',
+  'callisto',
+  'cerberus',
+  'chaoselemental',
+  'chaosfanatic',
+  'commanderzilyana',
+  'corporealbeast',
+  'crazyarchaeologist',
+  'dagannothprime',
+  'dagannothrex',
+  'dagannothsupreme',
+  'derangedarchaeologist',
+  'generalgraardor',
+  'giantmole',
+  'grotesqueguardians',
+  'hespori',
+  'kalphitequeen',
+  'kingblackdragon',
+  'kraken',
+  'kreearra',
+  'kriltsutsaroth',
+  'mimic',
+  'obor',
+  'sarachnis',
+  'scorpia',
+  'skotizo',
+  'gauntlet',
+  'corruptedgauntlet',
+  'theatreofblood',
+  'thermonuclearsmokedevil',
+  'tzkalzuk',
+  'tztokjad',
+  'venenatis',
+  'vetion',
+  'vorkath',
+  'wintertodt',
+  'zalcano',
+  'zulrah',
 ];

@@ -13,6 +13,9 @@ import {
   PlayerSkillRow,
   ActivityName,
   PlayerActivityRow,
+  Bosses,
+  LeagueStats,
+  Boss,
 } from './types';
 import {
   getStatsURL,
@@ -26,6 +29,7 @@ import {
   numberFromElement,
   rsnFromElement,
   getActivityPageURL,
+  BOSSES,
 } from './utils';
 
 export async function getStats(rsn: string): Promise<Player> {
@@ -95,10 +99,10 @@ export async function getStats(rsn: string): Promise<Player> {
   throw Error('Player not found');
 }
 
-export async function getStatsByGamemode(
+export async function getStatsByGamemode<T extends Gamemode = 'main'>(
   rsn: string,
-  mode: Gamemode = 'main'
-): Promise<Stats> {
+  mode: T = 'main' as T
+): Promise<T extends 'leagues' ? LeagueStats : Stats> {
   if (typeof rsn !== 'string') {
     throw Error('RSN must be a string');
   } else if (!/^[a-zA-Z0-9 _]+$/.test(rsn)) {
@@ -112,7 +116,7 @@ export async function getStatsByGamemode(
   if (response.status !== 200) {
     throw Error('Player not found');
   }
-  const stats: Stats = parseStats(response.data);
+  const stats = parseStats(response.data, mode);
 
   return stats;
 }
@@ -209,7 +213,10 @@ export async function getRSNFormat(rsn: string): Promise<string> {
   }
 }
 
-export function parseStats(csv: string): Stats {
+export function parseStats<T extends Gamemode = 'main'>(
+  csv: string,
+  mode: T = 'main' as T
+): T extends 'leagues' ? LeagueStats : Stats {
   const splitCSV = csv
     .split('\n')
     .filter(entry => !!entry)
@@ -238,43 +245,69 @@ export function parseStats(csv: string): Stats {
       return activity;
     });
 
+  const [lp] = activityObjects.splice(0, 1);
   const bhObjects = activityObjects.splice(0, BH_MODES.length);
-  const [lms] = activityObjects.splice(0, 1);
   const clueObjects = activityObjects.splice(0, CLUES.length);
+  const [lms] = activityObjects.splice(0, 1);
+  const bossObjects = activityObjects.splice(0, BOSSES.length);
 
-  const skills: Skills = skillObjects.reduce<Skills>(
-    (prev, curr, index) => {
-      const newSkills = { ...prev };
-      newSkills[SKILLS[index]] = curr;
-      return newSkills;
-    },
-    {} as Skills
+  const skills: Skills = skillObjects.reduce<Skills>((prev, curr, index) => {
+    const newSkills = { ...prev };
+    newSkills[SKILLS[index]] = curr;
+    return newSkills;
+  }, {} as Skills);
+
+  const bh: BH = bhObjects.reduce<BH>((prev, curr, index) => {
+    const newBH = { ...prev };
+    newBH[BH_MODES[index]] = curr;
+    return newBH;
+  }, {} as BH);
+
+  const clues: Clues = clueObjects.reduce<Clues>((prev, curr, index) => {
+    const newClues = { ...prev };
+    newClues[CLUES[index]] = curr;
+    return newClues;
+  }, {} as Clues);
+
+  // TODO Remove as soon as Jagex's API is fixed
+  const brokenBosses: Boss[] = ['callisto', 'cerberus'];
+  const TEMPBOSSES: Boss[] = BOSSES.reduce<Boss[]>(
+    (prev, curr) => (brokenBosses.includes(curr) ? prev : [...prev, curr]),
+    []
   );
 
-  const bh: BH = bhObjects.reduce<BH>(
-    (prev, curr, index) => {
-      const newBH = { ...prev };
-      newBH[BH_MODES[index]] = curr;
-      return newBH;
-    },
-    {} as BH
-  );
+  const bosses: Bosses = bossObjects.reduce<Bosses>((prev, curr, index) => {
+    const newBosses = { ...prev };
+    newBosses[TEMPBOSSES[index]] = brokenBosses.includes(BOSSES[index])
+      ? { rank: -1, score: -1 }
+      : curr;
+    return newBosses;
+  }, {} as Bosses);
 
-  const clues: Clues = clueObjects.reduce<Clues>(
-    (prev, curr, index) => {
-      const newClues = { ...prev };
-      newClues[CLUES[index]] = curr;
-      return newClues;
-    },
-    {} as Clues
-  );
+  // TODO Remove as soon as Jagex's API is fixed
+  brokenBosses.forEach(broken => {
+    bosses[broken] = {
+      rank: -1,
+      score: -1,
+    };
+  });
 
   const stats: Stats = {
     skills,
     bh,
     lms,
     clues,
+    bosses,
   };
 
-  return stats;
+  const leagueStats: LeagueStats = {
+    skills,
+    lp,
+    clues,
+    bosses,
+  };
+
+  return (mode === 'leagues' ? leagueStats : stats) as T extends 'leagues'
+    ? LeagueStats
+    : Stats;
 }
