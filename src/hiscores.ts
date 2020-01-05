@@ -14,7 +14,6 @@ import {
   ActivityName,
   PlayerActivityRow,
   Bosses,
-  LeagueStats,
   Boss,
 } from './types';
 import {
@@ -44,16 +43,16 @@ export async function getStats(rsn: string): Promise<Player> {
   const mainRes = await axios(getStatsURL('main', rsn));
   if (mainRes.status === 200) {
     const otherResponses = await Promise.all([
-      axios(getStatsURL('iron', rsn)).catch(err => err),
-      axios(getStatsURL('hc', rsn)).catch(err => err),
-      axios(getStatsURL('ult', rsn)).catch(err => err),
+      axios(getStatsURL('ironman', rsn)).catch(err => err),
+      axios(getStatsURL('hardcore', rsn)).catch(err => err),
+      axios(getStatsURL('ultimate', rsn)).catch(err => err),
       getRSNFormat(rsn),
     ]);
 
     const [ironRes, hcRes, ultRes, formattedName] = otherResponses;
 
     const player: Player = {
-      rsn: formattedName,
+      name: formattedName,
       mode: 'main',
       dead: false,
       deulted: false,
@@ -62,32 +61,42 @@ export async function getStats(rsn: string): Promise<Player> {
     player.main = parseStats(mainRes.data);
 
     if (ironRes.status === 200) {
-      player.iron = parseStats(ironRes.data);
+      player.ironman = parseStats(ironRes.data);
       if (hcRes.status === 200) {
-        player.mode = 'hc';
-        player.hc = parseStats(hcRes.data);
-        if (player.iron.skills.overall.xp !== player.hc.skills.overall.xp) {
+        player.mode = 'hardcore';
+        player.hardcore = parseStats(hcRes.data);
+        if (
+          player.ironman.skills.overall.xp !== player.hardcore.skills.overall.xp
+        ) {
           player.dead = true;
-          player.mode = 'iron';
+          player.mode = 'ironman';
         }
-        if (player.main.skills.overall.xp !== player.iron.skills.overall.xp) {
+        if (
+          player.main.skills.overall.xp !== player.ironman.skills.overall.xp
+        ) {
           player.deironed = true;
           player.mode = 'main';
         }
       } else if (ultRes.status === 200) {
-        player.mode = 'ult';
-        player.ult = parseStats(ultRes.data);
-        if (player.iron.skills.overall.xp !== player.ult.skills.overall.xp) {
+        player.mode = 'ultimate';
+        player.ultimate = parseStats(ultRes.data);
+        if (
+          player.ironman.skills.overall.xp !== player.ultimate.skills.overall.xp
+        ) {
           player.deulted = true;
-          player.mode = 'iron';
+          player.mode = 'ironman';
         }
-        if (player.main.skills.overall.xp !== player.iron.skills.overall.xp) {
+        if (
+          player.main.skills.overall.xp !== player.ironman.skills.overall.xp
+        ) {
           player.deironed = true;
           player.mode = 'main';
         }
       } else {
-        player.mode = 'iron';
-        if (player.main.skills.overall.xp !== player.iron.skills.overall.xp) {
+        player.mode = 'ironman';
+        if (
+          player.main.skills.overall.xp !== player.ironman.skills.overall.xp
+        ) {
           player.deironed = true;
           player.mode = 'main';
         }
@@ -99,10 +108,10 @@ export async function getStats(rsn: string): Promise<Player> {
   throw Error('Player not found');
 }
 
-export async function getStatsByGamemode<T extends Gamemode = 'main'>(
+export async function getStatsByGamemode(
   rsn: string,
-  mode: T = 'main' as T
-): Promise<T extends 'leagues' ? LeagueStats : Stats> {
+  mode: Gamemode = 'main'
+): Promise<Stats> {
   if (typeof rsn !== 'string') {
     throw Error('RSN must be a string');
   } else if (!/^[a-zA-Z0-9 _]+$/.test(rsn)) {
@@ -116,7 +125,7 @@ export async function getStatsByGamemode<T extends Gamemode = 'main'>(
   if (response.status !== 200) {
     throw Error('Player not found');
   }
-  const stats = parseStats(response.data, mode);
+  const stats = parseStats(response.data);
 
   return stats;
 }
@@ -145,7 +154,7 @@ export async function getSkillPage(
     const [nameEl] = nameCell.children.filter(el => el.name === 'a');
 
     return {
-      rsn: rsnFromElement(nameEl),
+      name: rsnFromElement(nameEl),
       rank: numberFromElement(rankEl),
       level: numberFromElement(levelEl),
       xp: numberFromElement(xpEl),
@@ -180,7 +189,7 @@ export async function getActivityPage(
     const [nameEl] = nameCell.children.filter(el => el.name === 'a');
 
     return {
-      rsn: rsnFromElement(nameEl),
+      name: rsnFromElement(nameEl),
       rank: numberFromElement(rankEl),
       score: numberFromElement(scoreEl),
       dead: nameCell.children.length === 4,
@@ -213,10 +222,7 @@ export async function getRSNFormat(rsn: string): Promise<string> {
   }
 }
 
-export function parseStats<T extends Gamemode = 'main'>(
-  csv: string,
-  mode: T = 'main' as T
-): T extends 'leagues' ? LeagueStats : Stats {
+export function parseStats(csv: string): Stats {
   const splitCSV = csv
     .split('\n')
     .filter(entry => !!entry)
@@ -245,10 +251,10 @@ export function parseStats<T extends Gamemode = 'main'>(
       return activity;
     });
 
-  const [lp] = activityObjects.splice(0, 1);
+  const [leaguePoints] = activityObjects.splice(0, 1);
   const bhObjects = activityObjects.splice(0, BH_MODES.length);
   const clueObjects = activityObjects.splice(0, CLUES.length);
-  const [lms] = activityObjects.splice(0, 1);
+  const [lastManStanding] = activityObjects.splice(0, 1);
   const bossObjects = activityObjects.splice(0, BOSSES.length);
 
   const skills: Skills = skillObjects.reduce<Skills>((prev, curr, index) => {
@@ -257,7 +263,7 @@ export function parseStats<T extends Gamemode = 'main'>(
     return newSkills;
   }, {} as Skills);
 
-  const bh: BH = bhObjects.reduce<BH>((prev, curr, index) => {
+  const bountyHunter: BH = bhObjects.reduce<BH>((prev, curr, index) => {
     const newBH = { ...prev };
     newBH[BH_MODES[index]] = curr;
     return newBH;
@@ -278,36 +284,29 @@ export function parseStats<T extends Gamemode = 'main'>(
 
   const bosses: Bosses = bossObjects.reduce<Bosses>((prev, curr, index) => {
     const newBosses = { ...prev };
-    newBosses[TEMPBOSSES[index]] = brokenBosses.includes(BOSSES[index])
-      ? { rank: -1, score: -1 }
-      : curr;
+
+    // TODO Remove as soon as Jagex's API is fixed
+    if (BOSSES[index] === brokenBosses[0]) {
+      brokenBosses.forEach(broken => {
+        newBosses[broken] = {
+          rank: -1,
+          score: -1,
+        };
+      });
+    }
+
+    newBosses[TEMPBOSSES[index]] = curr;
     return newBosses;
   }, {} as Bosses);
 
-  // TODO Remove as soon as Jagex's API is fixed
-  brokenBosses.forEach(broken => {
-    bosses[broken] = {
-      rank: -1,
-      score: -1,
-    };
-  });
-
   const stats: Stats = {
     skills,
-    bh,
-    lms,
+    leaguePoints,
+    bountyHunter,
+    lastManStanding,
     clues,
     bosses,
   };
 
-  const leagueStats: LeagueStats = {
-    skills,
-    lp,
-    clues,
-    bosses,
-  };
-
-  return (mode === 'leagues' ? leagueStats : stats) as T extends 'leagues'
-    ? LeagueStats
-    : Stats;
+  return stats;
 }

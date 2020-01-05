@@ -68,15 +68,15 @@ const topPage = await getSkillPage('overall');
 `getStats` will return a full player object with gamemode.  
 `getStatsByGameMode` will return a stats object and accepts a gamemode parameter:
 
-| Game mode        |   Param   |
-| ---------------- | :-------: |
-| Regular          |  `main`   |
-| Ironman          |  `iron`   |
-| Hardcore Ironman |   `hc`    |
-| Ultimate Ironman |   `ult`   |
-| Deadman Mode     |   `dmm`   |
-| DMM Tournament   |  `dmmt`   |
-| Leagues          | `leagues` |
+| Game mode        |    Param     |
+| ---------------- | :----------: |
+| Regular          |    `main`    |
+| Ironman          |  `ironman`   |
+| Hardcore Ironman |  `hardcore`  |
+| Ultimate Ironman |  `ultimate`  |
+| Deadman Mode     |  `deadman`   |
+| Tournament       | `tournament` |
+| Leagues          |  `seasonal`  |
 
 `getSkillPage` and `getActivityPage` require a skill/activity and optionally a gamemode and page:
 
@@ -87,75 +87,69 @@ hiscores
   .catch(err => console.error(err));
 ```
 
-Activities consist of all levels of clue scrolls as well as minigames:
+Activities consist of all levels of clue scrolls as well as minigames and bosses:
 
 ### Clue Scrolls
 
 | Type     |      Param      |
 | -------- | :-------------: |
-| All      |   `allclues`    |
-| Beginner | `beginnerclues` |
-| Easy     |   `easyclues`   |
-| Medium   |  `mediumclues`  |
-| Hard     |   `hardclues`   |
-| Elite    |  `eliteclues`   |
-| Master   |  `masterclues`  |
+| All      |   `allClues`    |
+| Beginner | `beginnerClues` |
+| Easy     |   `easyClues`   |
+| Medium   |  `mediumClues`  |
+| Hard     |   `hardClues`   |
+| Elite    |  `eliteClues`   |
+| Master   |  `masterClues`  |
 
 ### Minigames
 
-| Minigame               |   Param    |
-| ---------------------- | :--------: |
-| Bounty Hunter (Rogue)  | `roguebh`  |
-| Bounty Hunter (Hunter) | `hunterbh` |
-| Last Man Standing      |   `lms`    |
-
-### Leagues
-
-| Name          | Param |
-| ------------- | :---: |
-| League Points | `lp`  |
+| Minigame               |       Param       |
+| ---------------------- | :---------------: |
+| Bounty Hunter (Rogue)  |     `rogueBH`     |
+| Bounty Hunter (Hunter) |    `hunterBH`     |
+| Last Man Standing      | `lastManStanding` |
 
 ### Bosses
 
 | Boss Name                        |             Param              |
 | -------------------------------- | :----------------------------: |
-| Abyssal Sire                     |         `abyssalsire`          |
-| Alchemical Hydra                 |       `alchemicalhydra`        |
-| Barrows Chests                   |        `barrowschests`         |
+| Abyssal Sire                     |         `abyssalSire`          |
+| Alchemical Hydra                 |       `alchemicalHydra`        |
+| Barrows Chests                   |           `barrows`            |
 | Bryophyta                        |          `bryophyta`           |
 | Callisto                         |           `callisto`           |
 | Cerberus                         |           `cerberus`           |
-| Chambers Of Xeric                |       `chambersofxeric`        |
-| Chambers Of Xeric Challenge Mode | `chambersofxericchallengemode` |
-| Chaos Elemental                  |        `chaoselemental`        |
-| Chaos Fanatic                    |         `chaosfanatic`         |
-| Commander Zilyana                |       `commanderzilyana`       |
-| Corporeal Beast                  |        `corporealbeast`        |
-| Crazy Archaeologist              |      `crazyarchaeologist`      |
-| Dagannoth Prime                  |        `dagannothprime`        |
-| Dagannoth Rex                    |         `dagannothrex`         |
-| Dagannoth Supreme                |       `dagannothsupreme`       |
-| Deranged Archaeologist           |    `derangedarchaeologist`     |
-| General Graardor                 |       `generalgraardor`        |
-| Giant Mole                       |          `giantmole`           |
-| Grotesque Guardians              |      `grotesqueguardians`      |
+| Chambers Of Xeric                |       `chambersOfXeric`        |
+| Chambers Of Xeric Challenge Mode | `chambersOfXericChallengeMode` |
+| Chaos Elemental                  |        `chaosElemental`        |
+| Chaos Fanatic                    |         `chaosFanatic`         |
+| Commander Zilyana                |       `commanderZilyana`       |
+| Corporeal Beast                  |        `corporealBeast`        |
+| Crazy Archaeologist              |      `crazyArchaeologist`      |
+| Dagannoth Prime                  |        `dagannothPrime`        |
+| Dagannoth Rex                    |         `dagannothRex`         |
+| Dagannoth Supreme                |       `dagannothSupreme`       |
+| Deranged Archaeologist           |    `derangedArchaeologist`     |
+| General Graardor                 |       `generalGraardor`        |
+| Giant Mole                       |          `giantMole`           |
+| Grotesque Guardians              |      `grotesqueGuardians`      |
 | Hespori                          |           `hespori`            |
-| Kalphite Queen                   |        `kalphitequeen`         |
-| King Black Dragon                |       `kingblackdragon`        |
+| Kalphite Queen                   |        `kalphiteQueen`         |
+| King Black Dragon                |       `kingBlackDragon`        |
 | Kraken                           |            `kraken`            |
-| Kreearra                         |           `kreearra`           |
-| K'ril Tsutsaroth                 |        `kriltsutsaroth`        |
+| Kreearra                         |           `kreeArra`           |
+| K'ril Tsutsaroth                 |        `krilTsutsaroth`        |
 | Mimic                            |            `mimic`             |
 | Obor                             |             `obor`             |
 | Sarachnis                        |          `sarachnis`           |
 | Scorpia                          |           `scorpia`            |
 | Skotizo                          |           `skotizo`            |
 | Gauntlet                         |           `gauntlet`           |
-| Corrupted Gauntlet               |      `corruptedgauntlet`       |
-| Theatre Of Blood                 |        `theatreofblood`        |
-| Thermonuclear Smoke Devil        |   `thermonuclearsmokedevil`    |
-| TzKal-Zuk                        |           `tzkalzuk`           |
-| TzTok-Jad                        |           `tztokjad`           |
+| Corrupted Gauntlet               |      `corruptedGauntlet`       |
+| Theatre Of Blood                 |        `theatreOfBlood`        |
+| Thermonuclear Smoke Devil        |   `thermonuclearSmokeDevil`    |
+| TzKal-Zuk                        |           `tzKalZuk`           |
+| TzTok-Jad                        |           `tzTokJad`           |
 | Venenatis                        |          `venenatis`           |
 | Vetion                           |            `vetion`            |
 | Vorkath                          |           `vorkath`            |
@@ -169,7 +163,7 @@ Activities consist of all levels of clue scrolls as well as minigames:
 
 ```javascript
 {
-  rsn: 'Lynx Titan',
+  name: 'Lynx Titan',
   mode: 'main',
   dead: false,
   deulted: false,
@@ -182,8 +176,9 @@ Activities consist of all levels of clue scrolls as well as minigames:
       // ...
     },
     clues: {},
-    bh: {},
-    lms: {},
+    leaguePoints: {},
+    bountyHunter: {},
+    lastManStanding: {},
     bosses: {}
   }
 }
@@ -193,9 +188,18 @@ Activities consist of all levels of clue scrolls as well as minigames:
 
 ```javascript
 [
-  { rank: 1, rsn: 'Lynx Titan', level: 2277, xp: 4600000000, dead: false },
+  { rank: 1, name: 'Lynx Titan', level: 2277, xp: 4600000000, dead: false },
   {},
   {},
   // ...
 ];
+```
+
+## Helpful Extras
+
+Get the properly formatted name of any skill, boss, clue or other activity:
+
+```javascript
+// kril === "K'ril Tsutsaroth"
+const kril = FORMATTED_BOSS_NAMES['krilTsutsaroth'];
 ```

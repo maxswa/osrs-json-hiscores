@@ -1,6 +1,5 @@
 import { Gamemode, SkillName, ActivityName } from '../types';
 import {
-  BASE_URL,
   GAMEMODE_URL,
   STATS_URL,
   SCORES_URL,
@@ -9,19 +8,19 @@ import {
 } from './constants';
 
 export const getStatsURL = (gamemode: Gamemode, rsn: string) =>
-  `${BASE_URL}${GAMEMODE_URL[gamemode]}${STATS_URL}${encodeURIComponent(rsn)}`;
+  `${GAMEMODE_URL[gamemode]}${STATS_URL}${encodeURIComponent(rsn)}`;
 
 export const getPlayerTableURL = (gamemode: Gamemode, rsn: string) =>
-  `${BASE_URL}${
-    GAMEMODE_URL[gamemode]
-  }${SCORES_URL}table=0&user=${encodeURIComponent(rsn)}`;
+  `${GAMEMODE_URL[gamemode]}${SCORES_URL}table=0&user=${encodeURIComponent(
+    rsn
+  )}`;
 
 export const getSkillPageURL = (
   gamemode: Gamemode,
   skill: SkillName,
   page: number
 ) =>
-  `${BASE_URL}${GAMEMODE_URL[gamemode]}${SCORES_URL}table=${SKILLS.indexOf(
+  `${GAMEMODE_URL[gamemode]}${SCORES_URL}table=${SKILLS.indexOf(
     skill
   )}&page=${page}`;
 
@@ -30,7 +29,7 @@ export const getActivityPageURL = (
   activity: ActivityName,
   page: number
 ) =>
-  `${BASE_URL}${
+  `${
     GAMEMODE_URL[gamemode]
   }${SCORES_URL}category_type=1&table=${ACTIVITIES.indexOf(
     activity
