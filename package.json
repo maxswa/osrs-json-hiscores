@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "watch 'yarn run build' src",
     "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\"",
     "test": "jest --config jestconfig.json",
     "prepublish": "yarn run build",
     "release": "np"
@@ -43,6 +44,7 @@
     "@types/jest": "^24.0.14",
     "jest": "^24.8.0",
     "np": "^5.0.3",
+    "prettier": "^1.19.1",
     "ts-jest": "^24.0.2",
     "tslint": "^5.17.0",
     "tslint-config-airbnb": "^5.11.1",

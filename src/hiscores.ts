@@ -13,6 +13,8 @@ import {
   PlayerSkillRow,
   ActivityName,
   PlayerActivityRow,
+  Bosses,
+  Boss,
 } from './types';
 import {
   getStatsURL,
@@ -26,6 +28,7 @@ import {
   numberFromElement,
   rsnFromElement,
   getActivityPageURL,
+  BOSSES,
 } from './utils';
 
 export async function getStats(rsn: string): Promise<Player> {
@@ -40,16 +43,16 @@ export async function getStats(rsn: string): Promise<Player> {
   const mainRes = await axios(getStatsURL('main', rsn));
   if (mainRes.status === 200) {
     const otherResponses = await Promise.all([
-      axios(getStatsURL('iron', rsn)).catch(err => err),
-      axios(getStatsURL('hc', rsn)).catch(err => err),
-      axios(getStatsURL('ult', rsn)).catch(err => err),
+      axios(getStatsURL('ironman', rsn)).catch(err => err),
+      axios(getStatsURL('hardcore', rsn)).catch(err => err),
+      axios(getStatsURL('ultimate', rsn)).catch(err => err),
       getRSNFormat(rsn),
     ]);
 
     const [ironRes, hcRes, ultRes, formattedName] = otherResponses;
 
     const player: Player = {
-      rsn: formattedName,
+      name: formattedName,
       mode: 'main',
       dead: false,
       deulted: false,
@@ -58,32 +61,42 @@ export async function getStats(rsn: string): Promise<Player> {
     player.main = parseStats(mainRes.data);
 
     if (ironRes.status === 200) {
-      player.iron = parseStats(ironRes.data);
+      player.ironman = parseStats(ironRes.data);
       if (hcRes.status === 200) {
-        player.mode = 'hc';
-        player.hc = parseStats(hcRes.data);
-        if (player.iron.skills.overall.xp !== player.hc.skills.overall.xp) {
+        player.mode = 'hardcore';
+        player.hardcore = parseStats(hcRes.data);
+        if (
+          player.ironman.skills.overall.xp !== player.hardcore.skills.overall.xp
+        ) {
           player.dead = true;
-          player.mode = 'iron';
+          player.mode = 'ironman';
         }
-        if (player.main.skills.overall.xp !== player.iron.skills.overall.xp) {
+        if (
+          player.main.skills.overall.xp !== player.ironman.skills.overall.xp
+        ) {
           player.deironed = true;
           player.mode = 'main';
         }
       } else if (ultRes.status === 200) {
-        player.mode = 'ult';
-        player.ult = parseStats(ultRes.data);
-        if (player.iron.skills.overall.xp !== player.ult.skills.overall.xp) {
+        player.mode = 'ultimate';
+        player.ultimate = parseStats(ultRes.data);
+        if (
+          player.ironman.skills.overall.xp !== player.ultimate.skills.overall.xp
+        ) {
           player.deulted = true;
-          player.mode = 'iron';
+          player.mode = 'ironman';
         }
-        if (player.main.skills.overall.xp !== player.iron.skills.overall.xp) {
+        if (
+          player.main.skills.overall.xp !== player.ironman.skills.overall.xp
+        ) {
           player.deironed = true;
           player.mode = 'main';
         }
       } else {
-        player.mode = 'iron';
-        if (player.main.skills.overall.xp !== player.iron.skills.overall.xp) {
+        player.mode = 'ironman';
+        if (
+          player.main.skills.overall.xp !== player.ironman.skills.overall.xp
+        ) {
           player.deironed = true;
           player.mode = 'main';
         }
@@ -112,7 +125,7 @@ export async function getStatsByGamemode(
   if (response.status !== 200) {
     throw Error('Player not found');
   }
-  const stats: Stats = parseStats(response.data);
+  const stats = parseStats(response.data);
 
   return stats;
 }
@@ -141,7 +154,7 @@ export async function getSkillPage(
     const [nameEl] = nameCell.children.filter(el => el.name === 'a');
 
     return {
-      rsn: rsnFromElement(nameEl),
+      name: rsnFromElement(nameEl),
       rank: numberFromElement(rankEl),
       level: numberFromElement(levelEl),
       xp: numberFromElement(xpEl),
@@ -176,7 +189,7 @@ export async function getActivityPage(
     const [nameEl] = nameCell.children.filter(el => el.name === 'a');
 
     return {
-      rsn: rsnFromElement(nameEl),
+      name: rsnFromElement(nameEl),
       rank: numberFromElement(rankEl),
       score: numberFromElement(scoreEl),
       dead: nameCell.children.length === 4,
@@ -238,42 +251,61 @@ export function parseStats(csv: string): Stats {
       return activity;
     });
 
+  const [leaguePoints] = activityObjects.splice(0, 1);
   const bhObjects = activityObjects.splice(0, BH_MODES.length);
-  const [lms] = activityObjects.splice(0, 1);
   const clueObjects = activityObjects.splice(0, CLUES.length);
+  const [lastManStanding] = activityObjects.splice(0, 1);
+  const bossObjects = activityObjects.splice(0, BOSSES.length);
 
-  const skills: Skills = skillObjects.reduce<Skills>(
-    (prev, curr, index) => {
-      const newSkills = { ...prev };
-      newSkills[SKILLS[index]] = curr;
-      return newSkills;
-    },
-    {} as Skills
+  const skills: Skills = skillObjects.reduce<Skills>((prev, curr, index) => {
+    const newSkills = { ...prev };
+    newSkills[SKILLS[index]] = curr;
+    return newSkills;
+  }, {} as Skills);
+
+  const bountyHunter: BH = bhObjects.reduce<BH>((prev, curr, index) => {
+    const newBH = { ...prev };
+    newBH[BH_MODES[index]] = curr;
+    return newBH;
+  }, {} as BH);
+
+  const clues: Clues = clueObjects.reduce<Clues>((prev, curr, index) => {
+    const newClues = { ...prev };
+    newClues[CLUES[index]] = curr;
+    return newClues;
+  }, {} as Clues);
+
+  // TODO Remove as soon as Jagex's API is fixed
+  const brokenBosses: Boss[] = ['callisto', 'cerberus'];
+  const TEMPBOSSES: Boss[] = BOSSES.reduce<Boss[]>(
+    (prev, curr) => (brokenBosses.includes(curr) ? prev : [...prev, curr]),
+    []
   );
 
-  const bh: BH = bhObjects.reduce<BH>(
-    (prev, curr, index) => {
-      const newBH = { ...prev };
-      newBH[BH_MODES[index]] = curr;
-      return newBH;
-    },
-    {} as BH
-  );
+  const bosses: Bosses = bossObjects.reduce<Bosses>((prev, curr, index) => {
+    const newBosses = { ...prev };
 
-  const clues: Clues = clueObjects.reduce<Clues>(
-    (prev, curr, index) => {
-      const newClues = { ...prev };
-      newClues[CLUES[index]] = curr;
-      return newClues;
-    },
-    {} as Clues
-  );
+    // TODO Remove as soon as Jagex's API is fixed
+    if (BOSSES[index] === brokenBosses[0]) {
+      brokenBosses.forEach(broken => {
+        newBosses[broken] = {
+          rank: -1,
+          score: -1,
+        };
+      });
+    }
+
+    newBosses[TEMPBOSSES[index]] = curr;
+    return newBosses;
+  }, {} as Bosses);
 
   const stats: Stats = {
     skills,
-    bh,
-    lms,
+    leaguePoints,
+    bountyHunter,
+    lastManStanding,
     clues,
+    bosses,
   };
 
   return stats;

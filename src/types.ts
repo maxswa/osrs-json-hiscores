@@ -1,4 +1,11 @@
-export type Gamemode = 'main' | 'iron' | 'hc' | 'ult' | 'dmm' | 'sdmm' | 'dmmt';
+export type Gamemode =
+  | 'main'
+  | 'ironman'
+  | 'ultimate'
+  | 'hardcore'
+  | 'deadman'
+  | 'seasonal'
+  | 'tournament';
 
 export interface Skill {
   rank: number;
@@ -54,29 +61,78 @@ export type BHType = 'rogue' | 'hunter';
 
 export type BH = { [Type in BHType]: Activity };
 
+export type Boss =
+  | 'abyssalSire'
+  | 'alchemicalHydra'
+  | 'barrows'
+  | 'bryophyta'
+  | 'callisto'
+  | 'cerberus'
+  | 'chambersOfXeric'
+  | 'chambersOfXericChallengeMode'
+  | 'chaosElemental'
+  | 'chaosFanatic'
+  | 'commanderZilyana'
+  | 'corporealBeast'
+  | 'crazyArchaeologist'
+  | 'dagannothPrime'
+  | 'dagannothRex'
+  | 'dagannothSupreme'
+  | 'derangedArchaeologist'
+  | 'generalGraardor'
+  | 'giantMole'
+  | 'grotesqueGuardians'
+  | 'hespori'
+  | 'kalphiteQueen'
+  | 'kingBlackDragon'
+  | 'kraken'
+  | 'kreeArra'
+  | 'krilTsutsaroth'
+  | 'mimic'
+  | 'obor'
+  | 'sarachnis'
+  | 'scorpia'
+  | 'skotizo'
+  | 'gauntlet'
+  | 'corruptedGauntlet'
+  | 'theatreOfBlood'
+  | 'thermonuclearSmokeDevil'
+  | 'tzKalZuk'
+  | 'tzTokJad'
+  | 'venenatis'
+  | 'vetion'
+  | 'vorkath'
+  | 'wintertodt'
+  | 'zalcano'
+  | 'zulrah';
+
+export type Bosses = { [Type in Boss]: Activity };
+
 export type ActivityName =
-  | 'hunterbh'
-  | 'roguebh'
-  | 'lms'
-  | 'allclues'
-  | 'beginnerclues'
-  | 'easyclues'
-  | 'mediumclues'
-  | 'hardclues'
-  | 'eliteclues'
-  | 'masterclues';
+  | 'hunterBH'
+  | 'rogueBH'
+  | 'lastManStanding'
+  | 'allClues'
+  | 'beginnerClues'
+  | 'easyClues'
+  | 'mediumClues'
+  | 'hardClues'
+  | 'eliteClues'
+  | 'masterClues'
+  | Boss;
 
 export interface Stats {
   skills: Skills;
   clues: Clues;
-  bh: BH;
-  lms: Activity;
+  leaguePoints: Activity;
+  bountyHunter: BH;
+  lastManStanding: Activity;
+  bosses: Bosses;
 }
-
 export type Modes = { [M in Gamemode]?: Stats };
 
 export interface Player extends Modes {
-  rsn: string;
+  name: string;
   mode: Gamemode;
   dead: boolean;
   deulted: boolean;
@@ -84,11 +140,11 @@ export interface Player extends Modes {
 }
 
 export interface PlayerSkillRow extends Skill {
-  rsn: string;
+  name: string;
   dead: boolean;
 }
 
 export interface PlayerActivityRow extends Activity {
-  rsn: string;
+  name: string;
   dead: boolean;
 }
