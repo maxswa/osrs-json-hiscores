@@ -17,12 +17,12 @@ export type GamemodeUrl = {
 
 export const GAMEMODE_URL: GamemodeUrl = {
   main: `${BASE_URL}/`,
-  ironman: `${BASE_URL}_ironman`,
-  hardcore: `${BASE_URL}_hardcore_ironman`,
-  ultimate: `${BASE_URL}_ultimate`,
-  deadman: `${BASE_URL}_deadman`,
-  seasonal: `${BASE_URL}_seasonal`,
-  tournament: `${BASE_URL}_tournament`,
+  ironman: `${BASE_URL}_ironman/`,
+  hardcore: `${BASE_URL}_hardcore_ironman/`,
+  ultimate: `${BASE_URL}_ultimate/`,
+  deadman: `${BASE_URL}_deadman/`,
+  seasonal: `${BASE_URL}_seasonal/`,
+  tournament: `${BASE_URL}_tournament/`,
 };
 export const SKILLS: SkillName[] = [
   'overall',
