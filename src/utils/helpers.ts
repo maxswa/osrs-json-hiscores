@@ -41,7 +41,7 @@ export const numberFromElement = (el: CheerioElement) => {
   return parseInt(number, 10);
 };
 
-export const rsnFromElement = (el: CheerioElement) => {
-  const innerText = el.firstChild.data;
+export const rsnFromElement = (el: CheerioElement | undefined) => {
+  const innerText = el?.firstChild.data;
   return innerText ? innerText.replace(/\uFFFD/g, ' ') : '';
 };

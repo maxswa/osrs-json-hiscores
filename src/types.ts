@@ -109,6 +109,7 @@ export type Boss =
 export type Bosses = { [Type in Boss]: Activity };
 
 export type ActivityName =
+  | 'leaguePoints'
   | 'hunterBH'
   | 'rogueBH'
   | 'lastManStanding'

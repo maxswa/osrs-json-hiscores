@@ -60,18 +60,6 @@ export const CLUES: ClueType[] = [
   'master',
 ];
 export const BH_MODES: BHType[] = ['rogue', 'hunter'];
-export const ACTIVITIES: ActivityName[] = [
-  'hunterBH',
-  'rogueBH',
-  'lastManStanding',
-  'allClues',
-  'beginnerClues',
-  'easyClues',
-  'mediumClues',
-  'hardClues',
-  'eliteClues',
-  'masterClues',
-];
 export const GAMEMODES: Gamemode[] = [
   'main',
   'ironman',
@@ -125,6 +113,20 @@ export const BOSSES: Boss[] = [
   'wintertodt',
   'zalcano',
   'zulrah',
+];
+export const ACTIVITIES: ActivityName[] = [
+  'leaguePoints',
+  'hunterBH',
+  'rogueBH',
+  'allClues',
+  'beginnerClues',
+  'easyClues',
+  'mediumClues',
+  'hardClues',
+  'eliteClues',
+  'masterClues',
+  'lastManStanding',
+  ...BOSSES,
 ];
 
 export type FormattedBossNames = {

@@ -151,14 +151,15 @@ export async function getSkillPage(
   const players: PlayerSkillRow[] = playersHTML.map(row => {
     const cells = row.children.filter(el => el.name === 'td');
     const [rankEl, nameCell, levelEl, xpEl] = cells;
-    const [nameEl] = nameCell.children.filter(el => el.name === 'a');
+    const nameEl = nameCell.children.find(el => el.name === 'a');
+    const isDead = !!nameCell.children.find(el => el.name === 'img');
 
     return {
       name: rsnFromElement(nameEl),
       rank: numberFromElement(rankEl),
       level: numberFromElement(levelEl),
       xp: numberFromElement(xpEl),
-      dead: nameCell.children.length === 4,
+      dead: isDead,
     };
   });
 
@@ -186,13 +187,14 @@ export async function getActivityPage(
   const players: PlayerActivityRow[] = playersHTML.map(row => {
     const cells = row.children.filter(el => el.name === 'td');
     const [rankEl, nameCell, scoreEl] = cells;
-    const [nameEl] = nameCell.children.filter(el => el.name === 'a');
+    const nameEl = nameCell.children.find(el => el.name === 'a');
+    const isDead = !!nameCell.children.find(el => el.name === 'img');
 
     return {
       name: rsnFromElement(nameEl),
       rank: numberFromElement(rankEl),
       score: numberFromElement(scoreEl),
-      dead: nameCell.children.length === 4,
+      dead: isDead,
     };
   });
 

@@ -78,7 +78,7 @@ const topPage = await getSkillPage('overall');
 | Tournament       | `tournament` |
 | Leagues          |  `seasonal`  |
 
-`getSkillPage` and `getActivityPage` require a skill/activity and optionally a gamemode and page:
+`getSkillPage` and `getActivityPage` require a skill / activity and optionally a gamemode and page:
 
 ```javascript
 hiscores
@@ -108,6 +108,12 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | Bounty Hunter (Rogue)  |     `rogueBH`     |
 | Bounty Hunter (Hunter) |    `hunterBH`     |
 | Last Man Standing      | `lastManStanding` |
+
+### Leagues
+
+| Activity      |     Param      |
+| ------------- | :------------: |
+| League Points | `leaguePoints` |
 
 ### Bosses
 
