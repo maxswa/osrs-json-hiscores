@@ -8,169 +8,171 @@ import {
 } from '../src/index';
 
 test('Parse CSV to json', () => {
-  const csv = `40258,2063,218035714
-  20554, 99, 21102621
-  39059, 99, 15364425
-  14245, 99, 26556827
-  19819, 99, 33511407
-  27857, 99, 25774115
-  44278, 91, 6081159
-  40110, 99, 15128024
-  178948, 90, 5347474
-  175463, 81, 2355494
-  138677, 90, 5356303
-  77587, 91, 5904710
-  158478, 85, 3570485
-  93958, 83, 2684426
-  39179, 88, 4425107
-  138406, 77, 1591377
-  33399, 90, 5866307
-  1794, 99, 15057674
-  45551, 91, 6363261
-  121165, 90, 5748493
-  89460, 88, 4624078
-  53099, 80, 2008229
-  169127, 73, 1067670
-  115543, 82, 2546048
-  -1, -1
-  -1, -1
-  -1, -1
-  24817, 476
-  212728, 1
-  94827, 20
-  59099, 74
-  24642, 231
-  5206, 99
-  6293, 51
-  32875, 500
-  374,2780
-  934,3000
-  1936,1452
-  4919,23
-  101,4038
-  152,334
-  6153,133
-  4501,250
-  6806,603
+  const csv = `246,2277,1338203419
+  615,99,77438259
+  428,99,69176307
+  425,99,115218641
+  138,99,181425111
+  160,99,169725807
+  97,99,50666171
+  144,99,93155913
+  2108,99,53198880
+  5750,99,19589494
+  295,99,76386488
+  1304,99,32252994
+  847,99,54325931
+  534,99,26379932
+  7213,99,13246799
+  2475,99,18161285
+  1837,99,14746134
+  668,99,23961670
+  3841,99,17970837
+  265,99,56230978
+  821,99,62123353
+  169,99,43127930
+  810,99,37688883
+  92,99,32005622
+  -1,-1
+  -1,-1
+  -1,-1
+  32,12148
+  3105,76
+  1997,505
+  127,4259
+  361,915
+  392,250
+  1,6143
+  4814,898
+  382,2780
+  944,3000
+  1981,1452
+  4981,23
+  888,1046
+  613,4856
+  102,4038
+  156,334
+  6240,133
+  4569,250
+  6893,603
   1,17798
-  9160,125
-  1021,2802
-  4295,1655
-  959,2951
-  10009,1
-  1271,2407
-  378,4669
-  543,1567
-  6003,94
-  263,2897
-  4000,1277
-  41016,1477
-  617,2391
+  9320,125
+  1030,2802
+  4342,1655
+  966,2951
+  10151,1
+  1288,2407
+  377,4669
+  545,1567
+  6083,94
+  264,2897
+  4052,1277
+  41643,1477
+  625,2391
   120,2981
   1,109
   26,323
-  198,1101
-  81,3404
-  5027,61
+  201,1101
+  82,3404
+  5085,61
   63,375
-  2845,6
-  6913,138
-  3999,2000
-  484,8
-  957,47
-  10987,223
-  1923,272
-  8484,1340
-  599,1694
-  12489,435
-  3810,4583`;
+  2870,6
+  6984,138
+  4043,2000
+  489,8
+  967,47
+  11155,223
+  1940,272
+  8623,1340
+  605,1694
+  -1,-1
+  3867,4583`;
 
   const expectedOutput: Stats = {
     skills: {
-      overall: { rank: 40258, level: 2063, xp: 218035714 },
-      attack: { rank: 20554, level: 99, xp: 21102621 },
-      defence: { rank: 39059, level: 99, xp: 15364425 },
-      strength: { rank: 14245, level: 99, xp: 26556827 },
-      hitpoints: { rank: 19819, level: 99, xp: 33511407 },
-      ranged: { rank: 27857, level: 99, xp: 25774115 },
-      prayer: { rank: 44278, level: 91, xp: 6081159 },
-      magic: { rank: 40110, level: 99, xp: 15128024 },
-      cooking: { rank: 178948, level: 90, xp: 5347474 },
-      woodcutting: { rank: 175463, level: 81, xp: 2355494 },
-      fletching: { rank: 138677, level: 90, xp: 5356303 },
-      fishing: { rank: 77587, level: 91, xp: 5904710 },
-      firemaking: { rank: 158478, level: 85, xp: 3570485 },
-      crafting: { rank: 93958, level: 83, xp: 2684426 },
-      smithing: { rank: 39179, level: 88, xp: 4425107 },
-      mining: { rank: 138406, level: 77, xp: 1591377 },
-      herblore: { rank: 33399, level: 90, xp: 5866307 },
-      agility: { rank: 1794, level: 99, xp: 15057674 },
-      thieving: { rank: 45551, level: 91, xp: 6363261 },
-      slayer: { rank: 121165, level: 90, xp: 5748493 },
-      farming: { rank: 89460, level: 88, xp: 4624078 },
-      runecraft: { rank: 53099, level: 80, xp: 2008229 },
-      hunter: { rank: 169127, level: 73, xp: 1067670 },
-      construction: { rank: 115543, level: 82, xp: 2546048 },
+      overall: { rank: 246, level: 2277, xp: 1338203419 },
+      attack: { rank: 615, level: 99, xp: 77438259 },
+      defence: { rank: 428, level: 99, xp: 69176307 },
+      strength: { rank: 425, level: 99, xp: 115218641 },
+      hitpoints: { rank: 138, level: 99, xp: 181425111 },
+      ranged: { rank: 160, level: 99, xp: 169725807 },
+      prayer: { rank: 97, level: 99, xp: 50666171 },
+      magic: { rank: 144, level: 99, xp: 93155913 },
+      cooking: { rank: 2108, level: 99, xp: 53198880 },
+      woodcutting: { rank: 5750, level: 99, xp: 19589494 },
+      fletching: { rank: 295, level: 99, xp: 76386488 },
+      fishing: { rank: 1304, level: 99, xp: 32252994 },
+      firemaking: { rank: 847, level: 99, xp: 54325931 },
+      crafting: { rank: 534, level: 99, xp: 26379932 },
+      smithing: { rank: 7213, level: 99, xp: 13246799 },
+      mining: { rank: 2475, level: 99, xp: 18161285 },
+      herblore: { rank: 1837, level: 99, xp: 14746134 },
+      agility: { rank: 668, level: 99, xp: 23961670 },
+      thieving: { rank: 3841, level: 99, xp: 17970837 },
+      slayer: { rank: 265, level: 99, xp: 56230978 },
+      farming: { rank: 821, level: 99, xp: 62123353 },
+      runecraft: { rank: 169, level: 99, xp: 43127930 },
+      hunter: { rank: 810, level: 99, xp: 37688883 },
+      construction: { rank: 92, level: 99, xp: 32005622 },
     },
     leaguePoints: { rank: -1, score: -1 },
     bountyHunter: {
       rogue: { rank: -1, score: -1 },
       hunter: { rank: -1, score: -1 },
     },
-    lastManStanding: { rank: 32875, score: 500 },
+    lastManStanding: { rank: 4814, score: 898 },
     clues: {
-      all: { rank: 24817, score: 476 },
-      beginner: { rank: 212728, score: 1 },
-      easy: { rank: 94827, score: 20 },
-      medium: { rank: 59099, score: 74 },
-      hard: { rank: 24642, score: 231 },
-      elite: { rank: 5206, score: 99 },
-      master: { rank: 6293, score: 51 },
+      all: { rank: 32, score: 12148 },
+      beginner: { rank: 3105, score: 76 },
+      easy: { rank: 1997, score: 505 },
+      medium: { rank: 127, score: 4259 },
+      hard: { rank: 361, score: 915 },
+      elite: { rank: 392, score: 250 },
+      master: { rank: 1, score: 6143 },
     },
     bosses: {
-      abyssalSire: { rank: 374, score: 2780 },
-      alchemicalHydra: { rank: 934, score: 3000 },
-      barrows: { rank: 1936, score: 1452 },
-      bryophyta: { rank: 4919, score: 23 },
-      callisto: { rank: -1, score: -1 },
-      cerberus: { rank: -1, score: -1 },
-      chambersOfXeric: { rank: 101, score: 4038 },
-      chambersOfXericChallengeMode: { rank: 152, score: 334 },
-      chaosElemental: { rank: 6153, score: 133 },
-      chaosFanatic: { rank: 4501, score: 250 },
-      commanderZilyana: { rank: 6806, score: 603 },
+      abyssalSire: { rank: 382, score: 2780 },
+      alchemicalHydra: { rank: 944, score: 3000 },
+      barrows: { rank: 1981, score: 1452 },
+      bryophyta: { rank: 4981, score: 23 },
+      callisto: { rank: 888, score: 1046 },
+      cerberus: { rank: 613, score: 4856 },
+      chambersOfXeric: { rank: 102, score: 4038 },
+      chambersOfXericChallengeMode: { rank: 156, score: 334 },
+      chaosElemental: { rank: 6240, score: 133 },
+      chaosFanatic: { rank: 4569, score: 250 },
+      commanderZilyana: { rank: 6893, score: 603 },
       corporealBeast: { rank: 1, score: 17798 },
-      crazyArchaeologist: { rank: 9160, score: 125 },
-      dagannothPrime: { rank: 1021, score: 2802 },
-      dagannothRex: { rank: 4295, score: 1655 },
-      dagannothSupreme: { rank: 959, score: 2951 },
-      derangedArchaeologist: { rank: 10009, score: 1 },
-      generalGraardor: { rank: 1271, score: 2407 },
-      giantMole: { rank: 378, score: 4669 },
-      grotesqueGuardians: { rank: 543, score: 1567 },
-      hespori: { rank: 6003, score: 94 },
-      kalphiteQueen: { rank: 263, score: 2897 },
-      kingBlackDragon: { rank: 4000, score: 1277 },
-      kraken: { rank: 41016, score: 1477 },
-      kreeArra: { rank: 617, score: 2391 },
+      crazyArchaeologist: { rank: 9320, score: 125 },
+      dagannothPrime: { rank: 1030, score: 2802 },
+      dagannothRex: { rank: 4342, score: 1655 },
+      dagannothSupreme: { rank: 966, score: 2951 },
+      derangedArchaeologist: { rank: 10151, score: 1 },
+      generalGraardor: { rank: 1288, score: 2407 },
+      giantMole: { rank: 377, score: 4669 },
+      grotesqueGuardians: { rank: 545, score: 1567 },
+      hespori: { rank: 6083, score: 94 },
+      kalphiteQueen: { rank: 264, score: 2897 },
+      kingBlackDragon: { rank: 4052, score: 1277 },
+      kraken: { rank: 41643, score: 1477 },
+      kreeArra: { rank: 625, score: 2391 },
       krilTsutsaroth: { rank: 120, score: 2981 },
       mimic: { rank: 1, score: 109 },
       obor: { rank: 26, score: 323 },
-      sarachnis: { rank: 198, score: 1101 },
-      scorpia: { rank: 81, score: 3404 },
-      skotizo: { rank: 5027, score: 61 },
+      sarachnis: { rank: 201, score: 1101 },
+      scorpia: { rank: 82, score: 3404 },
+      skotizo: { rank: 5085, score: 61 },
       gauntlet: { rank: 63, score: 375 },
-      corruptedGauntlet: { rank: 2845, score: 6 },
-      theatreOfBlood: { rank: 6913, score: 138 },
-      thermonuclearSmokeDevil: { rank: 3999, score: 2000 },
-      tzKalZuk: { rank: 484, score: 8 },
-      tzTokJad: { rank: 957, score: 47 },
-      venenatis: { rank: 10987, score: 223 },
-      vetion: { rank: 1923, score: 272 },
-      vorkath: { rank: 8484, score: 1340 },
-      wintertodt: { rank: 599, score: 1694 },
-      zalcano: { rank: 12489, score: 435 },
-      zulrah: { rank: 3810, score: 4583 },
+      corruptedGauntlet: { rank: 2870, score: 6 },
+      theatreOfBlood: { rank: 6984, score: 138 },
+      thermonuclearSmokeDevil: { rank: 4043, score: 2000 },
+      tzKalZuk: { rank: 489, score: 8 },
+      tzTokJad: { rank: 967, score: 47 },
+      venenatis: { rank: 11155, score: 223 },
+      vetion: { rank: 1940, score: 272 },
+      vorkath: { rank: 8623, score: 1340 },
+      wintertodt: { rank: 605, score: 1694 },
+      zalcano: { rank: -1, score: -1 },
+      zulrah: { rank: 3867, score: 4583 },
     },
   };
 

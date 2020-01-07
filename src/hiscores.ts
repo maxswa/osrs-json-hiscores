@@ -277,27 +277,9 @@ export function parseStats(csv: string): Stats {
     return newClues;
   }, {} as Clues);
 
-  // TODO Remove as soon as Jagex's API is fixed
-  const brokenBosses: Boss[] = ['callisto', 'cerberus'];
-  const TEMPBOSSES: Boss[] = BOSSES.reduce<Boss[]>(
-    (prev, curr) => (brokenBosses.includes(curr) ? prev : [...prev, curr]),
-    []
-  );
-
   const bosses: Bosses = bossObjects.reduce<Bosses>((prev, curr, index) => {
     const newBosses = { ...prev };
-
-    // TODO Remove as soon as Jagex's API is fixed
-    if (BOSSES[index] === brokenBosses[0]) {
-      brokenBosses.forEach(broken => {
-        newBosses[broken] = {
-          rank: -1,
-          score: -1,
-        };
-      });
-    }
-
-    newBosses[TEMPBOSSES[index]] = curr;
+    newBosses[BOSSES[index]] = curr;
     return newBosses;
   }, {} as Bosses);
 
