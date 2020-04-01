@@ -7,7 +7,7 @@ import {
   ActivityName,
 } from '../types';
 
-export const BASE_URL = 'http://services.runescape.com/m=hiscore_oldschool';
+export const BASE_URL = 'https://secure.runescape.com/m=hiscore_oldschool';
 export const STATS_URL = 'index_lite.ws?player=';
 export const SCORES_URL = 'overall.ws?';
 
@@ -97,6 +97,7 @@ export const BOSSES: Boss[] = [
   'kreeArra',
   'krilTsutsaroth',
   'mimic',
+  'nightmare',
   'obor',
   'sarachnis',
   'scorpia',
@@ -161,6 +162,7 @@ export const FORMATTED_BOSS_NAMES: FormattedBossNames = {
   kreeArra: "Kree'Arra",
   krilTsutsaroth: "K'ril Tsutsaroth",
   mimic: 'Mimic',
+  nightmare: 'The Nightmare of Ashihama',
   obor: 'Obor',
   sarachnis: 'Sarachnis',
   scorpia: 'Scorpia',

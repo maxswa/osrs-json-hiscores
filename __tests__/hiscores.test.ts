@@ -70,6 +70,7 @@ test('Parse CSV to json', () => {
   625,2391
   120,2981
   1,109
+  3,22666
   26,323
   201,1101
   82,3404
@@ -157,6 +158,7 @@ test('Parse CSV to json', () => {
       kreeArra: { rank: 625, score: 2391 },
       krilTsutsaroth: { rank: 120, score: 2981 },
       mimic: { rank: 1, score: 109 },
+      nightmare: { rank: 3, score: 22666 },
       obor: { rank: 26, score: 323 },
       sarachnis: { rank: 201, score: 1101 },
       scorpia: { rank: 82, score: 3404 },
