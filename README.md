@@ -146,6 +146,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | Kreearra                         |           `kreeArra`           |
 | K'ril Tsutsaroth                 |        `krilTsutsaroth`        |
 | Mimic                            |            `mimic`             |
+| The Nightmare of Ashihama        |          `nightmare`           |
 | Obor                             |             `obor`             |
 | Sarachnis                        |          `sarachnis`           |
 | Scorpia                          |           `scorpia`            |
