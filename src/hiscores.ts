@@ -46,13 +46,13 @@ export async function getStats(rsn: string): Promise<Player> {
       axios(getStatsURL('ironman', rsn)).catch(err => err),
       axios(getStatsURL('hardcore', rsn)).catch(err => err),
       axios(getStatsURL('ultimate', rsn)).catch(err => err),
-      getRSNFormat(rsn),
+      getRSNFormat(rsn).catch(() => undefined),
     ]);
 
     const [ironRes, hcRes, ultRes, formattedName] = otherResponses;
 
     const player: Player = {
-      name: formattedName,
+      name: formattedName || rsn,
       mode: 'main',
       dead: false,
       deulted: false,
