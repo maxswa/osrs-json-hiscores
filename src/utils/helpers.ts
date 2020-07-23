@@ -35,13 +35,13 @@ export const getActivityPageURL = (
     activity
   )}&page=${page}`;
 
-export const numberFromElement = (el: CheerioElement) => {
-  const innerText = el.firstChild.data;
-  const number = innerText ? innerText.replace(/[\n|,]/g, '') : '-1';
+export const numberFromElement = (el: Element | null) => {
+  const { innerHTML } = el || {};
+  const number = innerHTML?.replace(/[\n|,]/g, '') ?? '-1';
   return parseInt(number, 10);
 };
 
-export const rsnFromElement = (el: CheerioElement | undefined) => {
-  const innerText = el?.firstChild.data;
-  return innerText ? innerText.replace(/\uFFFD/g, ' ') : '';
+export const rsnFromElement = (el: Element | null) => {
+  const { innerHTML } = el || {};
+  return innerHTML?.replace(/\uFFFD/g, ' ') || '';
 };

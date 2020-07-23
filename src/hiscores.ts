@@ -1,5 +1,4 @@
 import axios from 'axios';
-import * as cheerio from 'cheerio';
 import {
   Player,
   Activity,
@@ -14,7 +13,6 @@ import {
   ActivityName,
   PlayerActivityRow,
   Bosses,
-  Boss,
 } from './types';
 import {
   getStatsURL,
@@ -30,6 +28,7 @@ import {
   getActivityPageURL,
   BOSSES,
 } from './utils';
+import { JSDOM } from 'jsdom';
 
 export async function getStats(rsn: string): Promise<Player> {
   if (typeof rsn !== 'string') {
@@ -145,22 +144,26 @@ export async function getSkillPage(
   const url = getSkillPageURL(mode, skill, page);
 
   const response = await axios(url);
-  const $ = cheerio.load(response.data);
-  const playersHTML = $('.personal-hiscores__row').toArray();
+  const dom = new JSDOM(response.data);
+  const playersHTML = dom.window.document.querySelectorAll(
+    '.personal-hiscores__row'
+  );
 
-  const players: PlayerSkillRow[] = playersHTML.map(row => {
-    const cells = row.children.filter(el => el.name === 'td');
-    const [rankEl, nameCell, levelEl, xpEl] = cells;
-    const nameEl = nameCell.children.find(el => el.name === 'a');
-    const isDead = !!nameCell.children.find(el => el.name === 'img');
+  const players: PlayerSkillRow[] = [];
+  playersHTML.forEach(row => {
+    const rankEl = row.querySelector('td');
+    const nameEl = row.querySelector('td a');
+    const levelEl = row.querySelector('td.left + td');
+    const xpEl = row.querySelector('td.left + td + td');
+    const isDead = !!row.querySelector('td img');
 
-    return {
+    players.push({
       name: rsnFromElement(nameEl),
       rank: numberFromElement(rankEl),
       level: numberFromElement(levelEl),
       xp: numberFromElement(xpEl),
       dead: isDead,
-    };
+    });
   });
 
   return players;
@@ -181,21 +184,24 @@ export async function getActivityPage(
   const url = getActivityPageURL(mode, activity, page);
 
   const response = await axios(url);
-  const $ = cheerio.load(response.data);
-  const playersHTML = $('.personal-hiscores__row').toArray();
+  const dom = new JSDOM(response.data);
+  const playersHTML = dom.window.document.querySelectorAll(
+    '.personal-hiscores__row'
+  );
 
-  const players: PlayerActivityRow[] = playersHTML.map(row => {
-    const cells = row.children.filter(el => el.name === 'td');
-    const [rankEl, nameCell, scoreEl] = cells;
-    const nameEl = nameCell.children.find(el => el.name === 'a');
-    const isDead = !!nameCell.children.find(el => el.name === 'img');
+  const players: PlayerActivityRow[] = [];
+  playersHTML.forEach(row => {
+    const rankEl = row.querySelector('td');
+    const nameEl = row.querySelector('td a');
+    const scoreEl = row.querySelector('td.left + td');
+    const isDead = !!row.querySelector('td img');
 
-    return {
+    players.push({
       name: rsnFromElement(nameEl),
       rank: numberFromElement(rankEl),
       score: numberFromElement(scoreEl),
       dead: isDead,
-    };
+    });
   });
 
   return players;
@@ -213,10 +219,13 @@ export async function getRSNFormat(rsn: string): Promise<string> {
   const url = getPlayerTableURL('main', rsn);
   try {
     const response = await axios(url);
-    const $ = cheerio.load(response.data);
-    const rawName = $('[style="color:#AA0022;"]')[1].children[0].data;
-    if (rawName) {
-      return rawName.replace(/\uFFFD/g, ' ');
+    const dom = new JSDOM(response.data);
+    const spans = dom.window.document.querySelectorAll(
+      'span[style="color:#AA0022;"]'
+    );
+    if (spans.length >= 2) {
+      const nameSpan = spans[1];
+      return rsnFromElement(nameSpan);
     }
     throw Error('Player not found');
   } catch {
