@@ -127,6 +127,7 @@ export const ACTIVITIES: ActivityName[] = [
   'eliteClues',
   'masterClues',
   'lastManStanding',
+  'soulWarsZeal',
   ...BOSSES,
 ];
 
@@ -236,4 +237,5 @@ export const FORMATTED_BH_NAMES: FormattedBHNames = {
 };
 
 export const FORMATTED_LMS = 'Last Man Standing';
+export const FORMATTED_SOUL_WARS = 'Soul Wars Zeal';
 export const FORMATTED_LEAGUE_POINTS = 'League Points';
