@@ -114,6 +114,7 @@ export type ActivityName =
   | 'hunterBH'
   | 'rogueBH'
   | 'lastManStanding'
+  | 'soulWarsZeal'
   | 'allClues'
   | 'beginnerClues'
   | 'easyClues'
@@ -129,6 +130,7 @@ export interface Stats {
   leaguePoints: Activity;
   bountyHunter: BH;
   lastManStanding: Activity;
+  soulWarsZeal: Activity;
   bosses: Bosses;
 }
 export type Modes = { [M in Gamemode]?: Stats };
