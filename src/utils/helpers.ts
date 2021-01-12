@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { Gamemode, SkillName, ActivityName } from '../types';
 import {
   GAMEMODE_URL,
@@ -6,6 +7,7 @@ import {
   SKILLS,
   ACTIVITIES,
 } from './constants';
+const ua = require('useragent-generator');
 
 export const getStatsURL = (gamemode: Gamemode, rsn: string) =>
   `${GAMEMODE_URL[gamemode]}${STATS_URL}${encodeURIComponent(rsn)}`;
@@ -44,4 +46,13 @@ export const numberFromElement = (el: Element | null) => {
 export const rsnFromElement = (el: Element | null) => {
   const { innerHTML } = el || {};
   return innerHTML?.replace(/\uFFFD/g, ' ') || '';
+};
+
+export const httpGet = (url: string) => {
+  return axios.get(url, {
+    headers: {
+      // without User-Agent header requests may be rejected by DDoS protection mechanism
+      'User-Agent': ua.firefox(80)
+    }
+  });
 };

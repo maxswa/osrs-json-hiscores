@@ -3528,6 +3528,11 @@ normalize-url@^4.1.0:
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-4.5.0.tgz#453354087e6ca96957bd8f5baf753f5982142129"
   integrity sha512-2s47yzUxdexf1OhyRi4Em83iQk0aPvwTddtFz4hnSSw9dCEsLEGf6SwIO8ss/19S9iBb5sJaOuTvTGDeZI00BQ==
 
+normalize-version@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/normalize-version/-/normalize-version-1.0.5.tgz#a6a2b9002dc6fa2e5f15ec2f0b2c0284fb499712"
+  integrity sha1-pqK5AC3G+i5fFewvCywChPtJlxI=
+
 np@^5.0.3:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/np/-/np-5.2.1.tgz#037bc41a6702fa20ec002fc24f36ebeaa2b318a2"
@@ -4337,6 +4342,13 @@ scoped-regex@^2.0.0:
   resolved "https://registry.yarnpkg.com/scoped-regex/-/scoped-regex-2.1.0.tgz#7b9be845d81fd9d21d1ec97c61a0b7cf86d2015f"
   integrity sha512-g3WxHrqSWCZHGHlSrF51VXFdjImhwvH8ZO/pryFH56Qi0cDsZfylQa/t0jCzVQFNbNvM00HfHjkDPEuarKDSWQ==
 
+semver-closest@^0.1.0:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/semver-closest/-/semver-closest-0.1.2.tgz#ede8d4d5fb04303bb0c334fff69d288cce7fc7db"
+  integrity sha512-Q6qk0bPNlK5zG62mWFC8L0Qc6OJX76XRWxiPgZyrh98IZTL3HPErgUlPfCyrAPsHVpU+YP4lf5Mz+LzpId91Og==
+  dependencies:
+    semver "^5.4.1"
+
 semver-diff@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/semver-diff/-/semver-diff-2.1.0.tgz#4bbb8437c8d37e4b0cf1a68fd726ec6d645d6d36"
@@ -5062,6 +5074,15 @@ use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
   integrity sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==
+
+useragent-generator@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/useragent-generator/-/useragent-generator-1.1.0.tgz#acf38287432a17980cf3cd1759ed33709abae762"
+  integrity sha1-rPOCh0MqF5gM880XWe0zcJq652I=
+  dependencies:
+    normalize-version "^1.0.5"
+    semver "^5.4.1"
+    semver-closest "^0.1.0"
 
 util.promisify@^1.0.0:
   version "1.0.1"
