@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as ua from 'useragent-generator';
 import { Gamemode, SkillName, ActivityName } from '../types';
 import {
   GAMEMODE_URL,
@@ -7,7 +8,6 @@ import {
   SKILLS,
   ACTIVITIES,
 } from './constants';
-const ua = require('useragent-generator');
 
 export const getStatsURL = (gamemode: Gamemode, rsn: string) =>
   `${GAMEMODE_URL[gamemode]}${STATS_URL}${encodeURIComponent(rsn)}`;
