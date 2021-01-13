@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {
   Player,
   Activity,
@@ -26,6 +25,7 @@ import {
   numberFromElement,
   rsnFromElement,
   getActivityPageURL,
+  httpGet,
   BOSSES,
 } from './utils';
 import { JSDOM } from 'jsdom';
@@ -39,12 +39,12 @@ export async function getStats(rsn: string): Promise<Player> {
     throw Error('RSN must be between 1 and 12 characters');
   }
 
-  const mainRes = await axios(getStatsURL('main', rsn));
+  const mainRes = await httpGet(getStatsURL('main', rsn));
   if (mainRes.status === 200) {
     const otherResponses = await Promise.all([
-      axios(getStatsURL('ironman', rsn)).catch(err => err),
-      axios(getStatsURL('hardcore', rsn)).catch(err => err),
-      axios(getStatsURL('ultimate', rsn)).catch(err => err),
+      httpGet(getStatsURL('ironman', rsn)).catch(err => err),
+      httpGet(getStatsURL('hardcore', rsn)).catch(err => err),
+      httpGet(getStatsURL('ultimate', rsn)).catch(err => err),
       getRSNFormat(rsn).catch(() => undefined),
     ]);
 
@@ -120,7 +120,7 @@ export async function getStatsByGamemode(
   } else if (!GAMEMODES.includes(mode)) {
     throw Error('Invalid game mode');
   }
-  const response = await axios(getStatsURL(mode, rsn));
+  const response = await httpGet(getStatsURL(mode, rsn));
   if (response.status !== 200) {
     throw Error('Player not found');
   }
@@ -143,7 +143,7 @@ export async function getSkillPage(
   }
   const url = getSkillPageURL(mode, skill, page);
 
-  const response = await axios(url);
+  const response = await httpGet(url);
   const dom = new JSDOM(response.data);
   const playersHTML = dom.window.document.querySelectorAll(
     '.personal-hiscores__row'
@@ -183,7 +183,7 @@ export async function getActivityPage(
   }
   const url = getActivityPageURL(mode, activity, page);
 
-  const response = await axios(url);
+  const response = await httpGet(url);
   const dom = new JSDOM(response.data);
   const playersHTML = dom.window.document.querySelectorAll(
     '.personal-hiscores__row'
@@ -218,7 +218,7 @@ export async function getRSNFormat(rsn: string): Promise<string> {
 
   const url = getPlayerTableURL('main', rsn);
   try {
-    const response = await axios(url);
+    const response = await httpGet(url);
     const dom = new JSDOM(response.data);
     const spans = dom.window.document.querySelectorAll(
       'span[style="color:#AA0022;"]'
