@@ -32,9 +32,9 @@ test('Parse CSV to json', () => {
   169,99,43127930
   810,99,37688883
   92,99,32005622
-  -1,-1
-  -1,-1
-  -1,-1
+  23423,478
+  99831,23
+  89912,37
   32,12148
   3105,76
   1997,505
@@ -116,10 +116,10 @@ test('Parse CSV to json', () => {
       hunter: { rank: 810, level: 99, xp: 37688883 },
       construction: { rank: 92, level: 99, xp: 32005622 },
     },
-    leaguePoints: { rank: -1, score: -1 },
+    leaguePoints: { rank: 23423, score: 478 },
     bountyHunter: {
-      rogue: { rank: -1, score: -1 },
-      hunter: { rank: -1, score: -1 },
+      hunter: { rank: 99831, score: 23 },
+      rogue: { rank: 89912, score: 37 },
     },
     lastManStanding: { rank: 4814, score: 898 },
     soulWarsZeal: { rank: 37, score: 225 },

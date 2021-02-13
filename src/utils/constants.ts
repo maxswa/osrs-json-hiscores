@@ -59,7 +59,7 @@ export const CLUES: ClueType[] = [
   'elite',
   'master',
 ];
-export const BH_MODES: BHType[] = ['rogue', 'hunter'];
+export const BH_MODES: BHType[] = ['hunter', 'rogue'];
 export const GAMEMODES: Gamemode[] = [
   'main',
   'ironman',
