@@ -9,14 +9,36 @@ import {
   ACTIVITIES
 } from './constants';
 
+/**
+ * Will generate a stats URL for the official OSRS API.
+ *
+ * @param gamemode Gamemode to fetch ranks for.
+ * @param rsn Username of the player.
+ * @returns Encoded stats URL.
+ */
 export const getStatsURL = (gamemode: Gamemode, rsn: string) =>
   `${GAMEMODE_URL[gamemode]}${STATS_URL}${encodeURIComponent(rsn)}`;
 
+/**
+ * Will generate a player table URL for the official OSRS hiscores website.
+ *
+ * @param gamemode Gamemode to fetch ranks for.
+ * @param rsn Username of the player.
+ * @returns Encoded player table URL.
+ */
 export const getPlayerTableURL = (gamemode: Gamemode, rsn: string) =>
   `${GAMEMODE_URL[gamemode]}${SCORES_URL}table=0&user=${encodeURIComponent(
     rsn
   )}`;
 
+/**
+ * Will generate a skill table URL for the official OSRS hiscores website.
+ *
+ * @param gamemode Gamemode to fetch ranks for.
+ * @param skill Skill to fetch ranks for.
+ * @param page Page number.
+ * @returns
+ */
 export const getSkillPageURL = (
   gamemode: Gamemode,
   skill: SkillName,
@@ -26,6 +48,14 @@ export const getSkillPageURL = (
     skill
   )}&page=${page}`;
 
+/**
+ * Will generate an activity table URL for the official OSRS hiscores website.
+ *
+ * @param gamemode Gamemode to fetch ranks for.
+ * @param activity Activity or boss to fetch ranks for.
+ * @param page Page number.
+ * @returns
+ */
 export const getActivityPageURL = (
   gamemode: Gamemode,
   activity: ActivityName,
@@ -37,17 +67,35 @@ export const getActivityPageURL = (
     activity
   )}&page=${page}`;
 
+/**
+ * Extracts a number from an OSRS hiscores table cell element.
+ *
+ * @param el OSRS hiscores table cell element.
+ * @returns Number parsed from cell text.
+ */
 export const numberFromElement = (el: Element | null) => {
-  const { innerHTML } = el || {};
+  const { innerHTML } = el ?? {};
   const number = innerHTML?.replace(/[\n|,]/g, '') ?? '-1';
   return parseInt(number, 10);
 };
 
+/**
+ * Extracts a RSN from an OSRS hiscores table cell element.
+ *
+ * @param el OSRS hiscores table cell element.
+ * @returns RSN parsed from cell text.
+ */
 export const rsnFromElement = (el: Element | null) => {
-  const { innerHTML } = el || {};
-  return innerHTML?.replace(/\uFFFD/g, ' ') || '';
+  const { innerHTML } = el ?? {};
+  return innerHTML?.replace(/\uFFFD/g, ' ') ?? '';
 };
 
+/**
+ * Will run an Axios `GET` request against a given URL after injecting a `User-Agent` header.
+ *
+ * @param url URL to run a `GET` request against.
+ * @returns Axios response.
+ */
 export const httpGet = (url: string) =>
   axios.get(url, {
     headers: {

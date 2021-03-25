@@ -30,6 +30,12 @@ import {
   BOSSES
 } from './utils';
 
+/**
+ * Screen scrapes the hiscores to get the formatted rsn of a player.
+ *
+ * @param rsn Username of the player.
+ * @returns Formatted version of the rsn.
+ */
 export async function getRSNFormat(rsn: string): Promise<string> {
   if (typeof rsn !== 'string') {
     throw Error('RSN must be a string');
@@ -56,6 +62,12 @@ export async function getRSNFormat(rsn: string): Promise<string> {
   }
 }
 
+/**
+ * Parses CSV string of raw stats and returns a stats object.
+ *
+ * @param csv Raw CSV from the official OSRS API.
+ * @returns Parsed stats object.
+ */
 export function parseStats(csv: string): Stats {
   const splitCSV = csv
     .split('\n')
@@ -128,6 +140,15 @@ export function parseStats(csv: string): Stats {
   return stats;
 }
 
+/**
+ * Fetches stats from the OSRS API and consolidates the info into a player object.
+ *
+ * **Note:** This function will make up to 5 separate network requests.
+ * As such, it is highly subject to the performance of the official OSRS API.
+ *
+ * @param rsn Username of the player.
+ * @returns Player object.
+ */
 export async function getStats(rsn: string): Promise<Player> {
   if (typeof rsn !== 'string') {
     throw Error('RSN must be a string');
@@ -205,6 +226,13 @@ export async function getStats(rsn: string): Promise<Player> {
   throw Error('Player not found');
 }
 
+/**
+ * Fetches stats from the OSRS API and returns them as an object.
+ *
+ * @param rsn Username of the player.
+ * @param mode Gamemode to fetch ranks for.
+ * @returns Stats object.
+ */
 export async function getStatsByGamemode(
   rsn: string,
   mode: Gamemode = 'main'
@@ -267,6 +295,14 @@ export async function getSkillPage(
   return players;
 }
 
+/**
+ * Screen scrapes a hiscores page of an activity or boss and returns an array of up to 25 players.
+ *
+ * @param activity Name of the activity or boss to fetch hiscores for.
+ * @param mode Gamemode to fetch ranks for.
+ * @param page Page number.
+ * @returns Array of `PlayerActivityRow` objects.
+ */
 export async function getActivityPage(
   activity: ActivityName,
   mode: Gamemode = 'main',
