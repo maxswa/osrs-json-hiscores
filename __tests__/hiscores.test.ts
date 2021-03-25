@@ -76,6 +76,7 @@ test('Parse CSV to json', () => {
   201,1101
   82,3404
   5085,61
+  18823,23
   63,375
   2870,6
   6984,138
@@ -165,6 +166,7 @@ test('Parse CSV to json', () => {
       sarachnis: { rank: 201, score: 1101 },
       scorpia: { rank: 82, score: 3404 },
       skotizo: { rank: 5085, score: 61 },
+      tempoross: { rank: 18823, score: 23 },
       gauntlet: { rank: 63, score: 375 },
       corruptedGauntlet: { rank: 2870, score: 6 },
       theatreOfBlood: { rank: 6984, score: 138 },

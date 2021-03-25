@@ -152,6 +152,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | Sarachnis                        |          `sarachnis`           |
 | Scorpia                          |           `scorpia`            |
 | Skotizo                          |           `skotizo`            |
+| Tempoross                        |          `tempoross`           |
 | Gauntlet                         |           `gauntlet`           |
 | Corrupted Gauntlet               |      `corruptedGauntlet`       |
 | Theatre Of Blood                 |        `theatreOfBlood`        |

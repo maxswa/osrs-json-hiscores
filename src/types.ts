@@ -94,6 +94,7 @@ export type Boss =
   | 'sarachnis'
   | 'scorpia'
   | 'skotizo'
+  | 'tempoross'
   | 'gauntlet'
   | 'corruptedGauntlet'
   | 'theatreOfBlood'
