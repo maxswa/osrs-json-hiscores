@@ -12,7 +12,7 @@
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint --fix \"src/**/*.ts\"",
-    "test": "jest --config jestconfig.json",
+    "test": "jest",
     "prepublish": "yarn run build",
     "release": "np"
   },
