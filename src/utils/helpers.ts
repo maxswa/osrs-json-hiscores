@@ -6,7 +6,7 @@ import {
   STATS_URL,
   SCORES_URL,
   SKILLS,
-  ACTIVITIES,
+  ACTIVITIES
 } from './constants';
 
 export const getStatsURL = (gamemode: Gamemode, rsn: string) =>
@@ -48,11 +48,10 @@ export const rsnFromElement = (el: Element | null) => {
   return innerHTML?.replace(/\uFFFD/g, ' ') || '';
 };
 
-export const httpGet = (url: string) => {
-  return axios.get(url, {
+export const httpGet = (url: string) =>
+  axios.get(url, {
     headers: {
       // without User-Agent header requests may be rejected by DDoS protection mechanism
       'User-Agent': ua.firefox(80)
     }
   });
-};

@@ -4,7 +4,7 @@ import {
   ClueType,
   Gamemode,
   SkillName,
-  ActivityName,
+  ActivityName
 } from '../types';
 
 export const BASE_URL = 'https://secure.runescape.com/m=hiscore_oldschool';
@@ -22,7 +22,7 @@ export const GAMEMODE_URL: GamemodeUrl = {
   ultimate: `${BASE_URL}_ultimate/`,
   deadman: `${BASE_URL}_deadman/`,
   seasonal: `${BASE_URL}_seasonal/`,
-  tournament: `${BASE_URL}_tournament/`,
+  tournament: `${BASE_URL}_tournament/`
 };
 export const SKILLS: SkillName[] = [
   'overall',
@@ -48,7 +48,7 @@ export const SKILLS: SkillName[] = [
   'farming',
   'runecraft',
   'hunter',
-  'construction',
+  'construction'
 ];
 export const CLUES: ClueType[] = [
   'all',
@@ -57,7 +57,7 @@ export const CLUES: ClueType[] = [
   'medium',
   'hard',
   'elite',
-  'master',
+  'master'
 ];
 export const BH_MODES: BHType[] = ['hunter', 'rogue'];
 export const GAMEMODES: Gamemode[] = [
@@ -67,7 +67,7 @@ export const GAMEMODES: Gamemode[] = [
   'ultimate',
   'deadman',
   'seasonal',
-  'tournament',
+  'tournament'
 ];
 export const BOSSES: Boss[] = [
   'abyssalSire',
@@ -114,7 +114,7 @@ export const BOSSES: Boss[] = [
   'vorkath',
   'wintertodt',
   'zalcano',
-  'zulrah',
+  'zulrah'
 ];
 export const ACTIVITIES: ActivityName[] = [
   'leaguePoints',
@@ -129,7 +129,7 @@ export const ACTIVITIES: ActivityName[] = [
   'masterClues',
   'lastManStanding',
   'soulWarsZeal',
-  ...BOSSES,
+  ...BOSSES
 ];
 
 export type FormattedBossNames = {
@@ -181,7 +181,7 @@ export const FORMATTED_BOSS_NAMES: FormattedBossNames = {
   vorkath: 'Vorkath',
   wintertodt: 'Wintertodt',
   zalcano: 'Zalcano',
-  zulrah: 'Zulrah',
+  zulrah: 'Zulrah'
 };
 
 export type FormattedSkillNames = {
@@ -212,7 +212,7 @@ export const FORMATTED_SKILL_NAMES: FormattedSkillNames = {
   farming: 'Farming',
   runecraft: 'Runecraft',
   hunter: 'Hunter',
-  construction: 'Construction',
+  construction: 'Construction'
 };
 
 export type FormattedClueNames = {
@@ -226,7 +226,7 @@ export const FORMATTED_CLUE_NAMES: FormattedClueNames = {
   medium: 'Clue Scrolls (medium)',
   hard: 'Clue Scrolls (hard)',
   elite: 'Clue Scrolls (elite)',
-  master: 'Clue Scrolls (master)',
+  master: 'Clue Scrolls (master)'
 };
 
 export type FormattedBHNames = {
@@ -235,7 +235,7 @@ export type FormattedBHNames = {
 
 export const FORMATTED_BH_NAMES: FormattedBHNames = {
   rogue: 'Bounty Hunter - Rogue',
-  hunter: 'Bounty Hunter - Hunter',
+  hunter: 'Bounty Hunter - Hunter'
 };
 
 export const FORMATTED_LMS = 'Last Man Standing';

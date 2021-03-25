@@ -1,3 +1,4 @@
+import { JSDOM } from 'jsdom';
 import {
   Player,
   Activity,
@@ -11,7 +12,7 @@ import {
   PlayerSkillRow,
   ActivityName,
   PlayerActivityRow,
-  Bosses,
+  Bosses
 } from './types';
 import {
   getStatsURL,
@@ -26,9 +27,106 @@ import {
   rsnFromElement,
   getActivityPageURL,
   httpGet,
-  BOSSES,
+  BOSSES
 } from './utils';
-import { JSDOM } from 'jsdom';
+
+export async function getRSNFormat(rsn: string): Promise<string> {
+  if (typeof rsn !== 'string') {
+    throw Error('RSN must be a string');
+  } else if (!/^[a-zA-Z0-9 _]+$/.test(rsn)) {
+    throw Error('RSN contains invalid character');
+  } else if (rsn.length > 12 || rsn.length < 1) {
+    throw Error('RSN must be between 1 and 12 characters');
+  }
+
+  const url = getPlayerTableURL('main', rsn);
+  try {
+    const response = await httpGet(url);
+    const dom = new JSDOM(response.data);
+    const spans = dom.window.document.querySelectorAll(
+      'span[style="color:#AA0022;"]'
+    );
+    if (spans.length >= 2) {
+      const nameSpan = spans[1];
+      return rsnFromElement(nameSpan);
+    }
+    throw Error('Player not found');
+  } catch {
+    throw Error('Player not found');
+  }
+}
+
+export function parseStats(csv: string): Stats {
+  const splitCSV = csv
+    .split('\n')
+    .filter((entry) => !!entry)
+    .map((stat) => stat.split(','));
+
+  const skillObjects: Skill[] = splitCSV
+    .filter((stat) => stat.length === 3)
+    .map((stat) => {
+      const [rank, level, xp] = stat;
+      const skill: Skill = {
+        rank: parseInt(rank, 10),
+        level: parseInt(level, 10),
+        xp: parseInt(xp, 10)
+      };
+      return skill;
+    });
+
+  const activityObjects: Activity[] = splitCSV
+    .filter((stat) => stat.length === 2)
+    .map((stat) => {
+      const [rank, score] = stat;
+      const activity: Activity = {
+        rank: parseInt(rank, 10),
+        score: parseInt(score, 10)
+      };
+      return activity;
+    });
+
+  const [leaguePoints] = activityObjects.splice(0, 1);
+  const bhObjects = activityObjects.splice(0, BH_MODES.length);
+  const clueObjects = activityObjects.splice(0, CLUES.length);
+  const [lastManStanding, soulWarsZeal] = activityObjects.splice(0, 2);
+  const bossObjects = activityObjects.splice(0, BOSSES.length);
+
+  const skills: Skills = skillObjects.reduce<Skills>((prev, curr, index) => {
+    const newSkills = { ...prev };
+    newSkills[SKILLS[index]] = curr;
+    return newSkills;
+  }, {} as Skills);
+
+  const bountyHunter: BH = bhObjects.reduce<BH>((prev, curr, index) => {
+    const newBH = { ...prev };
+    newBH[BH_MODES[index]] = curr;
+    return newBH;
+  }, {} as BH);
+
+  const clues: Clues = clueObjects.reduce<Clues>((prev, curr, index) => {
+    const newClues = { ...prev };
+    newClues[CLUES[index]] = curr;
+    return newClues;
+  }, {} as Clues);
+
+  const bosses: Bosses = bossObjects.reduce<Bosses>((prev, curr, index) => {
+    const newBosses = { ...prev };
+    newBosses[BOSSES[index]] = curr;
+    return newBosses;
+  }, {} as Bosses);
+
+  const stats: Stats = {
+    skills,
+    leaguePoints,
+    bountyHunter,
+    lastManStanding,
+    soulWarsZeal,
+    clues,
+    bosses
+  };
+
+  return stats;
+}
 
 export async function getStats(rsn: string): Promise<Player> {
   if (typeof rsn !== 'string') {
@@ -42,20 +140,20 @@ export async function getStats(rsn: string): Promise<Player> {
   const mainRes = await httpGet(getStatsURL('main', rsn));
   if (mainRes.status === 200) {
     const otherResponses = await Promise.all([
-      httpGet(getStatsURL('ironman', rsn)).catch(err => err),
-      httpGet(getStatsURL('hardcore', rsn)).catch(err => err),
-      httpGet(getStatsURL('ultimate', rsn)).catch(err => err),
-      getRSNFormat(rsn).catch(() => undefined),
+      httpGet(getStatsURL('ironman', rsn)).catch((err) => err),
+      httpGet(getStatsURL('hardcore', rsn)).catch((err) => err),
+      httpGet(getStatsURL('ultimate', rsn)).catch((err) => err),
+      getRSNFormat(rsn).catch(() => undefined)
     ]);
 
     const [ironRes, hcRes, ultRes, formattedName] = otherResponses;
 
     const player: Player = {
-      name: formattedName || rsn,
+      name: formattedName ?? rsn,
       mode: 'main',
       dead: false,
       deulted: false,
-      deironed: false,
+      deironed: false
     };
     player.main = parseStats(mainRes.data);
 
@@ -150,7 +248,7 @@ export async function getSkillPage(
   );
 
   const players: PlayerSkillRow[] = [];
-  playersHTML.forEach(row => {
+  playersHTML.forEach((row) => {
     const rankEl = row.querySelector('td');
     const nameEl = row.querySelector('td a');
     const levelEl = row.querySelector('td.left + td');
@@ -162,7 +260,7 @@ export async function getSkillPage(
       rank: numberFromElement(rankEl),
       level: numberFromElement(levelEl),
       xp: numberFromElement(xpEl),
-      dead: isDead,
+      dead: isDead
     });
   });
 
@@ -190,7 +288,7 @@ export async function getActivityPage(
   );
 
   const players: PlayerActivityRow[] = [];
-  playersHTML.forEach(row => {
+  playersHTML.forEach((row) => {
     const rankEl = row.querySelector('td');
     const nameEl = row.querySelector('td a');
     const scoreEl = row.querySelector('td.left + td');
@@ -200,107 +298,9 @@ export async function getActivityPage(
       name: rsnFromElement(nameEl),
       rank: numberFromElement(rankEl),
       score: numberFromElement(scoreEl),
-      dead: isDead,
+      dead: isDead
     });
   });
 
   return players;
-}
-
-export async function getRSNFormat(rsn: string): Promise<string> {
-  if (typeof rsn !== 'string') {
-    throw Error('RSN must be a string');
-  } else if (!/^[a-zA-Z0-9 _]+$/.test(rsn)) {
-    throw Error('RSN contains invalid character');
-  } else if (rsn.length > 12 || rsn.length < 1) {
-    throw Error('RSN must be between 1 and 12 characters');
-  }
-
-  const url = getPlayerTableURL('main', rsn);
-  try {
-    const response = await httpGet(url);
-    const dom = new JSDOM(response.data);
-    const spans = dom.window.document.querySelectorAll(
-      'span[style="color:#AA0022;"]'
-    );
-    if (spans.length >= 2) {
-      const nameSpan = spans[1];
-      return rsnFromElement(nameSpan);
-    }
-    throw Error('Player not found');
-  } catch {
-    throw Error('Player not found');
-  }
-}
-
-export function parseStats(csv: string): Stats {
-  const splitCSV = csv
-    .split('\n')
-    .filter(entry => !!entry)
-    .map(stat => stat.split(','));
-
-  const skillObjects: Skill[] = splitCSV
-    .filter(stat => stat.length === 3)
-    .map(stat => {
-      const [rank, level, xp] = stat;
-      const skill: Skill = {
-        rank: parseInt(rank, 10),
-        level: parseInt(level, 10),
-        xp: parseInt(xp, 10),
-      };
-      return skill;
-    });
-
-  const activityObjects: Activity[] = splitCSV
-    .filter(stat => stat.length === 2)
-    .map(stat => {
-      const [rank, score] = stat;
-      const activity: Activity = {
-        rank: parseInt(rank, 10),
-        score: parseInt(score, 10),
-      };
-      return activity;
-    });
-
-  const [leaguePoints] = activityObjects.splice(0, 1);
-  const bhObjects = activityObjects.splice(0, BH_MODES.length);
-  const clueObjects = activityObjects.splice(0, CLUES.length);
-  const [lastManStanding, soulWarsZeal] = activityObjects.splice(0, 2);
-  const bossObjects = activityObjects.splice(0, BOSSES.length);
-
-  const skills: Skills = skillObjects.reduce<Skills>((prev, curr, index) => {
-    const newSkills = { ...prev };
-    newSkills[SKILLS[index]] = curr;
-    return newSkills;
-  }, {} as Skills);
-
-  const bountyHunter: BH = bhObjects.reduce<BH>((prev, curr, index) => {
-    const newBH = { ...prev };
-    newBH[BH_MODES[index]] = curr;
-    return newBH;
-  }, {} as BH);
-
-  const clues: Clues = clueObjects.reduce<Clues>((prev, curr, index) => {
-    const newClues = { ...prev };
-    newClues[CLUES[index]] = curr;
-    return newClues;
-  }, {} as Clues);
-
-  const bosses: Bosses = bossObjects.reduce<Bosses>((prev, curr, index) => {
-    const newBosses = { ...prev };
-    newBosses[BOSSES[index]] = curr;
-    return newBosses;
-  }, {} as Bosses);
-
-  const stats: Stats = {
-    skills,
-    leaguePoints,
-    bountyHunter,
-    lastManStanding,
-    soulWarsZeal,
-    clues,
-    bosses,
-  };
-
-  return stats;
 }

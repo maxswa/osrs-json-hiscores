@@ -4,11 +4,11 @@
 [![downloads](https://img.shields.io/npm/dm/osrs-json-hiscores.svg?style=flat-square)](https://npm-stat.com/charts.html?package=osrs-json-hiscores)
 [![types](https://img.shields.io/npm/types/osrs-json-hiscores.svg?style=flat-square)](https://github.com/maxswa/osrs-json-hiscores/blob/master/src/types.ts)
 
-**The Oldschool Runescape API wrapper that does more!**
+**The Old School Runescape API wrapper that does more!**
 
 ## What it does
 
-The official hiscores API for Oldschool Runescape (OSRS) returns CSV.
+The official hiscores API for Old School Runescape (OSRS) returns CSV.
 This wrapper converts it to json and provides extra information about the given player. By comparing player info it infers the player's game mode, as well as any previous modes (de-ultimated, de-ironed and/or died as a hardcore ironman).
 
 Additional functions are provided that screen-scrape the OSRS leaderboards and return a list of players as json.
@@ -50,8 +50,8 @@ Once you import it you can call the functions asynchronously:
 ```javascript
 hiscores
   .getStats('Lynx Titan')
-  .then(res => console.log(res))
-  .catch(err => console.error(err));
+  .then((res) => console.log(res))
+  .catch((err) => console.error(err));
 ```
 
 If you are using TypeScript or transpiling your JS you can use ES6 syntax:
@@ -83,8 +83,8 @@ const topPage = await getSkillPage('overall');
 ```javascript
 hiscores
   .getSkillPage('attack', 'main', 1)
-  .then(res => console.log(res))
-  .catch(err => console.error(err));
+  .then((res) => console.log(res))
+  .catch((err) => console.error(err));
 ```
 
 Activities consist of all levels of clue scrolls as well as minigames and bosses:
@@ -200,7 +200,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 [
   { rank: 1, name: 'Lynx Titan', level: 2277, xp: 4600000000, dead: false },
   {},
-  {},
+  {}
   // ...
 ];
 ```
