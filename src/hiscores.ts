@@ -39,7 +39,7 @@ import {
 export async function getRSNFormat(rsn: string): Promise<string> {
   if (typeof rsn !== 'string') {
     throw Error('RSN must be a string');
-  } else if (!/^[a-zA-Z0-9 _]+$/.test(rsn)) {
+  } else if (!/^[a-zA-Z0-9 _-]+$/.test(rsn)) {
     throw Error('RSN contains invalid character');
   } else if (rsn.length > 12 || rsn.length < 1) {
     throw Error('RSN must be between 1 and 12 characters');
