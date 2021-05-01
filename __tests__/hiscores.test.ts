@@ -230,7 +230,13 @@ test('Get attack top page', async () => {
       xp: 200000000,
       dead: false
     },
-    { name: 'Drakon', rank: 3, level: 99, xp: 200000000, dead: false },
+    {
+      name: expect.any(String),
+      rank: 3,
+      level: 99,
+      xp: 200000000,
+      dead: false
+    },
     {
       name: expect.any(String),
       rank: 4,
@@ -388,7 +394,7 @@ test('Get attack top page', async () => {
   ]);
 });
 
-test('Get non-existant player', async () => {
+test('Get non-existent player', async () => {
   jest.setTimeout(30000);
   getStats('fishy').catch((err) => {
     if (err.response) {
