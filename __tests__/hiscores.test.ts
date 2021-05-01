@@ -4,7 +4,7 @@ import {
   getStats,
   getStatsByGamemode,
   getRSNFormat,
-  Stats,
+  Stats
 } from '../src/index';
 
 test('Parse CSV to json', () => {
@@ -115,12 +115,12 @@ test('Parse CSV to json', () => {
       farming: { rank: 821, level: 99, xp: 62123353 },
       runecraft: { rank: 169, level: 99, xp: 43127930 },
       hunter: { rank: 810, level: 99, xp: 37688883 },
-      construction: { rank: 92, level: 99, xp: 32005622 },
+      construction: { rank: 92, level: 99, xp: 32005622 }
     },
     leaguePoints: { rank: 23423, score: 478 },
     bountyHunter: {
       hunter: { rank: 99831, score: 23 },
-      rogue: { rank: 89912, score: 37 },
+      rogue: { rank: 89912, score: 37 }
     },
     lastManStanding: { rank: 4814, score: 898 },
     soulWarsZeal: { rank: 37, score: 225 },
@@ -131,7 +131,7 @@ test('Parse CSV to json', () => {
       medium: { rank: 127, score: 4259 },
       hard: { rank: 361, score: 915 },
       elite: { rank: 392, score: 250 },
-      master: { rank: 1, score: 6143 },
+      master: { rank: 1, score: 6143 }
     },
     bosses: {
       abyssalSire: { rank: 382, score: 2780 },
@@ -178,17 +178,38 @@ test('Parse CSV to json', () => {
       vorkath: { rank: 8623, score: 1340 },
       wintertodt: { rank: 605, score: 1694 },
       zalcano: { rank: -1, score: -1 },
-      zulrah: { rank: 3867, score: 4583 },
-    },
+      zulrah: { rank: 3867, score: 4583 }
+    }
   };
 
   expect(parseStats(csv)).toStrictEqual(expectedOutput);
 });
 
-test('Get name format', async () => {
-  jest.setTimeout(30000);
-  const data = await getRSNFormat('lYnX tiTaN');
-  expect(data).toBe('Lynx Titan');
+describe('Get name format', () => {
+  it('gets a name with a space', async () => {
+    jest.setTimeout(30000);
+    const data = await getRSNFormat('lYnX tiTaN');
+    expect(data).toBe('Lynx Titan');
+  });
+  it('gets a name with an underscore', async () => {
+    jest.setTimeout(30000);
+    const data = await getRSNFormat('lYnX_tiTaN');
+    expect(data).toBe('Lynx Titan');
+  });
+  it('gets a name with a hyphen', async () => {
+    jest.setTimeout(30000);
+    const data = await getRSNFormat('lYnX-tiTaN');
+    expect(data).toBe('Lynx Titan');
+  });
+  it('gets a name with a number', async () => {
+    jest.setTimeout(30000);
+    const data = await getRSNFormat('B0ATY');
+    expect(data).toBe('B0aty');
+  });
+  it('throws an error for a name with invalid characters', async () => {
+    jest.setTimeout(30000);
+    await expect(getRSNFormat('b&aty')).rejects.toBeTruthy();
+  });
 });
 
 test('Get attack top page', async () => {
@@ -200,176 +221,182 @@ test('Get attack top page', async () => {
       rank: 1,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
     {
       name: expect.any(String),
       rank: 2,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
-    { name: 'Drakon', rank: 3, level: 99, xp: 200000000, dead: false },
+    {
+      name: expect.any(String),
+      rank: 3,
+      level: 99,
+      xp: 200000000,
+      dead: false
+    },
     {
       name: expect.any(String),
       rank: 4,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
     {
       name: expect.any(String),
       rank: 5,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
     {
       name: expect.any(String),
       rank: 6,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
     {
       name: expect.any(String),
       rank: 7,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
     {
       name: expect.any(String),
       rank: 8,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
     {
       name: expect.any(String),
       rank: 9,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
     {
       name: expect.any(String),
       rank: 10,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
     {
       name: expect.any(String),
       rank: 11,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
     {
       name: expect.any(String),
       rank: 12,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
     {
       name: expect.any(String),
       rank: 13,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
     {
       name: expect.any(String),
       rank: 14,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
     {
       name: expect.any(String),
       rank: 15,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
     {
       name: expect.any(String),
       rank: 16,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
     {
       name: expect.any(String),
       rank: 17,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
     {
       name: expect.any(String),
       rank: 18,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
     {
       name: expect.any(String),
       rank: 19,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
     {
       name: expect.any(String),
       rank: 20,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
     {
       name: expect.any(String),
       rank: 21,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
     {
       name: expect.any(String),
       rank: 22,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
     {
       name: expect.any(String),
       rank: 23,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
     {
       name: expect.any(String),
       rank: 24,
       level: 99,
       xp: 200000000,
-      dead: false,
+      dead: false
     },
     {
       name: expect.any(String),
       rank: 25,
       level: 99,
       xp: 200000000,
-      dead: false,
-    },
+      dead: false
+    }
   ]);
 });
 
-test('Get non-existant player', async () => {
+test('Get non-existent player', async () => {
   jest.setTimeout(30000);
-  getStats('fishy').catch(err => {
+  getStats('fishy').catch((err) => {
     if (err.response) {
       expect(err.response.status).toBe(404);
     }
@@ -403,6 +430,6 @@ test('Get stats by gamemode', async () => {
     farming: { rank: expect.any(Number), level: 99, xp: 200000000 },
     runecraft: { rank: expect.any(Number), level: 99, xp: 200000000 },
     hunter: { rank: expect.any(Number), level: 99, xp: 200000000 },
-    construction: { rank: expect.any(Number), level: 99, xp: 200000000 },
+    construction: { rank: expect.any(Number), level: 99, xp: 200000000 }
   });
 });
