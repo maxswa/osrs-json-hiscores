@@ -3,6 +3,7 @@
 [![npm](https://img.shields.io/npm/v/osrs-json-hiscores.svg?style=flat-square)](https://www.npmjs.com/package/osrs-json-hiscores)
 [![downloads](https://img.shields.io/npm/dm/osrs-json-hiscores.svg?style=flat-square)](https://npm-stat.com/charts.html?package=osrs-json-hiscores)
 [![types](https://img.shields.io/npm/types/osrs-json-hiscores.svg?style=flat-square)](https://github.com/maxswa/osrs-json-hiscores/blob/master/src/types.ts)
+[![build](https://img.shields.io/github/workflow/status/maxswa/osrs-json-hiscores/CI?style=flat-square)](https://github.com/maxswa/osrs-json-hiscores/actions/workflows/main.yml?query=branch%3Amain)
 
 **The Old School Runescape API wrapper that does more!**
 
