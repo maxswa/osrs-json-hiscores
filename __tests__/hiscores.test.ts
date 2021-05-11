@@ -1,11 +1,53 @@
+import axios from 'axios';
+import { readFileSync } from 'fs';
+
 import {
   parseStats,
   getSkillPage,
   getStats,
   getStatsByGamemode,
   getRSNFormat,
-  Stats
+  Stats,
+  getPlayerTableURL,
+  getSkillPageURL,
+  getStatsURL
 } from '../src/index';
+
+const B0ATY_NAME = 'B0ATY';
+const B0ATY_FORMATTED_NAME = 'B0aty';
+const LYNX_TITAN_SPACE_NAME = 'lYnX tiTaN';
+const LYNX_TITAN_UNDERSCORE_NAME = 'lYnX_tiTaN';
+const LYNX_TITAN_HYPHEN_NAME = 'lYnX-tiTaN';
+const LYNX_TITAN_FORMATTED_NAME = 'Lynx Titan';
+
+const attackTopPage = readFileSync(`${__dirname}/attackTopPage.html`, 'utf8');
+const b0atyNamePage = readFileSync(`${__dirname}/b0atyNamePage.html`, 'utf8');
+const lynxTitanStats = readFileSync(`${__dirname}/lynxTitanStats.csv`, 'utf8');
+const lynxTitanNamePage = readFileSync(
+  `${__dirname}/lynxTitanNamePage.html`,
+  'utf8'
+);
+
+jest.spyOn(axios, 'get').mockImplementation((url) => {
+  const lynxUrls = [
+    getPlayerTableURL('main', LYNX_TITAN_SPACE_NAME),
+    getPlayerTableURL('main', LYNX_TITAN_UNDERSCORE_NAME),
+    getPlayerTableURL('main', LYNX_TITAN_HYPHEN_NAME)
+  ];
+  if (lynxUrls.includes(url)) {
+    return Promise.resolve({ data: lynxTitanNamePage });
+  }
+  if (getPlayerTableURL('main', B0ATY_NAME) === url) {
+    return Promise.resolve({ data: b0atyNamePage });
+  }
+  if (getSkillPageURL('main', 'attack', 1) === url) {
+    return Promise.resolve({ data: attackTopPage });
+  }
+  if (getStatsURL('main', LYNX_TITAN_FORMATTED_NAME) === url) {
+    return Promise.resolve({ status: 200, data: lynxTitanStats });
+  }
+  throw new Error(`No mock response for URL: ${url}`);
+});
 
 test('Parse CSV to json', () => {
   const csv = `246,2277,1338203419
@@ -187,33 +229,27 @@ test('Parse CSV to json', () => {
 
 describe('Get name format', () => {
   it('gets a name with a space', async () => {
-    jest.setTimeout(30000);
-    const data = await getRSNFormat('lYnX tiTaN');
-    expect(data).toBe('Lynx Titan');
+    const data = await getRSNFormat(LYNX_TITAN_SPACE_NAME);
+    expect(data).toBe(LYNX_TITAN_FORMATTED_NAME);
   });
   it('gets a name with an underscore', async () => {
-    jest.setTimeout(30000);
-    const data = await getRSNFormat('lYnX_tiTaN');
-    expect(data).toBe('Lynx Titan');
+    const data = await getRSNFormat(LYNX_TITAN_UNDERSCORE_NAME);
+    expect(data).toBe(LYNX_TITAN_FORMATTED_NAME);
   });
   it('gets a name with a hyphen', async () => {
-    jest.setTimeout(30000);
-    const data = await getRSNFormat('lYnX-tiTaN');
-    expect(data).toBe('Lynx Titan');
+    const data = await getRSNFormat(LYNX_TITAN_HYPHEN_NAME);
+    expect(data).toBe(LYNX_TITAN_FORMATTED_NAME);
   });
   it('gets a name with a number', async () => {
-    jest.setTimeout(30000);
-    const data = await getRSNFormat('B0ATY');
-    expect(data).toBe('B0aty');
+    const data = await getRSNFormat(B0ATY_NAME);
+    expect(data).toBe(B0ATY_FORMATTED_NAME);
   });
   it('throws an error for a name with invalid characters', async () => {
-    jest.setTimeout(30000);
     await expect(getRSNFormat('b&aty')).rejects.toBeTruthy();
   });
 });
 
 test('Get attack top page', async () => {
-  jest.setTimeout(30000);
   const data = await getSkillPage('attack');
   expect(data).toMatchObject([
     {
@@ -395,7 +431,6 @@ test('Get attack top page', async () => {
 });
 
 test('Get non-existent player', async () => {
-  jest.setTimeout(30000);
   getStats('fishy').catch((err) => {
     if (err.response) {
       expect(err.response.status).toBe(404);
@@ -404,8 +439,7 @@ test('Get non-existent player', async () => {
 });
 
 test('Get stats by gamemode', async () => {
-  jest.setTimeout(30000);
-  const { skills } = await getStatsByGamemode('Lynx Titan');
+  const { skills } = await getStatsByGamemode(LYNX_TITAN_FORMATTED_NAME);
   expect(skills).toMatchObject({
     overall: { rank: expect.any(Number), level: 2277, xp: 4600000000 },
     attack: { rank: expect.any(Number), level: 99, xp: 200000000 },
