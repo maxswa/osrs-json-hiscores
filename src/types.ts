@@ -98,6 +98,7 @@ export type Boss =
   | 'gauntlet'
   | 'corruptedGauntlet'
   | 'theatreOfBlood'
+  | 'theatreOfBloodHardMode'
   | 'thermonuclearSmokeDevil'
   | 'tzKalZuk'
   | 'tzTokJad'

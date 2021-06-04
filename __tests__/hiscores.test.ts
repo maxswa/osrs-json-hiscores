@@ -122,6 +122,7 @@ test('Parse CSV to json', () => {
   63,375
   2870,6
   6984,138
+  23,923141
   4043,2000
   489,8
   967,47
@@ -212,6 +213,7 @@ test('Parse CSV to json', () => {
       gauntlet: { rank: 63, score: 375 },
       corruptedGauntlet: { rank: 2870, score: 6 },
       theatreOfBlood: { rank: 6984, score: 138 },
+      theatreOfBloodHardMode: { rank: 23, score: 923141 },
       thermonuclearSmokeDevil: { rank: 4043, score: 2000 },
       tzKalZuk: { rank: 489, score: 8 },
       tzTokJad: { rank: 967, score: 47 },
