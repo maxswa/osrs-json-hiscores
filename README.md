@@ -119,53 +119,54 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 
 ### Bosses
 
-| Boss Name                        |             Param              |
-| -------------------------------- | :----------------------------: |
-| Abyssal Sire                     |         `abyssalSire`          |
-| Alchemical Hydra                 |       `alchemicalHydra`        |
-| Barrows Chests                   |           `barrows`            |
-| Bryophyta                        |          `bryophyta`           |
-| Callisto                         |           `callisto`           |
-| Cerberus                         |           `cerberus`           |
-| Chambers Of Xeric                |       `chambersOfXeric`        |
-| Chambers Of Xeric Challenge Mode | `chambersOfXericChallengeMode` |
-| Chaos Elemental                  |        `chaosElemental`        |
-| Chaos Fanatic                    |         `chaosFanatic`         |
-| Commander Zilyana                |       `commanderZilyana`       |
-| Corporeal Beast                  |        `corporealBeast`        |
-| Crazy Archaeologist              |      `crazyArchaeologist`      |
-| Dagannoth Prime                  |        `dagannothPrime`        |
-| Dagannoth Rex                    |         `dagannothRex`         |
-| Dagannoth Supreme                |       `dagannothSupreme`       |
-| Deranged Archaeologist           |    `derangedArchaeologist`     |
-| General Graardor                 |       `generalGraardor`        |
-| Giant Mole                       |          `giantMole`           |
-| Grotesque Guardians              |      `grotesqueGuardians`      |
-| Hespori                          |           `hespori`            |
-| Kalphite Queen                   |        `kalphiteQueen`         |
-| King Black Dragon                |       `kingBlackDragon`        |
-| Kraken                           |            `kraken`            |
-| Kreearra                         |           `kreeArra`           |
-| K'ril Tsutsaroth                 |        `krilTsutsaroth`        |
-| Mimic                            |            `mimic`             |
-| The Nightmare of Ashihama        |          `nightmare`           |
-| Obor                             |             `obor`             |
-| Sarachnis                        |          `sarachnis`           |
-| Scorpia                          |           `scorpia`            |
-| Skotizo                          |           `skotizo`            |
-| Tempoross                        |          `tempoross`           |
-| Gauntlet                         |           `gauntlet`           |
-| Corrupted Gauntlet               |      `corruptedGauntlet`       |
-| Theatre Of Blood                 |        `theatreOfBlood`        |
-| Thermonuclear Smoke Devil        |   `thermonuclearSmokeDevil`    |
-| TzKal-Zuk                        |           `tzKalZuk`           |
-| TzTok-Jad                        |           `tzTokJad`           |
-| Venenatis                        |          `venenatis`           |
-| Vetion                           |            `vetion`            |
-| Vorkath                          |           `vorkath`            |
-| Wintertodt                       |          `wintertodt`          |
-| Zalcano                          |           `zalcano`            |
-| Zulrah                           |            `zulrah`            |
+| Boss Name                         |             Param              |
+| --------------------------------- | :----------------------------: |
+| Abyssal Sire                      |         `abyssalSire`          |
+| Alchemical Hydra                  |       `alchemicalHydra`        |
+| Barrows Chests                    |           `barrows`            |
+| Bryophyta                         |          `bryophyta`           |
+| Callisto                          |           `callisto`           |
+| Cerberus                          |           `cerberus`           |
+| Chambers Of Xeric                 |       `chambersOfXeric`        |
+| Chambers Of Xeric: Challenge Mode | `chambersOfXericChallengeMode` |
+| Chaos Elemental                   |        `chaosElemental`        |
+| Chaos Fanatic                     |         `chaosFanatic`         |
+| Commander Zilyana                 |       `commanderZilyana`       |
+| Corporeal Beast                   |        `corporealBeast`        |
+| Crazy Archaeologist               |      `crazyArchaeologist`      |
+| Dagannoth Prime                   |        `dagannothPrime`        |
+| Dagannoth Rex                     |         `dagannothRex`         |
+| Dagannoth Supreme                 |       `dagannothSupreme`       |
+| Deranged Archaeologist            |    `derangedArchaeologist`     |
+| General Graardor                  |       `generalGraardor`        |
+| Giant Mole                        |          `giantMole`           |
+| Grotesque Guardians               |      `grotesqueGuardians`      |
+| Hespori                           |           `hespori`            |
+| Kalphite Queen                    |        `kalphiteQueen`         |
+| King Black Dragon                 |       `kingBlackDragon`        |
+| Kraken                            |            `kraken`            |
+| Kreearra                          |           `kreeArra`           |
+| K'ril Tsutsaroth                  |        `krilTsutsaroth`        |
+| Mimic                             |            `mimic`             |
+| The Nightmare of Ashihama         |          `nightmare`           |
+| Obor                              |             `obor`             |
+| Sarachnis                         |          `sarachnis`           |
+| Scorpia                           |           `scorpia`            |
+| Skotizo                           |           `skotizo`            |
+| Tempoross                         |          `tempoross`           |
+| The Gauntlet                      |           `gauntlet`           |
+| The Corrupted Gauntlet            |      `corruptedGauntlet`       |
+| Theatre Of Blood                  |        `theatreOfBlood`        |
+| Theatre Of Blood: Hard Mode       |    `theatreOfBloodHardMode`    |
+| Thermonuclear Smoke Devil         |   `thermonuclearSmokeDevil`    |
+| TzKal-Zuk                         |           `tzKalZuk`           |
+| TzTok-Jad                         |           `tzTokJad`           |
+| Venenatis                         |          `venenatis`           |
+| Vetion                            |            `vetion`            |
+| Vorkath                           |           `vorkath`            |
+| Wintertodt                        |          `wintertodt`          |
+| Zalcano                           |           `zalcano`            |
+| Zulrah                            |            `zulrah`            |
 
 ## What you'll get
 
