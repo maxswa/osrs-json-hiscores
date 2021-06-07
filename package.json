@@ -2,7 +2,7 @@
   "name": "osrs-json-hiscores",
   "version": "2.5.0",
   "description": "The Old School Runescape API wrapper that does more!",
-  "main": "lib/index.js",
+  "main": "lib/index",
   "types": "lib/index.d.ts",
   "files": [
     "lib/**/*"

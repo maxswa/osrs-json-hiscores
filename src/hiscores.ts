@@ -68,7 +68,7 @@ export async function getRSNFormat(rsn: string): Promise<string> {
  * @param csv Raw CSV from the official OSRS API.
  * @returns Parsed stats object.
  */
-export function parseStats(csv: string): Stats {
+export function parseStats(csv: string, mode: Gamemode = 'main'): Stats {
   const splitCSV = csv
     .split('\n')
     .filter((entry) => !!entry)
@@ -97,11 +97,13 @@ export function parseStats(csv: string): Stats {
       return activity;
     });
 
+  const filteredBosses = mode === 'seasonal'? BOSSES.filter((boss) => boss !== 'tempoross') : BOSSES;
+  
   const [leaguePoints] = activityObjects.splice(0, 1);
   const bhObjects = activityObjects.splice(0, BH_MODES.length);
   const clueObjects = activityObjects.splice(0, CLUES.length);
   const [lastManStanding, soulWarsZeal] = activityObjects.splice(0, 2);
-  const bossObjects = activityObjects.splice(0, BOSSES.length);
+  const bossObjects = activityObjects.splice(0, filteredBosses.length);
 
   const skills: Skills = skillObjects.reduce<Skills>((prev, curr, index) => {
     const newSkills = { ...prev };
@@ -123,7 +125,7 @@ export function parseStats(csv: string): Stats {
 
   const bosses: Bosses = bossObjects.reduce<Bosses>((prev, curr, index) => {
     const newBosses = { ...prev };
-    newBosses[BOSSES[index]] = curr;
+    newBosses[filteredBosses[index]] = curr;
     return newBosses;
   }, {} as Bosses);
 
@@ -250,7 +252,7 @@ export async function getStatsByGamemode(
   if (response.status !== 200) {
     throw Error('Player not found');
   }
-  const stats = parseStats(response.data);
+  const stats = parseStats(response.data, mode);
 
   return stats;
 }
