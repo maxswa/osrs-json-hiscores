@@ -97,8 +97,11 @@ export function parseStats(csv: string, mode: Gamemode = 'main'): Stats {
       return activity;
     });
 
-  const filteredBosses = mode === 'seasonal'? BOSSES.filter((boss) => boss !== 'tempoross') : BOSSES;
-  
+  const filteredBosses =
+    mode === 'seasonal'
+      ? BOSSES.filter((boss) => boss !== 'tempoross')
+      : BOSSES;
+
   const [leaguePoints] = activityObjects.splice(0, 1);
   const bhObjects = activityObjects.splice(0, BH_MODES.length);
   const clueObjects = activityObjects.splice(0, CLUES.length);
