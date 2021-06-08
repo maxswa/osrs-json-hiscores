@@ -10,7 +10,8 @@ import {
   Stats,
   getPlayerTableURL,
   getSkillPageURL,
-  getStatsURL
+  getStatsURL,
+  BOSSES
 } from '../src/index';
 
 const B0ATY_NAME = 'B0ATY';
@@ -19,6 +20,7 @@ const LYNX_TITAN_SPACE_NAME = 'lYnX tiTaN';
 const LYNX_TITAN_UNDERSCORE_NAME = 'lYnX_tiTaN';
 const LYNX_TITAN_HYPHEN_NAME = 'lYnX-tiTaN';
 const LYNX_TITAN_FORMATTED_NAME = 'Lynx Titan';
+const FYSAD_FORMATTED_NAME = 'Fysad';
 
 const attackTopPage = readFileSync(`${__dirname}/attackTopPage.html`, 'utf8');
 const b0atyNamePage = readFileSync(`${__dirname}/b0atyNamePage.html`, 'utf8');
@@ -27,6 +29,7 @@ const lynxTitanNamePage = readFileSync(
   `${__dirname}/lynxTitanNamePage.html`,
   'utf8'
 );
+const fysadStatsSeasonal = readFileSync(`${__dirname}/fysadStatsSeasonal.csv`, 'utf8');
 
 jest.spyOn(axios, 'get').mockImplementation((url) => {
   const lynxUrls = [
@@ -44,6 +47,9 @@ jest.spyOn(axios, 'get').mockImplementation((url) => {
     return Promise.resolve({ data: attackTopPage });
   }
   if (getStatsURL('main', LYNX_TITAN_FORMATTED_NAME) === url) {
+    return Promise.resolve({ status: 200, data: lynxTitanStats });
+  }
+  if (getStatsURL('seasonal', FYSAD_FORMATTED_NAME) === url) {
     return Promise.resolve({ status: 200, data: lynxTitanStats });
   }
   throw new Error(`No mock response for URL: ${url}`);
@@ -441,7 +447,7 @@ test('Get non-existent player', async () => {
 });
 
 test('Get stats by gamemode', async () => {
-  const { skills } = await getStatsByGamemode(LYNX_TITAN_FORMATTED_NAME);
+  const { skills, bosses } = await getStatsByGamemode(LYNX_TITAN_FORMATTED_NAME);
   expect(skills).toMatchObject({
     overall: { rank: expect.any(Number), level: 2277, xp: 4600000000 },
     attack: { rank: expect.any(Number), level: 99, xp: 200000000 },
@@ -468,4 +474,15 @@ test('Get stats by gamemode', async () => {
     hunter: { rank: expect.any(Number), level: 99, xp: 200000000 },
     construction: { rank: expect.any(Number), level: 99, xp: 200000000 }
   });
+
+  const bossKeys = Object.keys(bosses);
+  expect(bossKeys).toEqual(BOSSES);
+});
+
+test('Get stats by game mode seasonal (omit TOB: Hard Mode from bosses)', async () => {
+  const {bosses} = await getStatsByGamemode(FYSAD_FORMATTED_NAME, 'seasonal');
+  const bossKeys = Object.keys(bosses);
+
+  const filteredBosses = BOSSES.filter(boss => boss !== 'theatreOfBloodHardMode');
+  expect(bossKeys).toEqual(filteredBosses);
 });
