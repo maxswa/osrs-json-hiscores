@@ -96,7 +96,7 @@ export function parseStats(csv: string, mode: Gamemode = 'main'): Stats {
       };
       return activity;
     });
-  
+
   /** `seasonal` API results don't currently include TOB: Hard Mode, so it needs to be filtered out in that case. */
   const filteredBosses =
     mode === 'seasonal'
