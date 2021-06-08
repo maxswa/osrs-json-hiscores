@@ -50,7 +50,7 @@ jest.spyOn(axios, 'get').mockImplementation((url) => {
     return Promise.resolve({ status: 200, data: lynxTitanStats });
   }
   if (getStatsURL('seasonal', FYSAD_FORMATTED_NAME) === url) {
-    return Promise.resolve({ status: 200, data: lynxTitanStats });
+    return Promise.resolve({ status: 200, data: fysadStatsSeasonal });
   }
   throw new Error(`No mock response for URL: ${url}`);
 });
@@ -448,6 +448,7 @@ test('Get non-existent player', async () => {
 
 test('Get stats by gamemode', async () => {
   const { skills, bosses } = await getStatsByGamemode(LYNX_TITAN_FORMATTED_NAME);
+  
   expect(skills).toMatchObject({
     overall: { rank: expect.any(Number), level: 2277, xp: 4600000000 },
     attack: { rank: expect.any(Number), level: 99, xp: 200000000 },
@@ -476,7 +477,9 @@ test('Get stats by gamemode', async () => {
   });
 
   const bossKeys = Object.keys(bosses);
-  expect(bossKeys).toEqual(BOSSES);
+  expect(bossKeys).toStrictEqual(BOSSES);
+
+  expect.assertions(2);
 });
 
 test('Get stats by game mode seasonal (omit TOB: Hard Mode from bosses)', async () => {
@@ -484,5 +487,9 @@ test('Get stats by game mode seasonal (omit TOB: Hard Mode from bosses)', async 
   const bossKeys = Object.keys(bosses);
 
   const filteredBosses = BOSSES.filter(boss => boss !== 'theatreOfBloodHardMode');
-  expect(bossKeys).toEqual(filteredBosses);
+
+  expect(bossKeys).toStrictEqual(filteredBosses);
+  expect(bossKeys).not.toContain('theatreOfBloodHardMode');
+
+  expect.assertions(2);
 });
