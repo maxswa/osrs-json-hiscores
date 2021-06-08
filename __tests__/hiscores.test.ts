@@ -11,7 +11,8 @@ import {
   getPlayerTableURL,
   getSkillPageURL,
   getStatsURL,
-  BOSSES
+  BOSSES,
+  Boss
 } from '../src/index';
 
 const B0ATY_NAME = 'B0ATY';
@@ -489,7 +490,7 @@ test('Get stats by game mode seasonal (omit TOB: Hard Mode from bosses)', async 
   const filteredBosses = BOSSES.filter(boss => boss !== 'theatreOfBloodHardMode');
 
   expect(bossKeys).toStrictEqual(filteredBosses);
-  expect(bossKeys).not.toContain('theatreOfBloodHardMode');
+  expect(bossKeys).not.toContain<Boss>('theatreOfBloodHardMode');
 
   expect.assertions(2);
 });
