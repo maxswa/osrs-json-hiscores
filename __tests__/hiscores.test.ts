@@ -213,7 +213,7 @@ test('Parse CSV to json', () => {
       krilTsutsaroth: { rank: 120, score: 2981 },
       mimic: { rank: 1, score: 109 },
       nightmare: { rank: 3, score: 22666 },
-      phosanisNightmare: { rank: 2, score: 84},
+      phosanisNightmare: { rank: 2, score: 84 },
       obor: { rank: 26, score: 323 },
       sarachnis: { rank: 201, score: 1101 },
       scorpia: { rank: 82, score: 3404 },
