@@ -89,6 +89,7 @@ export type Boss =
   | 'kreeArra'
   | 'krilTsutsaroth'
   | 'mimic'
+  | 'nex'
   | 'nightmare'
   | 'phosanisNightmare'
   | 'obor'
