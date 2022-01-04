@@ -27,7 +27,8 @@ import {
   rsnFromElement,
   getActivityPageURL,
   httpGet,
-  BOSSES
+  BOSSES,
+  INVALID_FORMAT_ERROR
 } from './utils';
 
 /**
@@ -73,6 +74,10 @@ export function parseStats(csv: string): Stats {
     .split('\n')
     .filter((entry) => !!entry)
     .map((stat) => stat.split(','));
+
+  if (splitCSV.length !== SKILLS.length + BH_MODES.length + CLUES.length + BOSSES.length + 3) {
+    throw Error(INVALID_FORMAT_ERROR);
+  }
 
   const skillObjects: Skill[] = splitCSV
     .filter((stat) => stat.length === 3)
