@@ -11,7 +11,8 @@ import {
   getPlayerTableURL,
   getSkillPageURL,
   getStatsURL,
-  BOSSES
+  BOSSES,
+  INVALID_FORMAT_ERROR
 } from '../src/index';
 
 const B0ATY_NAME = 'B0ATY';
@@ -230,6 +231,16 @@ test('Parse CSV to json', () => {
   };
 
   expect(parseStats(csv)).toStrictEqual(expectedOutput);
+});
+
+test('Parse CSV with unknown activity', () => {
+  const statsWithUnknownActivity = lynxTitanStats + `
+    -1,-1`;
+  expect(() => parseStats(statsWithUnknownActivity)).toThrow(INVALID_FORMAT_ERROR);
+});
+
+test('Parse invalid CSV', () => {
+  expect(() => parseStats('invalid')).toThrow(INVALID_FORMAT_ERROR);
 });
 
 describe('Get name format', () => {
