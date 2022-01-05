@@ -148,6 +148,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | Kreearra                          |           `kreeArra`           |
 | K'ril Tsutsaroth                  |        `krilTsutsaroth`        |
 | Mimic                             |            `mimic`             |
+| Nex                               |             `nex`              |
 | The Nightmare of Ashihama         |          `nightmare`           |
 | Phosani's Nightmare               |      `phosanisNightmare`       |
 | Obor                              |             `obor`             |

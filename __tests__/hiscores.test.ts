@@ -115,6 +115,7 @@ test('Parse CSV to json', () => {
   625,2391
   120,2981
   1,109
+  99,39002
   3,22666
   2,84
   26,323
@@ -207,6 +208,7 @@ test('Parse CSV to json', () => {
       kreeArra: { rank: 625, score: 2391 },
       krilTsutsaroth: { rank: 120, score: 2981 },
       mimic: { rank: 1, score: 109 },
+      nex: { rank: 99, score: 39002 },
       nightmare: { rank: 3, score: 22666 },
       phosanisNightmare: { rank: 2, score: 84 },
       obor: { rank: 26, score: 323 },
@@ -455,8 +457,10 @@ test('Get non-existent player', async () => {
 });
 
 test('Get stats by gamemode', async () => {
-  const { skills, bosses } = await getStatsByGamemode(LYNX_TITAN_FORMATTED_NAME);
-  
+  const { skills, bosses } = await getStatsByGamemode(
+    LYNX_TITAN_FORMATTED_NAME
+  );
+
   expect(skills).toMatchObject({
     overall: { rank: expect.any(Number), level: 2277, xp: 4600000000 },
     attack: { rank: expect.any(Number), level: 99, xp: 200000000 },
