@@ -88,6 +88,7 @@ test('Parse CSV to json', () => {
   1,6143
   4814,898
   37,225
+  25,1110
   382,2780
   944,3000
   1981,1452
@@ -171,6 +172,7 @@ test('Parse CSV to json', () => {
     },
     lastManStanding: { rank: 4814, score: 898 },
     soulWarsZeal: { rank: 37, score: 225 },
+    riftsClosed: { rank: 25, score: 1110 },
     clues: {
       all: { rank: 32, score: 12148 },
       beginner: { rank: 3105, score: 76 },
