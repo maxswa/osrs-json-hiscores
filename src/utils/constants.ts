@@ -132,6 +132,7 @@ export const ACTIVITIES: ActivityName[] = [
   'masterClues',
   'lastManStanding',
   'soulWarsZeal',
+  'riftsClosed',
   ...BOSSES
 ];
 
@@ -247,5 +248,6 @@ export const FORMATTED_BH_NAMES: FormattedBHNames = {
 export const FORMATTED_LMS = 'Last Man Standing';
 export const FORMATTED_SOUL_WARS = 'Soul Wars Zeal';
 export const FORMATTED_LEAGUE_POINTS = 'League Points';
+export const FORMATTED_RIFTS_CLOSED = 'Rifts Closed';
 
 export const INVALID_FORMAT_ERROR = 'Invalid hiscores format';
