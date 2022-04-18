@@ -110,6 +110,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | Bounty Hunter (Hunter) |    `hunterBH`     |
 | Last Man Standing      | `lastManStanding` |
 | Soul Wars Zeal         |  `soulWarsZeal`   |
+| Rifts Closed           |   `riftsClosed`   |
 
 ### Leagues
 
@@ -193,6 +194,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
     bountyHunter: {},
     lastManStanding: {},
     soulWarsZeal: {},
+    riftsClosed: {},
     bosses: {}
   }
 }

@@ -28,7 +28,8 @@ import {
   getActivityPageURL,
   httpGet,
   BOSSES,
-  INVALID_FORMAT_ERROR
+  INVALID_FORMAT_ERROR,
+  EXTRA_ACTIVITY_COUNT
 } from './utils';
 
 /**
@@ -75,7 +76,14 @@ export function parseStats(csv: string): Stats {
     .filter((entry) => !!entry)
     .map((stat) => stat.split(','));
 
-  if (splitCSV.length !== SKILLS.length + BH_MODES.length + CLUES.length + BOSSES.length + 3) {
+  if (
+    splitCSV.length !==
+    SKILLS.length +
+      BH_MODES.length +
+      CLUES.length +
+      BOSSES.length +
+      EXTRA_ACTIVITY_COUNT
+  ) {
     throw Error(INVALID_FORMAT_ERROR);
   }
 
@@ -105,7 +113,10 @@ export function parseStats(csv: string): Stats {
   const [leaguePoints] = activityObjects.splice(0, 1);
   const bhObjects = activityObjects.splice(0, BH_MODES.length);
   const clueObjects = activityObjects.splice(0, CLUES.length);
-  const [lastManStanding, soulWarsZeal] = activityObjects.splice(0, 2);
+  const [lastManStanding, soulWarsZeal, riftsClosed] = activityObjects.splice(
+    0,
+    3
+  );
   const bossObjects = activityObjects.splice(0, BOSSES.length);
 
   const skills: Skills = skillObjects.reduce<Skills>((prev, curr, index) => {
@@ -138,6 +149,7 @@ export function parseStats(csv: string): Stats {
     bountyHunter,
     lastManStanding,
     soulWarsZeal,
+    riftsClosed,
     clues,
     bosses
   };
