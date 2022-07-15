@@ -131,6 +131,7 @@ export const ACTIVITIES: ActivityName[] = [
   'eliteClues',
   'masterClues',
   'lastManStanding',
+  'pvpArena',
   'soulWarsZeal',
   'riftsClosed',
   ...BOSSES
@@ -246,6 +247,7 @@ export const FORMATTED_BH_NAMES: FormattedBHNames = {
 };
 
 export const FORMATTED_LMS = 'Last Man Standing';
+export const FORMATTED_PVP_ARENA = 'PvP Arena';
 export const FORMATTED_SOUL_WARS = 'Soul Wars Zeal';
 export const FORMATTED_LEAGUE_POINTS = 'League Points';
 export const FORMATTED_RIFTS_CLOSED = 'Rifts Closed';
