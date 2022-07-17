@@ -118,6 +118,7 @@ export type ActivityName =
   | 'hunterBH'
   | 'rogueBH'
   | 'lastManStanding'
+  | 'pvpArena'
   | 'soulWarsZeal'
   | 'riftsClosed'
   | 'allClues'
@@ -135,6 +136,7 @@ export interface Stats {
   leaguePoints: Activity;
   bountyHunter: BH;
   lastManStanding: Activity;
+  pvpArena: Activity;
   soulWarsZeal: Activity;
   riftsClosed: Activity;
   bosses: Bosses;
