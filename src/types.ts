@@ -102,6 +102,8 @@ export type Boss =
   | 'theatreOfBlood'
   | 'theatreOfBloodHardMode'
   | 'thermonuclearSmokeDevil'
+  | 'tombsOfAmascut'
+  | 'tombsOfAmascutExpertMode'
   | 'tzKalZuk'
   | 'tzTokJad'
   | 'venenatis'

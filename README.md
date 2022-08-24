@@ -163,6 +163,8 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | Theatre Of Blood                  |        `theatreOfBlood`        |
 | Theatre Of Blood: Hard Mode       |    `theatreOfBloodHardMode`    |
 | Thermonuclear Smoke Devil         |   `thermonuclearSmokeDevil`    |
+| Tombs of Amascut                  |        `tombsOfAmascut`        |
+| Tombs of Amascut: Expert Mode     |   `tombsOfAmascutExpertMode`   |
 | TzKal-Zuk                         |           `tzKalZuk`           |
 | TzTok-Jad                         |           `tzTokJad`           |
 | Venenatis                         |          `venenatis`           |
