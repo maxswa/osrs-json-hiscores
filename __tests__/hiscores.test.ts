@@ -130,6 +130,8 @@ test('Parse CSV to json', () => {
   6984,138
   23,923141
   4043,2000
+  4073,1020
+  289,13070
   489,8
   967,47
   11155,223
@@ -225,6 +227,8 @@ test('Parse CSV to json', () => {
       theatreOfBlood: { rank: 6984, score: 138 },
       theatreOfBloodHardMode: { rank: 23, score: 923141 },
       thermonuclearSmokeDevil: { rank: 4043, score: 2000 },
+      tombsOfAmascut: { rank: 4073, score: 1020 },
+      tombsOfAmascutExpertMode: { rank: 289, score: 13070 },
       tzKalZuk: { rank: 489, score: 8 },
       tzTokJad: { rank: 967, score: 47 },
       venenatis: { rank: 11155, score: 223 },
@@ -240,9 +244,11 @@ test('Parse CSV to json', () => {
 });
 
 test('Parse CSV with unknown activity', () => {
-  const statsWithUnknownActivity = lynxTitanStats + `
+  const statsWithUnknownActivity = `${lynxTitanStats}
     -1,-1`;
-  expect(() => parseStats(statsWithUnknownActivity)).toThrow(INVALID_FORMAT_ERROR);
+  expect(() => parseStats(statsWithUnknownActivity)).toThrow(
+    INVALID_FORMAT_ERROR
+  );
 });
 
 test('Parse invalid CSV', () => {
