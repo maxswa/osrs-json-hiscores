@@ -159,7 +159,7 @@ export function parseStats(csv: string): Stats {
 export async function getStats(rsn: string): Promise<Player> {
   if (typeof rsn !== 'string') {
     throw Error('RSN must be a string');
-  } else if (!/^[a-zA-Z0-9 _]+$/.test(rsn)) {
+  } else if (!/^[a-zA-Z0-9 _-]+$/.test(rsn)) {
     throw Error('RSN contains invalid character');
   } else if (rsn.length > 12 || rsn.length < 1) {
     throw Error('RSN must be between 1 and 12 characters');
@@ -246,7 +246,7 @@ export async function getStatsByGamemode(
 ): Promise<Stats> {
   if (typeof rsn !== 'string') {
     throw Error('RSN must be a string');
-  } else if (!/^[a-zA-Z0-9 _]+$/.test(rsn)) {
+  } else if (!/^[a-zA-Z0-9 _-]+$/.test(rsn)) {
     throw Error('RSN contains invalid character');
   } else if (rsn.length > 12 || rsn.length < 1) {
     throw Error('RSN must be between 1 and 12 characters');
