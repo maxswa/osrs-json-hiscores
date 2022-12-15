@@ -50,12 +50,11 @@ export async function getRSNFormat(rsn: string): Promise<string> {
   try {
     const response = await httpGet(url);
     const dom = new JSDOM(response.data);
-    const spans = dom.window.document.querySelectorAll(
-      'span[style="color:#AA0022;"]'
+    const anchor = dom.window.document.querySelector(
+      '.personal-hiscores__row.personal-hiscores__row--type-highlight a'
     );
-    if (spans.length >= 2) {
-      const nameSpan = spans[1];
-      return rsnFromElement(nameSpan);
+    if (anchor) {
+      return rsnFromElement(anchor);
     }
     throw Error('Player not found');
   } catch {
@@ -75,7 +74,10 @@ export function parseStats(csv: string): Stats {
     .filter((entry) => !!entry)
     .map((stat) => stat.split(','));
 
-  if (splitCSV.length !== SKILLS.length + BH_MODES.length + CLUES.length + BOSSES.length + 5) {
+  if (
+    splitCSV.length !==
+    SKILLS.length + BH_MODES.length + CLUES.length + BOSSES.length + 5
+  ) {
     throw Error(INVALID_FORMAT_ERROR);
   }
 
@@ -105,7 +107,12 @@ export function parseStats(csv: string): Stats {
   const [leaguePoints] = activityObjects.splice(0, 1);
   const bhObjects = activityObjects.splice(0, BH_MODES.length);
   const clueObjects = activityObjects.splice(0, CLUES.length);
-  const [lastManStanding, pvpArena, soulWarsZeal, riftsClosed] = activityObjects.splice(0, 4);
+  const [
+    lastManStanding,
+    pvpArena,
+    soulWarsZeal,
+    riftsClosed
+  ] = activityObjects.splice(0, 4);
   const bossObjects = activityObjects.splice(0, BOSSES.length);
 
   const skills: Skills = skillObjects.reduce<Skills>((prev, curr, index) => {
