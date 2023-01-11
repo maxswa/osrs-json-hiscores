@@ -93,6 +93,7 @@ export type Boss =
   | 'nightmare'
   | 'phosanisNightmare'
   | 'obor'
+  | 'phantomMuspah'
   | 'sarachnis'
   | 'scorpia'
   | 'skotizo'

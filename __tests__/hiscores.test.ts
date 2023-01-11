@@ -121,6 +121,7 @@ test('Parse CSV to json', () => {
   3,22666
   2,84
   26,323
+  44,6233
   201,1101
   82,3404
   5085,61
@@ -218,6 +219,7 @@ test('Parse CSV to json', () => {
       nightmare: { rank: 3, score: 22666 },
       phosanisNightmare: { rank: 2, score: 84 },
       obor: { rank: 26, score: 323 },
+      phantomMuspah: { rank: 44, score: 6233 },
       sarachnis: { rank: 201, score: 1101 },
       scorpia: { rank: 82, score: 3404 },
       skotizo: { rank: 5085, score: 61 },
