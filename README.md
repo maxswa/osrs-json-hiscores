@@ -154,6 +154,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | The Nightmare of Ashihama         |          `nightmare`           |
 | Phosani's Nightmare               |      `phosanisNightmare`       |
 | Obor                              |             `obor`             |
+| Phantom Muspah                    |        `phantomMuspah`         |
 | Sarachnis                         |          `sarachnis`           |
 | Scorpia                           |           `scorpia`            |
 | Skotizo                           |           `skotizo`            |
