@@ -22,7 +22,10 @@ export const GAMEMODE_URL: GamemodeUrl = {
   ultimate: `${BASE_URL}_ultimate/`,
   deadman: `${BASE_URL}_deadman/`,
   seasonal: `${BASE_URL}_seasonal/`,
-  tournament: `${BASE_URL}_tournament/`
+  tournament: `${BASE_URL}_tournament/`,
+  skiller: `${BASE_URL}_skiller/`,
+  oneDefence: `${BASE_URL}_skiller_defence/`,
+  freshStart: `${BASE_URL}_fresh_start/`
 };
 export const SKILLS: SkillName[] = [
   'overall',

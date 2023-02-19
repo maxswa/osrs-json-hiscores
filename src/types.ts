@@ -5,7 +5,10 @@ export type Gamemode =
   | 'hardcore'
   | 'deadman'
   | 'seasonal'
-  | 'tournament';
+  | 'tournament'
+  | 'skiller'
+  | 'oneDefence'
+  | 'freshStart';
 
 export interface Skill {
   rank: number;
