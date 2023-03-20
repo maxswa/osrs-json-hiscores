@@ -1,4 +1,5 @@
-import { JSDOM } from 'jsdom';
+import { AxiosResponse } from 'axios';
+import { BinaryData, JSDOM } from 'jsdom';
 import {
   Player,
   Activity,
@@ -12,7 +13,8 @@ import {
   PlayerSkillRow,
   ActivityName,
   PlayerActivityRow,
-  Bosses
+  Bosses,
+  GetStatsOptions
 } from './types';
 import {
   getStatsURL,
@@ -28,7 +30,8 @@ import {
   getActivityPageURL,
   httpGet,
   BOSSES,
-  INVALID_FORMAT_ERROR
+  INVALID_FORMAT_ERROR,
+  validateRSN
 } from './utils';
 
 /**
@@ -38,17 +41,13 @@ import {
  * @returns Formatted version of the rsn.
  */
 export async function getRSNFormat(rsn: string): Promise<string> {
-  if (typeof rsn !== 'string') {
-    throw Error('RSN must be a string');
-  } else if (!/^[a-zA-Z0-9 _-]+$/.test(rsn)) {
-    throw Error('RSN contains invalid character');
-  } else if (rsn.length > 12 || rsn.length < 1) {
-    throw Error('RSN must be between 1 and 12 characters');
-  }
+  validateRSN(rsn);
 
   const url = getPlayerTableURL('main', rsn);
   try {
-    const response = await httpGet(url);
+    const response = await httpGet<string | Buffer | BinaryData | undefined>(
+      url
+    );
     const dom = new JSDOM(response.data);
     const anchor = dom.window.document.querySelector(
       '.personal-hiscores__row.personal-hiscores__row--type-highlight a'
@@ -163,25 +162,36 @@ export function parseStats(csv: string): Stats {
  * @param rsn Username of the player.
  * @returns Player object.
  */
-export async function getStats(rsn: string): Promise<Player> {
-  if (typeof rsn !== 'string') {
-    throw Error('RSN must be a string');
-  } else if (!/^[a-zA-Z0-9 _-]+$/.test(rsn)) {
-    throw Error('RSN contains invalid character');
-  } else if (rsn.length > 12 || rsn.length < 1) {
-    throw Error('RSN must be between 1 and 12 characters');
-  }
+export async function getStats(
+  rsn: string,
+  options?: GetStatsOptions
+): Promise<Player> {
+  validateRSN(rsn);
+  const otherGamemodes = options?.otherGamemodes ?? [
+    'ironman',
+    'hardcore',
+    'ultimate'
+  ];
+  const shouldGetFormattedRsn = options?.shouldGetFormattedRsn ?? true;
 
-  const mainRes = await httpGet(getStatsURL('main', rsn));
+  const mainRes = await httpGet<string>(getStatsURL('main', rsn));
   if (mainRes.status === 200) {
-    const otherResponses = await Promise.all([
-      httpGet(getStatsURL('ironman', rsn)).catch((err) => err),
-      httpGet(getStatsURL('hardcore', rsn)).catch((err) => err),
-      httpGet(getStatsURL('ultimate', rsn)).catch((err) => err),
-      getRSNFormat(rsn).catch(() => undefined)
-    ]);
-
-    const [ironRes, hcRes, ultRes, formattedName] = otherResponses;
+    const emptyResponse: AxiosResponse<string> = {
+      status: 404,
+      data: '',
+      statusText: '',
+      headers: {},
+      config: {}
+    };
+    const getModeStats = async (
+      mode: Extract<Gamemode, 'ironman' | 'hardcore' | 'ultimate'>
+    ): Promise<AxiosResponse<string>> =>
+      otherGamemodes.includes(mode)
+        ? httpGet<string>(getStatsURL(mode, rsn)).catch((err) => err)
+        : emptyResponse;
+    const formattedName = shouldGetFormattedRsn
+      ? await getRSNFormat(rsn).catch(() => undefined)
+      : undefined;
 
     const player: Player = {
       name: formattedName ?? rsn,
@@ -192,8 +202,11 @@ export async function getStats(rsn: string): Promise<Player> {
     };
     player.main = parseStats(mainRes.data);
 
+    const ironRes = await getModeStats('ironman');
     if (ironRes.status === 200) {
       player.ironman = parseStats(ironRes.data);
+      const hcRes = await getModeStats('hardcore');
+      const ultRes = await getModeStats('ultimate');
       if (hcRes.status === 200) {
         player.mode = 'hardcore';
         player.hardcore = parseStats(hcRes.data);
@@ -251,16 +264,11 @@ export async function getStatsByGamemode(
   rsn: string,
   mode: Gamemode = 'main'
 ): Promise<Stats> {
-  if (typeof rsn !== 'string') {
-    throw Error('RSN must be a string');
-  } else if (!/^[a-zA-Z0-9 _-]+$/.test(rsn)) {
-    throw Error('RSN contains invalid character');
-  } else if (rsn.length > 12 || rsn.length < 1) {
-    throw Error('RSN must be between 1 and 12 characters');
-  } else if (!GAMEMODES.includes(mode)) {
+  validateRSN(rsn);
+  if (!GAMEMODES.includes(mode)) {
     throw Error('Invalid game mode');
   }
-  const response = await httpGet(getStatsURL(mode, rsn));
+  const response = await httpGet<string>(getStatsURL(mode, rsn));
   if (response.status !== 200) {
     throw Error('Player not found');
   }
@@ -283,7 +291,7 @@ export async function getSkillPage(
   }
   const url = getSkillPageURL(mode, skill, page);
 
-  const response = await httpGet(url);
+  const response = await httpGet<string | Buffer | BinaryData | undefined>(url);
   const dom = new JSDOM(response.data);
   const playersHTML = dom.window.document.querySelectorAll(
     '.personal-hiscores__row'
@@ -331,7 +339,7 @@ export async function getActivityPage(
   }
   const url = getActivityPageURL(mode, activity, page);
 
-  const response = await httpGet(url);
+  const response = await httpGet<string | Buffer | BinaryData | undefined>(url);
   const dom = new JSDOM(response.data);
   const playersHTML = dom.window.document.querySelectorAll(
     '.personal-hiscores__row'

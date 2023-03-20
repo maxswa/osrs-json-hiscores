@@ -505,3 +505,50 @@ test('Get stats by gamemode', async () => {
 
   expect.assertions(2);
 });
+
+describe('Get stats options', () => {
+  const rsn = 'player';
+  let axiosMock: jest.Mock;
+  beforeEach(() => {
+    axios.get = jest.fn(
+      (url) =>
+        new Promise<any>((resolve) =>
+          resolve(
+            url === getPlayerTableURL('main', rsn)
+              ? { data: lynxTitanNamePage }
+              : { status: 200, data: lynxTitanStats }
+          )
+        )
+    );
+    axiosMock = axios.get as any;
+    axiosMock.mockClear();
+  });
+  it('fetches all gamemodes and formatted RSN when no options provided', async () => {
+    await getStats(rsn);
+    expect(axiosMock.mock.calls.map((val) => val[0])).toEqual([
+      getStatsURL('main', rsn),
+      getPlayerTableURL('main', rsn),
+      getStatsURL('ironman', rsn),
+      getStatsURL('hardcore', rsn),
+      getStatsURL('ultimate', rsn)
+    ]);
+  });
+  it('skips fetching formatted RSN when option is provided', async () => {
+    await getStats(rsn, { shouldGetFormattedRsn: false });
+    expect(
+      axiosMock.mock.calls.some(
+        (val) => val[0] === getPlayerTableURL('main', rsn)
+      )
+    ).toBeFalsy();
+  });
+  it('skips fetching game mode when option is provided', async () => {
+    await getStats(rsn, {
+      otherGamemodes: ['ironman', 'ultimate']
+    });
+    expect(
+      axiosMock.mock.calls.some(
+        (val) => val[0] === getStatsURL('hardcore', rsn)
+      )
+    ).toBeFalsy();
+  });
+});

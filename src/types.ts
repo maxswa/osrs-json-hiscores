@@ -166,3 +166,16 @@ export interface PlayerActivityRow extends Activity {
   name: string;
   dead: boolean;
 }
+
+export interface GetStatsOptions {
+  /**
+   * Other game modes to fetch ranks for.
+   * @defaultvalue `['ironman', 'hardcore', 'ultimate']`
+   */
+  otherGamemodes?: Extract<Gamemode, 'ironman' | 'hardcore' | 'ultimate'>[];
+  /**
+   * If true, the formatted RSN will be fetched. Otherwise it will return the provided, unformatted RSN.
+   * @defaultvalue `true`
+   */
+  shouldGetFormattedRsn?: boolean;
+}
