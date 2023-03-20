@@ -96,10 +96,25 @@ export const rsnFromElement = (el: Element | null) => {
  * @param url URL to run a `GET` request against.
  * @returns Axios response.
  */
-export const httpGet = (url: string) =>
-  axios.get(url, {
+export const httpGet = <Response>(url: string) =>
+  axios.get<Response>(url, {
     headers: {
       // without User-Agent header requests may be rejected by DDoS protection mechanism
       'User-Agent': ua.firefox(80)
     }
   });
+
+/**
+ * Validates that a provided RSN has the same username restrictions as Jagex.
+ * @param rsn Username to validate.
+ * @throws Error if the RSN fails validation.
+ */
+export const validateRSN = (rsn: string) => {
+  if (typeof rsn !== 'string') {
+    throw Error('RSN must be a string');
+  } else if (!/^[a-zA-Z0-9 _-]+$/.test(rsn)) {
+    throw Error('RSN contains invalid character');
+  } else if (rsn.length > 12 || rsn.length < 1) {
+    throw Error('RSN must be between 1 and 12 characters');
+  }
+};
