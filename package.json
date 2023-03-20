@@ -30,6 +30,9 @@
     "stats",
     "skills"
   ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
   "author": "maxswa",
   "license": "ISC",
   "bugs": {
