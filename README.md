@@ -125,9 +125,11 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | --------------------------------- | :----------------------------: |
 | Abyssal Sire                      |         `abyssalSire`          |
 | Alchemical Hydra                  |       `alchemicalHydra`        |
+| Artio                             |            `artio`             |
 | Barrows Chests                    |           `barrows`            |
 | Bryophyta                         |          `bryophyta`           |
 | Callisto                          |           `callisto`           |
+| Cal'varion                        |          `calvarion`           |
 | Cerberus                          |           `cerberus`           |
 | Chambers Of Xeric                 |       `chambersOfXeric`        |
 | Chambers Of Xeric: Challenge Mode | `chambersOfXericChallengeMode` |
@@ -158,6 +160,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | Sarachnis                         |          `sarachnis`           |
 | Scorpia                           |           `scorpia`            |
 | Skotizo                           |           `skotizo`            |
+| Spindel                           |           `spindel`            |
 | Tempoross                         |          `tempoross`           |
 | The Gauntlet                      |           `gauntlet`           |
 | The Corrupted Gauntlet            |      `corruptedGauntlet`       |

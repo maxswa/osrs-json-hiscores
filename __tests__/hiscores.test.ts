@@ -92,9 +92,11 @@ test('Parse CSV to json', () => {
   25,1110
   382,2780
   944,3000
+  704,892
   1981,1452
   4981,23
   888,1046
+  444,792
   613,4856
   102,4038
   156,334
@@ -125,6 +127,7 @@ test('Parse CSV to json', () => {
   201,1101
   82,3404
   5085,61
+  678,903
   18823,23
   63,375
   2870,6
@@ -190,9 +193,11 @@ test('Parse CSV to json', () => {
     bosses: {
       abyssalSire: { rank: 382, score: 2780 },
       alchemicalHydra: { rank: 944, score: 3000 },
+      artio: { rank: 704, score: 892 },
       barrows: { rank: 1981, score: 1452 },
       bryophyta: { rank: 4981, score: 23 },
       callisto: { rank: 888, score: 1046 },
+      calvarion: { rank: 444, score: 792 },
       cerberus: { rank: 613, score: 4856 },
       chambersOfXeric: { rank: 102, score: 4038 },
       chambersOfXericChallengeMode: { rank: 156, score: 334 },
@@ -223,6 +228,7 @@ test('Parse CSV to json', () => {
       sarachnis: { rank: 201, score: 1101 },
       scorpia: { rank: 82, score: 3404 },
       skotizo: { rank: 5085, score: 61 },
+      spindel: { rank: 678, score: 903 },
       tempoross: { rank: 18823, score: 23 },
       gauntlet: { rank: 63, score: 375 },
       corruptedGauntlet: { rank: 2870, score: 6 },
