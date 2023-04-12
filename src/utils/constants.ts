@@ -157,7 +157,7 @@ export const FORMATTED_BOSS_NAMES: FormattedBossNames = {
   barrows: 'Barrows Chests',
   bryophyta: 'Bryophyta',
   callisto: 'Callisto',
-  calvarion: "Cal'varion",
+  calvarion: "Calvar'ion",
   cerberus: 'Cerberus',
   chambersOfXeric: 'Chambers of Xeric',
   chambersOfXericChallengeMode: 'Chambers of Xeric: Challenge Mode',

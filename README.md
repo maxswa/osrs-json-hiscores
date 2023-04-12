@@ -129,7 +129,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | Barrows Chests                    |           `barrows`            |
 | Bryophyta                         |          `bryophyta`           |
 | Callisto                          |           `callisto`           |
-| Cal'varion                        |          `calvarion`           |
+| Calvar'ion                        |          `calvarion`           |
 | Cerberus                          |           `cerberus`           |
 | Chambers Of Xeric                 |       `chambersOfXeric`        |
 | Chambers Of Xeric: Challenge Mode | `chambersOfXericChallengeMode` |
