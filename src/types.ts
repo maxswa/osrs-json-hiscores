@@ -60,7 +60,7 @@ export type ClueType =
 
 export type Clues = { [Type in ClueType]: Activity };
 
-export type BHType = 'rogue' | 'hunter';
+export type BHType = 'rogue' | 'hunter' | 'legacyRogue' | 'legacyHunter';
 
 export type BH = { [Type in BHType]: Activity };
 
@@ -126,6 +126,8 @@ export type ActivityName =
   | 'leaguePoints'
   | 'hunterBH'
   | 'rogueBH'
+  | 'hunterLegacyBH'
+  | 'rogueLegacyBH'
   | 'lastManStanding'
   | 'pvpArena'
   | 'soulWarsZeal'
