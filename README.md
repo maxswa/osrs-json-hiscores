@@ -106,10 +106,10 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 
 | Minigame                        |       Param       |
 | ------------------------------- | :---------------: |
-| Bounty Hunter (Rogue)           |     `rogueBH`     |
-| Bounty Hunter (Hunter)          |    `hunterBH`     |
-| Bounty Hunter (Legacy - Rogue)  |  `rogueLegacyBH`  |
-| Bounty Hunter (Legacy - Hunter) | `hunterLegacyBH`  |
+| Bounty Hunter (Legacy - Rogue)  |     `rogueBH`     |
+| Bounty Hunter (Legacy - Hunter) |    `hunterBH`     |
+| Bounty Hunter (Rogue)           |    `rogueBHV2`    |
+| Bounty Hunter (Hunter)          |   `hunterBHV2`    |
 | Last Man Standing               | `lastManStanding` |
 | PvP Arena                       |    `pvpArena`     |
 | Soul Wars Zeal                  |  `soulWarsZeal`   |

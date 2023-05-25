@@ -62,7 +62,7 @@ export const CLUES: ClueType[] = [
   'elite',
   'master'
 ];
-export const BH_MODES: BHType[] = ['hunter', 'rogue', 'legacyHunter', 'legacyRogue'];
+export const BH_MODES: BHType[] = ['hunterV2', 'rogueV2', 'hunter', 'rogue'];
 export const GAMEMODES: Gamemode[] = [
   'main',
   'ironman',
@@ -130,10 +130,10 @@ export const BOSSES: Boss[] = [
 ];
 export const ACTIVITIES: ActivityName[] = [
   'leaguePoints',
+  'hunterBHV2',
+  'rogueBHV2',
   'hunterBH',
   'rogueBH',
-  'hunterLegacyBH',
-  'rogueLegacyBH',
   'allClues',
   'beginnerClues',
   'easyClues',
@@ -259,10 +259,10 @@ export type FormattedBHNames = {
 };
 
 export const FORMATTED_BH_NAMES: FormattedBHNames = {
-  rogue: 'Bounty Hunter - Rogue',
-  hunter: 'Bounty Hunter - Hunter',
-  legacyRogue: 'Bounty Hunter (Legacy) - Rogue',
-  legacyHunter: 'Bounty Hunter (Legacy) - Hunter'
+  rogue: 'Bounty Hunter (Legacy) - Rogue',
+  hunter: 'Bounty Hunter (Legacy) - Hunter',
+  rogueV2: 'Bounty Hunter - Rogue',
+  hunterV2: 'Bounty Hunter - Hunter'
 };
 
 export const FORMATTED_LMS = 'Last Man Standing';
