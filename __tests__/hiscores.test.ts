@@ -12,7 +12,8 @@ import {
   getSkillPageURL,
   getStatsURL,
   BOSSES,
-  INVALID_FORMAT_ERROR
+  INVALID_FORMAT_ERROR,
+  BH_MODES
 } from '../src/index';
 
 const B0ATY_NAME = 'B0ATY';
@@ -77,6 +78,8 @@ test('Parse CSV to json', () => {
   810,99,37688883
   92,99,32005622
   23423,478
+  89914,35
+  99834,25
   99831,23
   89912,37
   32,12148
@@ -174,8 +177,10 @@ test('Parse CSV to json', () => {
     },
     leaguePoints: { rank: 23423, score: 478 },
     bountyHunter: {
+      hunterV2: { rank: 89914, score: 35 },
+      rogueV2: { rank: 99834, score: 25 },
       hunter: { rank: 99831, score: 23 },
-      rogue: { rank: 89912, score: 37 }
+      rogue: { rank: 89912, score: 37 },
     },
     lastManStanding: { rank: 4814, score: 898 },
     pvpArena: { rank: 13, score: 4057 },
@@ -475,7 +480,7 @@ test('Get non-existent player', async () => {
 });
 
 test('Get stats by gamemode', async () => {
-  const { skills, bosses } = await getStatsByGamemode(
+  const { skills, bosses, bountyHunter } = await getStatsByGamemode(
     LYNX_TITAN_FORMATTED_NAME
   );
 
@@ -508,8 +513,10 @@ test('Get stats by gamemode', async () => {
 
   const bossKeys = Object.keys(bosses);
   expect(bossKeys).toStrictEqual(BOSSES);
+  const bountyHunterKeys = Object.keys(bountyHunter);
+  expect(bountyHunterKeys).toStrictEqual(BH_MODES);
 
-  expect.assertions(2);
+  expect.assertions(3);
 });
 
 describe('Get stats options', () => {
