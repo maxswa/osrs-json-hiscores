@@ -38,6 +38,7 @@ import {
  * Screen scrapes the hiscores to get the formatted rsn of a player.
  *
  * @param rsn Username of the player.
+ * @param config Optional axios request config object.
  * @returns Formatted version of the rsn.
  */
 export async function getRSNFormat(
@@ -341,6 +342,7 @@ export async function getSkillPage(
  * @param activity Name of the activity or boss to fetch hiscores for.
  * @param mode Gamemode to fetch ranks for.
  * @param page Page number.
+ * @param config Optional axios request config object.
  * @returns Array of `PlayerActivityRow` objects.
  */
 export async function getActivityPage(
