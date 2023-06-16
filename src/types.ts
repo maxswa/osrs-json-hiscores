@@ -1,3 +1,5 @@
+import { AxiosRequestConfig } from 'axios';
+
 export type Gamemode =
   | 'main'
   | 'ironman'
@@ -183,4 +185,13 @@ export interface GetStatsOptions {
    * @defaultvalue `true`
    */
   shouldGetFormattedRsn?: boolean;
+  /**
+   * Map of configs for each requests that can take place in the `getStats` function.
+   */
+  axiosConfigs?: Partial<Record<Gamemode, AxiosRequestConfig>> & {
+    /**
+     * The axios request config object to use for the RSN format request.
+     */
+    rsn?: AxiosRequestConfig;
+  };
 }

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import * as ua from 'useragent-generator';
 import { Gamemode, SkillName, ActivityName } from '../types';
 import {
@@ -96,12 +96,16 @@ export const rsnFromElement = (el: Element | null) => {
  * @param url URL to run a `GET` request against.
  * @returns Axios response.
  */
-export const httpGet = <Response>(url: string) =>
+export const httpGet = <Response>(
+  url: string,
+  config: AxiosRequestConfig = {}
+) =>
   axios.get<Response>(url, {
     headers: {
       // without User-Agent header requests may be rejected by DDoS protection mechanism
       'User-Agent': ua.firefox(80)
-    }
+    },
+    ...config
   });
 
 /**

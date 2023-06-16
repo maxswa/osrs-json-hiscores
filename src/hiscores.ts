@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { BinaryData, JSDOM } from 'jsdom';
 import {
   Player,
@@ -38,15 +38,20 @@ import {
  * Screen scrapes the hiscores to get the formatted rsn of a player.
  *
  * @param rsn Username of the player.
+ * @param config Optional axios request config object.
  * @returns Formatted version of the rsn.
  */
-export async function getRSNFormat(rsn: string): Promise<string> {
+export async function getRSNFormat(
+  rsn: string,
+  config?: AxiosRequestConfig
+): Promise<string> {
   validateRSN(rsn);
 
   const url = getPlayerTableURL('main', rsn);
   try {
     const response = await httpGet<string | Buffer | BinaryData | undefined>(
-      url
+      url,
+      config
     );
     const dom = new JSDOM(response.data);
     const anchor = dom.window.document.querySelector(
@@ -174,7 +179,10 @@ export async function getStats(
   ];
   const shouldGetFormattedRsn = options?.shouldGetFormattedRsn ?? true;
 
-  const mainRes = await httpGet<string>(getStatsURL('main', rsn));
+  const mainRes = await httpGet<string>(
+    getStatsURL('main', rsn),
+    options?.axiosConfigs?.main
+  );
   if (mainRes.status === 200) {
     const emptyResponse: AxiosResponse<string> = {
       status: 404,
@@ -187,10 +195,15 @@ export async function getStats(
       mode: Extract<Gamemode, 'ironman' | 'hardcore' | 'ultimate'>
     ): Promise<AxiosResponse<string>> =>
       otherGamemodes.includes(mode)
-        ? httpGet<string>(getStatsURL(mode, rsn)).catch((err) => err)
+        ? httpGet<string>(
+            getStatsURL(mode, rsn),
+            options?.axiosConfigs?.[mode]
+          ).catch((err) => err)
         : emptyResponse;
     const formattedName = shouldGetFormattedRsn
-      ? await getRSNFormat(rsn).catch(() => undefined)
+      ? await getRSNFormat(rsn, options?.axiosConfigs?.rsn).catch(
+          () => undefined
+        )
       : undefined;
 
     const player: Player = {
@@ -258,17 +271,19 @@ export async function getStats(
  *
  * @param rsn Username of the player.
  * @param mode Gamemode to fetch ranks for.
+ * @param config Optional axios request config object.
  * @returns Stats object.
  */
 export async function getStatsByGamemode(
   rsn: string,
-  mode: Gamemode = 'main'
+  mode: Gamemode = 'main',
+  config?: AxiosRequestConfig
 ): Promise<Stats> {
   validateRSN(rsn);
   if (!GAMEMODES.includes(mode)) {
     throw Error('Invalid game mode');
   }
-  const response = await httpGet<string>(getStatsURL(mode, rsn));
+  const response = await httpGet<string>(getStatsURL(mode, rsn), config);
   if (response.status !== 200) {
     throw Error('Player not found');
   }
@@ -280,7 +295,8 @@ export async function getStatsByGamemode(
 export async function getSkillPage(
   skill: SkillName,
   mode: Gamemode = 'main',
-  page: number = 1
+  page: number = 1,
+  config?: AxiosRequestConfig
 ): Promise<PlayerSkillRow[]> {
   if (!GAMEMODES.includes(mode)) {
     throw Error('Invalid game mode');
@@ -291,7 +307,10 @@ export async function getSkillPage(
   }
   const url = getSkillPageURL(mode, skill, page);
 
-  const response = await httpGet<string | Buffer | BinaryData | undefined>(url);
+  const response = await httpGet<string | Buffer | BinaryData | undefined>(
+    url,
+    config
+  );
   const dom = new JSDOM(response.data);
   const playersHTML = dom.window.document.querySelectorAll(
     '.personal-hiscores__row'
@@ -323,12 +342,14 @@ export async function getSkillPage(
  * @param activity Name of the activity or boss to fetch hiscores for.
  * @param mode Gamemode to fetch ranks for.
  * @param page Page number.
+ * @param config Optional axios request config object.
  * @returns Array of `PlayerActivityRow` objects.
  */
 export async function getActivityPage(
   activity: ActivityName,
   mode: Gamemode = 'main',
-  page: number = 1
+  page: number = 1,
+  config?: AxiosRequestConfig
 ): Promise<PlayerActivityRow[]> {
   if (!GAMEMODES.includes(mode)) {
     throw Error('Invalid game mode');
@@ -339,7 +360,10 @@ export async function getActivityPage(
   }
   const url = getActivityPageURL(mode, activity, page);
 
-  const response = await httpGet<string | Buffer | BinaryData | undefined>(url);
+  const response = await httpGet<string | Buffer | BinaryData | undefined>(
+    url,
+    config
+  );
   const dom = new JSDOM(response.data);
   const playersHTML = dom.window.document.querySelectorAll(
     '.personal-hiscores__row'
