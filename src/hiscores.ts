@@ -111,12 +111,8 @@ export function parseStats(csv: string): Stats {
   const [leaguePoints] = activityObjects.splice(0, 1);
   const bhObjects = activityObjects.splice(0, BH_MODES.length);
   const clueObjects = activityObjects.splice(0, CLUES.length);
-  const [
-    lastManStanding,
-    pvpArena,
-    soulWarsZeal,
-    riftsClosed
-  ] = activityObjects.splice(0, 4);
+  const [lastManStanding, pvpArena, soulWarsZeal, riftsClosed] =
+    activityObjects.splice(0, 4);
   const bossObjects = activityObjects.splice(0, BOSSES.length);
 
   const skills: Skills = skillObjects.reduce<Skills>((prev, curr, index) => {
