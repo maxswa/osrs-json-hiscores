@@ -144,6 +144,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | Dagannoth Rex                     |         `dagannothRex`         |
 | Dagannoth Supreme                 |       `dagannothSupreme`       |
 | Deranged Archaeologist            |    `derangedArchaeologist`     |
+| Duke Sucellus                     |         `dukeSucellus`         |
 | General Graardor                  |       `generalGraardor`        |
 | Giant Mole                        |          `giantMole`           |
 | Grotesque Guardians               |      `grotesqueGuardians`      |
@@ -166,6 +167,8 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | Tempoross                         |          `tempoross`           |
 | The Gauntlet                      |           `gauntlet`           |
 | The Corrupted Gauntlet            |      `corruptedGauntlet`       |
+| The Leviathan                     |          `leviathan`           |
+| The Whisperer                     |          `whisperer`           |
 | Theatre Of Blood                  |        `theatreOfBlood`        |
 | Theatre Of Blood: Hard Mode       |    `theatreOfBloodHardMode`    |
 | Thermonuclear Smoke Devil         |   `thermonuclearSmokeDevil`    |
@@ -173,6 +176,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | Tombs of Amascut: Expert Mode     |   `tombsOfAmascutExpertMode`   |
 | TzKal-Zuk                         |           `tzKalZuk`           |
 | TzTok-Jad                         |           `tzTokJad`           |
+| Vardorvis                         |          `vardorvis`           |
 | Venenatis                         |          `venenatis`           |
 | Vetion                            |            `vetion`            |
 | Vorkath                           |           `vorkath`            |
