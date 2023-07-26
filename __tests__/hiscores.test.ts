@@ -112,6 +112,7 @@ test('Parse CSV to json', () => {
   4342,1655
   966,2951
   10151,1
+  1289,2477
   1288,2407
   377,4669
   545,1567
@@ -134,6 +135,8 @@ test('Parse CSV to json', () => {
   18823,23
   63,375
   2870,6
+  2871,7
+  2872,8
   6984,138
   23,923141
   4043,2000
@@ -141,6 +144,7 @@ test('Parse CSV to json', () => {
   289,13070
   489,8
   967,47
+  968,48
   11155,223
   1940,272
   8623,1340
@@ -215,6 +219,7 @@ test('Parse CSV to json', () => {
       dagannothRex: { rank: 4342, score: 1655 },
       dagannothSupreme: { rank: 966, score: 2951 },
       derangedArchaeologist: { rank: 10151, score: 1 },
+      dukeSucellus: { rank: 1289, score: 2477 },
       generalGraardor: { rank: 1288, score: 2407 },
       giantMole: { rank: 377, score: 4669 },
       grotesqueGuardians: { rank: 545, score: 1567 },
@@ -237,6 +242,8 @@ test('Parse CSV to json', () => {
       tempoross: { rank: 18823, score: 23 },
       gauntlet: { rank: 63, score: 375 },
       corruptedGauntlet: { rank: 2870, score: 6 },
+      leviathan: { rank: 2871, score: 7 },
+      whisperer: { rank: 2872, score: 8 },
       theatreOfBlood: { rank: 6984, score: 138 },
       theatreOfBloodHardMode: { rank: 23, score: 923141 },
       thermonuclearSmokeDevil: { rank: 4043, score: 2000 },
@@ -244,6 +251,7 @@ test('Parse CSV to json', () => {
       tombsOfAmascutExpertMode: { rank: 289, score: 13070 },
       tzKalZuk: { rank: 489, score: 8 },
       tzTokJad: { rank: 967, score: 47 },
+      vardorvis: { rank: 968, score: 48 },
       venenatis: { rank: 11155, score: 223 },
       vetion: { rank: 1940, score: 272 },
       vorkath: { rank: 8623, score: 1340 },
