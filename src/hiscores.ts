@@ -14,7 +14,8 @@ import {
   ActivityName,
   PlayerActivityRow,
   Bosses,
-  GetStatsOptions
+  GetStatsOptions,
+  HiscoresResponse
 } from './types';
 import {
   getStatsURL,
@@ -31,8 +32,42 @@ import {
   httpGet,
   BOSSES,
   INVALID_FORMAT_ERROR,
-  validateRSN
+  validateRSN,
+  PLAYER_NOT_FOUND_ERROR,
+  FORMATTED_SKILL_NAMES,
+  FORMATTED_BH_NAMES,
+  FORMATTED_CLUE_NAMES,
+  FORMATTED_BOSS_NAMES,
+  FORMATTED_LEAGUE_POINTS,
+  FORMATTED_LMS,
+  FORMATTED_PVP_ARENA,
+  FORMATTED_SOUL_WARS,
+  FORMATTED_RIFTS_CLOSED
 } from './utils';
+
+/**
+ * Gets a player's stats from the official OSRS JSON endpoint.
+ *
+ * @param rsn Username of the player.
+ * @param mode Gamemode to fetch ranks for.
+ * @param config Optional axios request config object.
+ * @returns Official JSON stats object.
+ */
+export async function getOfficialStats(
+  rsn: string,
+  mode: Gamemode = 'main',
+  config?: AxiosRequestConfig
+): Promise<HiscoresResponse> {
+  validateRSN(rsn);
+
+  const url = getStatsURL(mode, rsn, true);
+  try {
+    const response = await httpGet<HiscoresResponse>(url, config);
+    return response.data;
+  } catch {
+    throw Error(PLAYER_NOT_FOUND_ERROR);
+  }
+}
 
 /**
  * Screen scrapes the hiscores to get the formatted rsn of a player.
@@ -60,10 +95,79 @@ export async function getRSNFormat(
     if (anchor) {
       return rsnFromElement(anchor);
     }
-    throw Error('Player not found');
+    throw Error(PLAYER_NOT_FOUND_ERROR);
   } catch {
-    throw Error('Player not found');
+    throw Error(PLAYER_NOT_FOUND_ERROR);
   }
+}
+
+/**
+ * Parses official JSON object of raw stats and returns a stats object.
+ *
+ * @param csv Raw JSON from the official OSRS API.
+ * @returns Parsed stats object.
+ */
+export function parseJsonStats(json: HiscoresResponse): Stats {
+  const getActivity = (formattedName: string): Activity => {
+    const hiscoresActivity = json.activities.find(
+      // We must match on name here since id is not guaranteed to be the same between updates
+      ({ name }) => name === formattedName
+    );
+    return {
+      rank: hiscoresActivity?.rank ?? -1,
+      score: hiscoresActivity?.score ?? -1
+    };
+  };
+  const reduceActivity = <Key extends string, Reduced = Record<Key, Activity>>(
+    keys: Key[],
+    formattedNames: Record<Key, string>
+  ): Reduced =>
+    keys.reduce<Reduced>(
+      (reducer, key) => ({
+        ...reducer,
+        [key]: getActivity(formattedNames[key])
+      }),
+      {} as Reduced
+    );
+
+  const skills = SKILLS.reduce<Skills>((skillsObject, skillName) => {
+    const hiscoresSkill = json.skills.find(
+      // We must match on name here since id is not guaranteed to be the same between updates
+      ({ name }) => name === FORMATTED_SKILL_NAMES[skillName]
+    );
+    return {
+      ...skillsObject,
+      [skillName]: {
+        rank: hiscoresSkill?.rank ?? -1,
+        level: hiscoresSkill?.level ?? -1,
+        xp: hiscoresSkill?.xp ?? -1
+      }
+    };
+  }, {} as Skills);
+
+  const bountyHunter = reduceActivity(BH_MODES, FORMATTED_BH_NAMES);
+  const clues = reduceActivity(CLUES, FORMATTED_CLUE_NAMES);
+  const bosses = reduceActivity(BOSSES, FORMATTED_BOSS_NAMES);
+
+  const leaguePoints = getActivity(FORMATTED_LEAGUE_POINTS);
+  const lastManStanding = getActivity(FORMATTED_LMS);
+  const pvpArena = getActivity(FORMATTED_PVP_ARENA);
+  const soulWarsZeal = getActivity(FORMATTED_SOUL_WARS);
+  const riftsClosed = getActivity(FORMATTED_RIFTS_CLOSED);
+
+  const stats: Stats = {
+    skills,
+    leaguePoints,
+    bountyHunter,
+    lastManStanding,
+    pvpArena,
+    soulWarsZeal,
+    riftsClosed,
+    clues,
+    bosses
+  };
+
+  return stats;
 }
 
 /**
@@ -259,7 +363,7 @@ export async function getStats(
 
     return player;
   }
-  throw Error('Player not found');
+  throw Error(PLAYER_NOT_FOUND_ERROR);
 }
 
 /**
@@ -281,7 +385,7 @@ export async function getStatsByGamemode(
   }
   const response = await httpGet<string>(getStatsURL(mode, rsn), config);
   if (response.status !== 200) {
-    throw Error('Player not found');
+    throw Error(PLAYER_NOT_FOUND_ERROR);
   }
   const stats = parseStats(response.data);
 

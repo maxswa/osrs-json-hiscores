@@ -199,3 +199,41 @@ export interface GetStatsOptions {
     rsn?: AxiosRequestConfig;
   };
 }
+
+export interface HiscoresCommon {
+  /**
+   * This field behaves more like an index than a true unique ID.
+   */
+  id: number;
+  /**
+   * The display name of this skill / activity.
+   */
+  name: string;
+  /**
+   * The player's official hiscores rank in this skill / activity.
+   */
+  rank: number;
+}
+
+export interface HiscoresSkill extends HiscoresCommon {
+  /**
+   * The player's current level in this skill.
+   */
+  level: number;
+  /**
+   * The player's current experience in this skill.
+   */
+  xp: number;
+}
+
+export interface HiscoresActivity extends HiscoresCommon {
+  /**
+   * The player's current score in this activity.
+   */
+  score: number;
+}
+
+export interface HiscoresResponse {
+  skills: HiscoresSkill[];
+  activities: HiscoresActivity[];
+}
