@@ -279,24 +279,24 @@ export async function getStats(
   ];
   const shouldGetFormattedRsn = options?.shouldGetFormattedRsn ?? true;
 
-  const mainRes = await httpGet<string>(
-    getStatsURL('main', rsn),
+  const mainRes = await httpGet<HiscoresResponse>(
+    getStatsURL('main', rsn, true),
     options?.axiosConfigs?.main
   );
   if (mainRes.status === 200) {
-    const emptyResponse: AxiosResponse<string> = {
+    const emptyResponse: AxiosResponse<HiscoresResponse> = {
       status: 404,
-      data: '',
+      data: { skills: [], activities: [] },
       statusText: '',
       headers: {},
       config: {}
     };
     const getModeStats = async (
       mode: Extract<Gamemode, 'ironman' | 'hardcore' | 'ultimate'>
-    ): Promise<AxiosResponse<string>> =>
+    ): Promise<AxiosResponse<HiscoresResponse>> =>
       otherGamemodes.includes(mode)
-        ? httpGet<string>(
-            getStatsURL(mode, rsn),
+        ? httpGet<HiscoresResponse>(
+            getStatsURL(mode, rsn, true),
             options?.axiosConfigs?.[mode]
           ).catch((err) => err)
         : emptyResponse;
@@ -313,16 +313,16 @@ export async function getStats(
       deulted: false,
       deironed: false
     };
-    player.main = parseStats(mainRes.data);
+    player.main = parseJsonStats(mainRes.data);
 
     const ironRes = await getModeStats('ironman');
     if (ironRes.status === 200) {
-      player.ironman = parseStats(ironRes.data);
+      player.ironman = parseJsonStats(ironRes.data);
       const hcRes = await getModeStats('hardcore');
       const ultRes = await getModeStats('ultimate');
       if (hcRes.status === 200) {
         player.mode = 'hardcore';
-        player.hardcore = parseStats(hcRes.data);
+        player.hardcore = parseJsonStats(hcRes.data);
         if (
           player.ironman.skills.overall.xp !== player.hardcore.skills.overall.xp
         ) {
@@ -337,7 +337,7 @@ export async function getStats(
         }
       } else if (ultRes.status === 200) {
         player.mode = 'ultimate';
-        player.ultimate = parseStats(ultRes.data);
+        player.ultimate = parseJsonStats(ultRes.data);
         if (
           player.ironman.skills.overall.xp !== player.ultimate.skills.overall.xp
         ) {
@@ -383,11 +383,8 @@ export async function getStatsByGamemode(
   if (!GAMEMODES.includes(mode)) {
     throw Error('Invalid game mode');
   }
-  const response = await httpGet<string>(getStatsURL(mode, rsn), config);
-  if (response.status !== 200) {
-    throw Error(PLAYER_NOT_FOUND_ERROR);
-  }
-  const stats = parseStats(response.data);
+  const response = await getOfficialStats(rsn, mode, config);
+  const stats = parseJsonStats(response);
 
   return stats;
 }
