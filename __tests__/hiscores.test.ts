@@ -31,7 +31,9 @@ const b0atyStatsCsv = readFileSync(`${__dirname}/b0atyStats.csv`, 'utf8');
 const b0atyStatsJson: HiscoresResponse = JSON.parse(
   readFileSync(`${__dirname}/b0atyStats.json`, 'utf8')
 );
-const lynxTitanStats = readFileSync(`${__dirname}/lynxTitanStats.csv`, 'utf8');
+const lynxTitanStats = JSON.parse(
+  readFileSync(`${__dirname}/lynxTitanStats.json`, 'utf8')
+);
 const lynxTitanNamePage = readFileSync(
   `${__dirname}/lynxTitanNamePage.html`,
   'utf8'
@@ -52,7 +54,7 @@ jest.spyOn(axios, 'get').mockImplementation((url) => {
   if (getSkillPageURL('main', 'attack', 1) === url) {
     return Promise.resolve({ data: attackTopPage });
   }
-  if (getStatsURL('main', LYNX_TITAN_FORMATTED_NAME) === url) {
+  if (getStatsURL('main', LYNX_TITAN_FORMATTED_NAME, true) === url) {
     return Promise.resolve({ status: 200, data: lynxTitanStats });
   }
   throw new Error(`No mock response for URL: ${url}`);
@@ -553,11 +555,11 @@ describe('Get stats options', () => {
   it('fetches all gamemodes and formatted RSN when no options provided', async () => {
     await getStats(rsn);
     expect(axiosMock.mock.calls.map((val) => val[0])).toEqual([
-      getStatsURL('main', rsn),
+      getStatsURL('main', rsn, true),
       getPlayerTableURL('main', rsn),
-      getStatsURL('ironman', rsn),
-      getStatsURL('hardcore', rsn),
-      getStatsURL('ultimate', rsn)
+      getStatsURL('ironman', rsn, true),
+      getStatsURL('hardcore', rsn, true),
+      getStatsURL('ultimate', rsn, true)
     ]);
   });
   it('skips fetching formatted RSN when option is provided', async () => {
