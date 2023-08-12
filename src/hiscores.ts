@@ -111,7 +111,7 @@ export function parseJsonStats(json: HiscoresResponse): Stats {
   const getActivity = (formattedName: string): Activity => {
     const hiscoresActivity = json.activities.find(
       // We must match on name here since id is not guaranteed to be the same between updates
-      ({ name }) => name === formattedName
+      ({ name }) => name.toLowerCase() === formattedName.toLowerCase()
     );
     return {
       rank: hiscoresActivity?.rank ?? -1,
@@ -133,7 +133,8 @@ export function parseJsonStats(json: HiscoresResponse): Stats {
   const skills = SKILLS.reduce<Skills>((skillsObject, skillName) => {
     const hiscoresSkill = json.skills.find(
       // We must match on name here since id is not guaranteed to be the same between updates
-      ({ name }) => name === FORMATTED_SKILL_NAMES[skillName]
+      ({ name }) =>
+        name.toLowerCase() === FORMATTED_SKILL_NAMES[skillName].toLowerCase()
     );
     return {
       ...skillsObject,
