@@ -110,10 +110,10 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | Bounty Hunter (Legacy - Hunter) |    `hunterBH`     |
 | Bounty Hunter (Rogue)           |    `rogueBHV2`    |
 | Bounty Hunter (Hunter)          |   `hunterBHV2`    |
-| Last Man Standing               | `lastManStanding` |
-| PvP Arena                       |    `pvpArena`     |
+| LMS - Rank                      | `lastManStanding` |
+| PvP Arena - Rank                |    `pvpArena`     |
 | Soul Wars Zeal                  |  `soulWarsZeal`   |
-| Rifts Closed                    |   `riftsClosed`   |
+| Rifts closed                    |   `riftsClosed`   |
 
 ### Leagues
 
@@ -156,7 +156,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | K'ril Tsutsaroth                  |        `krilTsutsaroth`        |
 | Mimic                             |            `mimic`             |
 | Nex                               |             `nex`              |
-| The Nightmare of Ashihama         |          `nightmare`           |
+| Nightmare                         |          `nightmare`           |
 | Phosani's Nightmare               |      `phosanisNightmare`       |
 | Obor                              |             `obor`             |
 | Phantom Muspah                    |        `phantomMuspah`         |

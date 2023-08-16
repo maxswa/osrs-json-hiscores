@@ -9,6 +9,7 @@ import {
 
 export const BASE_URL = 'https://secure.runescape.com/m=hiscore_oldschool';
 export const STATS_URL = 'index_lite.ws?player=';
+export const JSON_STATS_URL = 'index_lite.json?player=';
 export const SCORES_URL = 'overall.ws?';
 
 export type GamemodeUrl = {
@@ -188,7 +189,7 @@ export const FORMATTED_BOSS_NAMES: FormattedBossNames = {
   krilTsutsaroth: "K'ril Tsutsaroth",
   mimic: 'Mimic',
   nex: 'Nex',
-  nightmare: 'The Nightmare of Ashihama',
+  nightmare: 'Nightmare',
   phosanisNightmare: "Phosani's Nightmare",
   obor: 'Obor',
   phantomMuspah: 'Phantom Muspah',
@@ -273,10 +274,11 @@ export const FORMATTED_BH_NAMES: FormattedBHNames = {
   hunterV2: 'Bounty Hunter - Hunter'
 };
 
-export const FORMATTED_LMS = 'Last Man Standing';
-export const FORMATTED_PVP_ARENA = 'PvP Arena';
+export const FORMATTED_LMS = 'LMS - Rank';
+export const FORMATTED_PVP_ARENA = 'PvP Arena - Rank';
 export const FORMATTED_SOUL_WARS = 'Soul Wars Zeal';
 export const FORMATTED_LEAGUE_POINTS = 'League Points';
-export const FORMATTED_RIFTS_CLOSED = 'Rifts Closed';
+export const FORMATTED_RIFTS_CLOSED = 'Rifts closed';
 
 export const INVALID_FORMAT_ERROR = 'Invalid hiscores format';
+export const PLAYER_NOT_FOUND_ERROR = 'Player not found';

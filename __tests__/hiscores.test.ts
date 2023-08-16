@@ -13,7 +13,9 @@ import {
   getStatsURL,
   BOSSES,
   INVALID_FORMAT_ERROR,
-  BH_MODES
+  BH_MODES,
+  parseJsonStats,
+  HiscoresResponse
 } from '../src/index';
 
 const B0ATY_NAME = 'B0ATY';
@@ -25,7 +27,13 @@ const LYNX_TITAN_FORMATTED_NAME = 'Lynx Titan';
 
 const attackTopPage = readFileSync(`${__dirname}/attackTopPage.html`, 'utf8');
 const b0atyNamePage = readFileSync(`${__dirname}/b0atyNamePage.html`, 'utf8');
-const lynxTitanStats = readFileSync(`${__dirname}/lynxTitanStats.csv`, 'utf8');
+const b0atyStatsCsv = readFileSync(`${__dirname}/b0atyStats.csv`, 'utf8');
+const b0atyStatsJson: HiscoresResponse = JSON.parse(
+  readFileSync(`${__dirname}/b0atyStats.json`, 'utf8')
+);
+const lynxTitanStats = JSON.parse(
+  readFileSync(`${__dirname}/lynxTitanStats.json`, 'utf8')
+);
 const lynxTitanNamePage = readFileSync(
   `${__dirname}/lynxTitanNamePage.html`,
   'utf8'
@@ -46,7 +54,7 @@ jest.spyOn(axios, 'get').mockImplementation((url) => {
   if (getSkillPageURL('main', 'attack', 1) === url) {
     return Promise.resolve({ data: attackTopPage });
   }
-  if (getStatsURL('main', LYNX_TITAN_FORMATTED_NAME) === url) {
+  if (getStatsURL('main', LYNX_TITAN_FORMATTED_NAME, true) === url) {
     return Promise.resolve({ status: 200, data: lynxTitanStats });
   }
   throw new Error(`No mock response for URL: ${url}`);
@@ -184,7 +192,7 @@ test('Parse CSV to json', () => {
       hunterV2: { rank: 89914, score: 35 },
       rogueV2: { rank: 99834, score: 25 },
       hunter: { rank: 99831, score: 23 },
-      rogue: { rank: 89912, score: 37 },
+      rogue: { rank: 89912, score: 37 }
     },
     lastManStanding: { rank: 4814, score: 898 },
     pvpArena: { rank: 13, score: 4057 },
@@ -533,13 +541,13 @@ describe('Get stats options', () => {
   beforeEach(() => {
     axios.get = jest.fn(
       (url) =>
-        new Promise<any>((resolve) =>
+        new Promise<any>((resolve) => {
           resolve(
             url === getPlayerTableURL('main', rsn)
               ? { data: lynxTitanNamePage }
               : { status: 200, data: lynxTitanStats }
-          )
-        )
+          );
+        })
     );
     axiosMock = axios.get as any;
     axiosMock.mockClear();
@@ -547,11 +555,11 @@ describe('Get stats options', () => {
   it('fetches all gamemodes and formatted RSN when no options provided', async () => {
     await getStats(rsn);
     expect(axiosMock.mock.calls.map((val) => val[0])).toEqual([
-      getStatsURL('main', rsn),
+      getStatsURL('main', rsn, true),
       getPlayerTableURL('main', rsn),
-      getStatsURL('ironman', rsn),
-      getStatsURL('hardcore', rsn),
-      getStatsURL('ultimate', rsn)
+      getStatsURL('ironman', rsn, true),
+      getStatsURL('hardcore', rsn, true),
+      getStatsURL('ultimate', rsn, true)
     ]);
   });
   it('skips fetching formatted RSN when option is provided', async () => {
@@ -572,4 +580,10 @@ describe('Get stats options', () => {
       )
     ).toBeFalsy();
   });
+});
+
+test('CSV and JSON parsing outputs identical object', async () => {
+  const csvOutput = parseStats(b0atyStatsCsv);
+  const jsonOutput = parseJsonStats(b0atyStatsJson);
+  expect(csvOutput).toEqual(jsonOutput);
 });
