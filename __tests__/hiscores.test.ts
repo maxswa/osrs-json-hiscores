@@ -12,7 +12,7 @@ import {
   getSkillPageURL,
   getStatsURL,
   BOSSES,
-  INVALID_FORMAT_ERROR,
+  InvalidFormatError,
   BH_MODES,
   parseJsonStats,
   HiscoresResponse
@@ -276,12 +276,12 @@ test('Parse CSV with unknown activity', () => {
   const statsWithUnknownActivity = `${lynxTitanStats}
     -1,-1`;
   expect(() => parseStats(statsWithUnknownActivity)).toThrow(
-    INVALID_FORMAT_ERROR
+    InvalidFormatError
   );
 });
 
 test('Parse invalid CSV', () => {
-  expect(() => parseStats('invalid')).toThrow(INVALID_FORMAT_ERROR);
+  expect(() => parseStats('invalid')).toThrow(InvalidFormatError);
 });
 
 describe('Get name format', () => {

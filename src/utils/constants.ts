@@ -280,8 +280,6 @@ export const FORMATTED_SOUL_WARS = 'Soul Wars Zeal';
 export const FORMATTED_LEAGUE_POINTS = 'League Points';
 export const FORMATTED_RIFTS_CLOSED = 'Rifts closed';
 
-export const INVALID_FORMAT_ERROR = 'Invalid hiscores format';
-export const PLAYER_NOT_FOUND_ERROR = 'Player not found';
 export class InvalidFormatError extends Error {
   __proto__ = Error;
 
