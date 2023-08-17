@@ -1,4 +1,4 @@
-import { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosRequestConfig, AxiosError } from 'axios';
 import { BinaryData, JSDOM } from 'jsdom';
 import {
   Player,
@@ -31,9 +31,10 @@ import {
   getActivityPageURL,
   httpGet,
   BOSSES,
-  INVALID_FORMAT_ERROR,
+  InvalidFormatError,
+  PlayerNotFoundError,
+  HiScoresError,
   validateRSN,
-  PLAYER_NOT_FOUND_ERROR,
   FORMATTED_SKILL_NAMES,
   FORMATTED_BH_NAMES,
   FORMATTED_CLUE_NAMES,
@@ -64,8 +65,14 @@ export async function getOfficialStats(
   try {
     const response = await httpGet<HiscoresResponse>(url, config);
     return response.data;
-  } catch {
-    throw Error(PLAYER_NOT_FOUND_ERROR);
+  } catch (err) {
+    const error = err as Error | AxiosError;
+
+    if (!axios.isAxiosError(error)) throw err;
+
+    if (error.response?.status === 404) throw new PlayerNotFoundError();
+
+    throw new HiScoresError();
   }
 }
 
@@ -95,9 +102,9 @@ export async function getRSNFormat(
     if (anchor) {
       return rsnFromElement(anchor);
     }
-    throw Error(PLAYER_NOT_FOUND_ERROR);
-  } catch {
-    throw Error(PLAYER_NOT_FOUND_ERROR);
+    throw new PlayerNotFoundError();
+  } catch (err) {
+    throw new HiScoresError();
   }
 }
 
@@ -187,7 +194,7 @@ export function parseStats(csv: string): Stats {
     splitCSV.length !==
     SKILLS.length + BH_MODES.length + CLUES.length + BOSSES.length + 5
   ) {
-    throw Error(INVALID_FORMAT_ERROR);
+    throw new InvalidFormatError();
   }
 
   const skillObjects: Skill[] = splitCSV
@@ -280,91 +287,82 @@ export async function getStats(
   ];
   const shouldGetFormattedRsn = options?.shouldGetFormattedRsn ?? true;
 
-  const mainRes = await httpGet<HiscoresResponse>(
-    getStatsURL('main', rsn, true),
-    options?.axiosConfigs?.main
-  );
-  if (mainRes.status === 200) {
-    const emptyResponse: AxiosResponse<HiscoresResponse> = {
-      status: 404,
-      data: { skills: [], activities: [] },
-      statusText: '',
-      headers: {},
-      config: {}
-    };
-    const getModeStats = async (
-      mode: Extract<Gamemode, 'ironman' | 'hardcore' | 'ultimate'>
-    ): Promise<AxiosResponse<HiscoresResponse>> =>
-      otherGamemodes.includes(mode)
-        ? httpGet<HiscoresResponse>(
-            getStatsURL(mode, rsn, true),
-            options?.axiosConfigs?.[mode]
-          ).catch((err) => err)
-        : emptyResponse;
-    const formattedName = shouldGetFormattedRsn
-      ? await getRSNFormat(rsn, options?.axiosConfigs?.rsn).catch(
-          () => undefined
-        )
-      : undefined;
+  const main = await getOfficialStats(rsn, 'main', options?.axiosConfigs?.main);
 
-    const player: Player = {
-      name: formattedName ?? rsn,
-      mode: 'main',
-      dead: false,
-      deulted: false,
-      deironed: false
-    };
-    player.main = parseJsonStats(mainRes.data);
-
-    const ironRes = await getModeStats('ironman');
-    if (ironRes.status === 200) {
-      player.ironman = parseJsonStats(ironRes.data);
-      const hcRes = await getModeStats('hardcore');
-      const ultRes = await getModeStats('ultimate');
-      if (hcRes.status === 200) {
-        player.mode = 'hardcore';
-        player.hardcore = parseJsonStats(hcRes.data);
-        if (
-          player.ironman.skills.overall.xp !== player.hardcore.skills.overall.xp
-        ) {
-          player.dead = true;
-          player.mode = 'ironman';
-        }
-        if (
-          player.main.skills.overall.xp !== player.ironman.skills.overall.xp
-        ) {
-          player.deironed = true;
-          player.mode = 'main';
-        }
-      } else if (ultRes.status === 200) {
-        player.mode = 'ultimate';
-        player.ultimate = parseJsonStats(ultRes.data);
-        if (
-          player.ironman.skills.overall.xp !== player.ultimate.skills.overall.xp
-        ) {
-          player.deulted = true;
-          player.mode = 'ironman';
-        }
-        if (
-          player.main.skills.overall.xp !== player.ironman.skills.overall.xp
-        ) {
-          player.deironed = true;
-          player.mode = 'main';
-        }
-      } else {
-        player.mode = 'ironman';
-        if (
-          player.main.skills.overall.xp !== player.ironman.skills.overall.xp
-        ) {
-          player.deironed = true;
-          player.mode = 'main';
-        }
-      }
+  const getModeStats = async (
+    mode: Extract<Gamemode, 'ironman' | 'hardcore' | 'ultimate'>
+  ): Promise<HiscoresResponse | undefined> => {
+    if (!otherGamemodes.includes(mode)) {
+      return { skills: [], activities: [] };
     }
 
-    return player;
+    try {
+      return await getOfficialStats(rsn, mode, options?.axiosConfigs?.[mode]);
+    } catch {
+      return undefined;
+    }
+  };
+
+  const formattedName = shouldGetFormattedRsn
+    ? await getRSNFormat(rsn, options?.axiosConfigs?.rsn).catch(() => undefined)
+    : undefined;
+
+  const player: Player = {
+    name: formattedName ?? rsn,
+    mode: 'main',
+    dead: false,
+    deulted: false,
+    deironed: false
+  };
+  player.main = parseJsonStats(main);
+
+  const iron = await getModeStats('ironman');
+  if (iron) {
+    player.ironman = parseJsonStats(iron);
+    const hc = await getModeStats('hardcore');
+    const ult = await getModeStats('ultimate');
+    if (hc) {
+      player.mode = 'hardcore';
+      player.hardcore = parseJsonStats(hc);
+      if (
+        player.ironman.skills.overall.xp !== player.hardcore.skills.overall.xp
+      ) {
+        player.dead = true;
+        player.mode = 'ironman';
+      }
+      if (
+        player.main.skills.overall.xp !== player.ironman.skills.overall.xp
+      ) {
+        player.deironed = true;
+        player.mode = 'main';
+      }
+    } else if (ult) {
+      player.mode = 'ultimate';
+      player.ultimate = parseJsonStats(ult);
+      if (
+        player.ironman.skills.overall.xp !== player.ultimate.skills.overall.xp
+      ) {
+        player.deulted = true;
+        player.mode = 'ironman';
+      }
+      if (
+        player.main.skills.overall.xp !== player.ironman.skills.overall.xp
+      ) {
+        player.deironed = true;
+        player.mode = 'main';
+      }
+    } else {
+      player.mode = 'ironman';
+      if (
+          player.main.skills.overall.xp !== player.ironman.skills.overall.xp
+        ) {
+        player.deironed = true;
+        player.mode = 'main';
+      }
+    }
   }
-  throw Error(PLAYER_NOT_FOUND_ERROR);
+
+  return player;
 }
 
 /**
