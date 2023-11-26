@@ -287,17 +287,13 @@ export async function getStats(
 
   const main = await getOfficialStats(rsn, 'main', options?.axiosConfigs?.main);
 
-  const emptyResponse: HiscoresResponse = {
-    skills: [],
-    activities: []
-  };
   const getModeStats = async (
     mode: Extract<Gamemode, 'ironman' | 'hardcore' | 'ultimate'>
   ): Promise<HiscoresResponse | undefined> =>
     otherGamemodes.includes(mode)
       ? getOfficialStats(rsn, mode, options?.axiosConfigs?.[mode])
-      .catch(err => err)
-      : emptyResponse;
+      .catch(() => undefined)
+      : undefined;
   const formattedName = shouldGetFormattedRsn
     ? await getRSNFormat(rsn, options?.axiosConfigs?.rsn).catch(
         () => undefined
