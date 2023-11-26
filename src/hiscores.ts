@@ -1,4 +1,8 @@
-import { AxiosRequestConfig, AxiosResponse } from 'axios';
+import {
+  AxiosRequestConfig,
+  AxiosResponse,
+  InternalAxiosRequestConfig
+} from 'axios';
 import { BinaryData, JSDOM } from 'jsdom';
 import {
   Player,
@@ -290,7 +294,7 @@ export async function getStats(
       data: { skills: [], activities: [] },
       statusText: '',
       headers: {},
-      config: {}
+      config: {} as InternalAxiosRequestConfig
     };
     const getModeStats = async (
       mode: Extract<Gamemode, 'ironman' | 'hardcore' | 'ultimate'>
