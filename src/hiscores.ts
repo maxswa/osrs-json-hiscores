@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosError } from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { BinaryData, JSDOM } from 'jsdom';
 import {
   Player,

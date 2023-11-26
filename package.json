@@ -1,6 +1,6 @@
 {
   "name": "osrs-json-hiscores",
-  "version": "2.16.0",
+  "version": "2.16.1",
   "description": "The Old School Runescape API wrapper that does more!",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -92,7 +92,7 @@
     "testEnvironment": "node"
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^1.6.2",
     "jsdom": "^22.1.0",
     "useragent-generator": "^1.1.0"
   },
