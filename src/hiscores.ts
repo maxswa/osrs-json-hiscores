@@ -66,11 +66,9 @@ export async function getOfficialStats(
     const response = await httpGet<HiscoresResponse>(url, config);
     return response.data;
   } catch (err) {
-    const error = err as Error | AxiosError;
+    if (!axios.isAxiosError(err)) throw err;
 
-    if (!axios.isAxiosError(error)) throw err;
-
-    if (error.response?.status === 404) throw new PlayerNotFoundError();
+    if (err.response?.status === 404) throw new PlayerNotFoundError();
 
     throw new HiScoresError();
   }
@@ -103,7 +101,7 @@ export async function getRSNFormat(
       return rsnFromElement(anchor);
     }
     throw new PlayerNotFoundError();
-  } catch (err) {
+  } catch {
     throw new HiScoresError();
   }
 }
