@@ -67,7 +67,10 @@
     ],
     "ignorePatterns": [
       "**/@types/*"
-    ]
+    ],
+    "rules": {
+      "max-classes-per-file": "off"
+    }
   },
   "prettier": {
     "trailingComma": "none",

@@ -282,3 +282,40 @@ export const FORMATTED_RIFTS_CLOSED = 'Rifts closed';
 
 export const INVALID_FORMAT_ERROR = 'Invalid hiscores format';
 export const PLAYER_NOT_FOUND_ERROR = 'Player not found';
+export const HISCORES_ERROR = 'HiScores not responding';
+
+export class InvalidFormatError extends Error {
+  __proto__ = Error;
+
+  constructor() {
+    super(INVALID_FORMAT_ERROR);
+    Object.setPrototypeOf(this, InvalidFormatError.prototype);
+  }
+}
+
+export class InvalidRSNError extends Error {
+  __proto__ = Error;
+
+  constructor(message: string) {
+    super(message);
+    Object.setPrototypeOf(this, InvalidRSNError.prototype);
+  }
+}
+
+export class PlayerNotFoundError extends Error {
+  __proto__ = Error;
+
+  constructor() {
+    super(PLAYER_NOT_FOUND_ERROR);
+    Object.setPrototypeOf(this, PlayerNotFoundError.prototype);
+  }
+}
+
+export class HiScoresError extends Error {
+  __proto__ = Error;
+
+  constructor() {
+    super(HISCORES_ERROR);
+    Object.setPrototypeOf(this, HiScoresError.prototype);
+  }
+}

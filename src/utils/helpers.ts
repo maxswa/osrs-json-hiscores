@@ -7,7 +7,8 @@ import {
   SCORES_URL,
   SKILLS,
   ACTIVITIES,
-  JSON_STATS_URL
+  JSON_STATS_URL,
+  InvalidRSNError
 } from './constants';
 
 /**
@@ -119,10 +120,10 @@ export const httpGet = <Response>(
  */
 export const validateRSN = (rsn: string) => {
   if (typeof rsn !== 'string') {
-    throw Error('RSN must be a string');
+    throw new InvalidRSNError('RSN must be a string');
   } else if (!/^[a-zA-Z0-9 _-]+$/.test(rsn)) {
-    throw Error('RSN contains invalid character');
+    throw new InvalidRSNError('RSN contains invalid character');
   } else if (rsn.length > 12 || rsn.length < 1) {
-    throw Error('RSN must be between 1 and 12 characters');
+    throw new InvalidRSNError('RSN must be between 1 and 12 characters');
   }
 };
