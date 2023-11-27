@@ -580,6 +580,12 @@ describe('Get stats options', () => {
       )
     ).toBeFalsy();
   });
+  it('omits excluded gamemodes', async () => {
+    const response = await getStats(rsn, {
+      otherGamemodes: ['ironman', 'ultimate']
+    });
+    expect(response.hardcore).toBeUndefined();
+  });
 });
 
 test('CSV and JSON parsing outputs identical object', async () => {
