@@ -86,6 +86,7 @@ test('Parse CSV to json', () => {
   810,99,37688883
   92,99,32005622
   23423,478
+  89554,301
   89914,35
   99834,25
   99831,23
@@ -188,6 +189,7 @@ test('Parse CSV to json', () => {
       construction: { rank: 92, level: 99, xp: 32005622 }
     },
     leaguePoints: { rank: 23423, score: 478 },
+    deadmanPoints: { rank: 89554, score: 301 },
     bountyHunter: {
       hunterV2: { rank: 89914, score: 35 },
       rogueV2: { rank: 99834, score: 25 },

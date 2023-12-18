@@ -135,6 +135,7 @@ export const BOSSES: Boss[] = [
 ];
 export const ACTIVITIES: ActivityName[] = [
   'leaguePoints',
+  'deadmanPoints',
   'hunterBHV2',
   'rogueBHV2',
   'hunterBH',
@@ -278,6 +279,7 @@ export const FORMATTED_LMS = 'LMS - Rank';
 export const FORMATTED_PVP_ARENA = 'PvP Arena - Rank';
 export const FORMATTED_SOUL_WARS = 'Soul Wars Zeal';
 export const FORMATTED_LEAGUE_POINTS = 'League Points';
+export const FORMATTED_DEADMAN_POINTS = 'Deadman Points';
 export const FORMATTED_RIFTS_CLOSED = 'Rifts closed';
 
 export const INVALID_FORMAT_ERROR = 'Invalid hiscores format';
