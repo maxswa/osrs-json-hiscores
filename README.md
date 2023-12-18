@@ -115,11 +115,12 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | Soul Wars Zeal                  |  `soulWarsZeal`   |
 | Rifts closed                    |   `riftsClosed`   |
 
-### Leagues
+### Points
 
-| Activity      |     Param      |
-| ------------- | :------------: |
-| League Points | `leaguePoints` |
+| Activity       |      Param      |
+| -------------- | :-------------: |
+| League Points  | `leaguePoints`  |
+| Deadman Points | `deadmanPoints` |
 
 ### Bosses
 

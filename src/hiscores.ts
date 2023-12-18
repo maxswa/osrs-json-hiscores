@@ -43,7 +43,8 @@ import {
   FORMATTED_LMS,
   FORMATTED_PVP_ARENA,
   FORMATTED_SOUL_WARS,
-  FORMATTED_RIFTS_CLOSED
+  FORMATTED_RIFTS_CLOSED,
+  FORMATTED_DEADMAN_POINTS
 } from './utils';
 
 /**
@@ -156,6 +157,7 @@ export function parseJsonStats(json: HiscoresResponse): Stats {
   const bosses = reduceActivity(BOSSES, FORMATTED_BOSS_NAMES);
 
   const leaguePoints = getActivity(FORMATTED_LEAGUE_POINTS);
+  const deadmanPoints = getActivity(FORMATTED_DEADMAN_POINTS);
   const lastManStanding = getActivity(FORMATTED_LMS);
   const pvpArena = getActivity(FORMATTED_PVP_ARENA);
   const soulWarsZeal = getActivity(FORMATTED_SOUL_WARS);
@@ -164,6 +166,7 @@ export function parseJsonStats(json: HiscoresResponse): Stats {
   const stats: Stats = {
     skills,
     leaguePoints,
+    deadmanPoints,
     bountyHunter,
     lastManStanding,
     pvpArena,
@@ -188,10 +191,7 @@ export function parseStats(csv: string): Stats {
     .filter((entry) => !!entry)
     .map((stat) => stat.split(','));
 
-  if (
-    splitCSV.length !==
-    SKILLS.length + BH_MODES.length + CLUES.length + BOSSES.length + 5
-  ) {
+  if (splitCSV.length !== SKILLS.length + ACTIVITIES.length) {
     throw new InvalidFormatError();
   }
 
@@ -218,7 +218,7 @@ export function parseStats(csv: string): Stats {
       return activity;
     });
 
-  const [leaguePoints] = activityObjects.splice(0, 1);
+  const [leaguePoints, deadmanPoints] = activityObjects.splice(0, 2);
   const bhObjects = activityObjects.splice(0, BH_MODES.length);
   const clueObjects = activityObjects.splice(0, CLUES.length);
   const [lastManStanding, pvpArena, soulWarsZeal, riftsClosed] =
@@ -252,6 +252,7 @@ export function parseStats(csv: string): Stats {
   const stats: Stats = {
     skills,
     leaguePoints,
+    deadmanPoints,
     bountyHunter,
     lastManStanding,
     pvpArena,
@@ -291,13 +292,12 @@ export async function getStats(
     mode: Extract<Gamemode, 'ironman' | 'hardcore' | 'ultimate'>
   ): Promise<HiscoresResponse | undefined> =>
     otherGamemodes.includes(mode)
-      ? getOfficialStats(rsn, mode, options?.axiosConfigs?.[mode])
-      .catch(() => undefined)
+      ? getOfficialStats(rsn, mode, options?.axiosConfigs?.[mode]).catch(
+          () => undefined
+        )
       : undefined;
   const formattedName = shouldGetFormattedRsn
-    ? await getRSNFormat(rsn, options?.axiosConfigs?.rsn).catch(
-        () => undefined
-      )
+    ? await getRSNFormat(rsn, options?.axiosConfigs?.rsn).catch(() => undefined)
     : undefined;
 
   const player: Player = {
@@ -323,9 +323,7 @@ export async function getStats(
         player.dead = true;
         player.mode = 'ironman';
       }
-      if (
-        player.main.skills.overall.xp !== player.ironman.skills.overall.xp
-      ) {
+      if (player.main.skills.overall.xp !== player.ironman.skills.overall.xp) {
         player.deironed = true;
         player.mode = 'main';
       }
@@ -338,17 +336,13 @@ export async function getStats(
         player.deulted = true;
         player.mode = 'ironman';
       }
-      if (
-        player.main.skills.overall.xp !== player.ironman.skills.overall.xp
-      ) {
+      if (player.main.skills.overall.xp !== player.ironman.skills.overall.xp) {
         player.deironed = true;
         player.mode = 'main';
       }
     } else {
       player.mode = 'ironman';
-      if (
-          player.main.skills.overall.xp !== player.ironman.skills.overall.xp
-        ) {
+      if (player.main.skills.overall.xp !== player.ironman.skills.overall.xp) {
         player.deironed = true;
         player.mode = 'main';
       }

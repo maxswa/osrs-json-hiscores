@@ -130,6 +130,7 @@ export type Bosses = { [Type in Boss]: Activity };
 
 export type ActivityName =
   | 'leaguePoints'
+  | 'deadmanPoints'
   | 'hunterBHV2'
   | 'rogueBHV2'
   | 'hunterBH'
@@ -150,7 +151,14 @@ export type ActivityName =
 export interface Stats {
   skills: Skills;
   clues: Clues;
+  /**
+   * Will only contain rank and score data for the `seasonal` gamemode.
+   */
   leaguePoints: Activity;
+  /**
+   * Will only contain rank and score data for the `tournament` gamemode.
+   */
+  deadmanPoints: Activity;
   bountyHunter: BH;
   lastManStanding: Activity;
   pvpArena: Activity;
