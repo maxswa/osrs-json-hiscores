@@ -5,22 +5,24 @@
 [![types](https://img.shields.io/npm/types/osrs-json-hiscores.svg?style=flat-square)](https://github.com/maxswa/osrs-json-hiscores/blob/master/src/types.ts)
 [![build](https://img.shields.io/github/actions/workflow/status/maxswa/osrs-json-hiscores/main.yml?style=flat-square&branch=main)](https://github.com/maxswa/osrs-json-hiscores/actions/workflows/main.yml?query=branch%3Amain)
 
-**The Old School Runescape API wrapper that does more!**
+**The Old School RuneScape API wrapper that does more!**
 
 ## What it does
 
-The official hiscores API for Old School Runescape (OSRS) returns CSV.
-This wrapper converts it to json and provides extra information about the given player. By comparing player info it infers the player's game mode, as well as any previous modes (de-ultimated, de-ironed and/or died as a hardcore ironman).
+The official hiscores API for Old School RuneScape (OSRS) can return CSV or a simple JSON array.
+This wrapper converts the hiscores data into a more usable JSON object and provides extra information about the given player. By comparing player info it infers the player's game mode, as well as any previous modes (de-ultimated, de-ironed and/or died as a hardcore ironman).
 
-Additional functions are provided that screen-scrape the OSRS leaderboards and return a list of players as json.
+Additional functions are provided that screen-scrape the OSRS leaderboards and return a list of players as json. Also simple utility functions are provided to fetch the raw responses from Jagex's APIs, if desired.
 
 `osrs-json-hiscores` has TypeScript support, with full definitions for all functions and custom data types.
 
 ---
 
-### Disclaimer
+### ⚠ Disclaimer ⚠
 
-Jagex does not provide `Access-Control-Allow-Origin` headers in their responses. This means that [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) will block all browser requests to their hiscores API. In order to get around this, osrs-json-hiscores should be installed on the server side and exposed to the front end via a simple API. Here is an example of this in use: [codesandbox.io/s/osrs-json-hiscores-demo](https://codesandbox.io/s/osrs-json-hiscores-demo-qz656)
+Jagex does not provide `Access-Control-Allow-Origin` headers in their responses. This means that [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) will block all browser requests to their hiscores API. In order to get around this, osrs-json-hiscores needs to be installed on the server side and exposed to the front end via a simple API. Here is an example of this in use: [codesandbox.io/s/osrs-json-hiscores-demo](https://codesandbox.io/s/osrs-json-hiscores-demo-qz656)
+
+TLDR: You cannot use this library directly in your client side app e.g. React or Vue, you must set up a server which uses this lib internally and have your client fetch data from your server.
 
 ---
 
@@ -42,27 +44,14 @@ $ yarn add osrs-json-hiscores
 
 Install the package and then import it into your project:
 
-```javascript
-const hiscores = require('osrs-json-hiscores');
+```typescript
+import { getStatsByGamemode, getSkillPage } from 'osrs-json-hiscores';
 ```
 
 Once you import it you can call the functions asynchronously:
 
-```javascript
-hiscores
-  .getStats('Lynx Titan')
-  .then((res) => console.log(res))
-  .catch((err) => console.error(err));
-```
-
-If you are using TypeScript or transpiling your JS you can use ES6 syntax:
-
-```javascript
-import hiscores, { getSkillPage } from 'osrs-json-hiscores';
-
-// ...
-
-const stats = await hiscores.getStats('Lynx Titan');
+```typescript
+const stats = await getStatsByGamemode('Lynx Titan');
 const topPage = await getSkillPage('overall');
 ```
 
@@ -81,9 +70,8 @@ const topPage = await getSkillPage('overall');
 
 `getSkillPage` and `getActivityPage` require a skill / activity and optionally a gamemode and page:
 
-```javascript
-hiscores
-  .getSkillPage('attack', 'main', 1)
+```typescript
+getSkillPage('attack', 'main', 1)
   .then((res) => console.log(res))
   .catch((err) => console.error(err));
 ```
@@ -189,7 +177,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 
 `getStats` returns a player object that looks like this:
 
-```javascript
+```typescript
 {
   name: 'Lynx Titan',
   mode: 'main',
@@ -217,7 +205,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 
 `getSkillPage` returns and array of 25 players (This represents a page on the hiscores):
 
-```javascript
+```typescript
 [
   { rank: 1, name: 'Lynx Titan', level: 2277, xp: 4600000000, dead: false },
   {},
@@ -230,7 +218,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 
 Get the properly formatted name of any skill, boss, clue or other activity:
 
-```javascript
+```typescript
 // kril === "K'ril Tsutsaroth"
 const kril = FORMATTED_BOSS_NAMES['krilTsutsaroth'];
 ```
