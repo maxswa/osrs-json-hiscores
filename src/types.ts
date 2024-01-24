@@ -104,6 +104,7 @@ export type Boss =
   | 'phantomMuspah'
   | 'sarachnis'
   | 'scorpia'
+  | 'scurrius'
   | 'skotizo'
   | 'spindel'
   | 'tempoross'

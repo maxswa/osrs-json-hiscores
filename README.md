@@ -151,6 +151,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | Phantom Muspah                    |        `phantomMuspah`         |
 | Sarachnis                         |          `sarachnis`           |
 | Scorpia                           |           `scorpia`            |
+| Scurrius                          |           `scurrius`           |
 | Skotizo                           |           `skotizo`            |
 | Spindel                           |           `spindel`            |
 | Tempoross                         |          `tempoross`           |
