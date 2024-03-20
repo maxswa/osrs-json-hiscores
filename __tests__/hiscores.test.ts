@@ -102,6 +102,7 @@ test('Parse CSV to json', () => {
   13,4057
   37,225
   25,1110
+  7827,43249
   382,2780
   944,3000
   704,892
@@ -131,6 +132,7 @@ test('Parse CSV to json', () => {
   41643,1477
   625,2391
   120,2981
+  54,2958
   1,109
   99,39002
   3,22666
@@ -141,6 +143,7 @@ test('Parse CSV to json', () => {
   82,3404
   555,7079
   5085,61
+  8731,1423
   678,903
   18823,23
   63,375
@@ -201,6 +204,7 @@ test('Parse CSV to json', () => {
     pvpArena: { rank: 13, score: 4057 },
     soulWarsZeal: { rank: 37, score: 225 },
     riftsClosed: { rank: 25, score: 1110 },
+    colosseumGlory: { rank: 7827, score: 43249 },
     clues: {
       all: { rank: 32, score: 12148 },
       beginner: { rank: 3105, score: 76 },
@@ -240,6 +244,7 @@ test('Parse CSV to json', () => {
       kraken: { rank: 41643, score: 1477 },
       kreeArra: { rank: 625, score: 2391 },
       krilTsutsaroth: { rank: 120, score: 2981 },
+      lunarChests: { rank: 54, score: 2958 },
       mimic: { rank: 1, score: 109 },
       nex: { rank: 99, score: 39002 },
       nightmare: { rank: 3, score: 22666 },
@@ -250,6 +255,7 @@ test('Parse CSV to json', () => {
       scorpia: { rank: 82, score: 3404 },
       scurrius: { rank: 555, score: 7079 },
       skotizo: { rank: 5085, score: 61 },
+      solHeredit: { rank: 8731, score: 1423 },
       spindel: { rank: 678, score: 903 },
       tempoross: { rank: 18823, score: 23 },
       gauntlet: { rank: 63, score: 375 },
