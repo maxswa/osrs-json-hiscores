@@ -102,6 +102,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | PvP Arena - Rank                |    `pvpArena`     |
 | Soul Wars Zeal                  |  `soulWarsZeal`   |
 | Rifts closed                    |   `riftsClosed`   |
+| Colosseum Glory                 |  `colosseumGlory` |
 
 ### Points
 
@@ -143,6 +144,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | Kraken                            |            `kraken`            |
 | Kreearra                          |           `kreeArra`           |
 | K'ril Tsutsaroth                  |        `krilTsutsaroth`        |
+| Lunar Chests                      |         `lunarChests`          |
 | Mimic                             |            `mimic`             |
 | Nex                               |             `nex`              |
 | Nightmare                         |          `nightmare`           |
@@ -153,6 +155,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | Scorpia                           |           `scorpia`            |
 | Scurrius                          |           `scurrius`           |
 | Skotizo                           |           `skotizo`            |
+| Sol Heredit                       |         `solHeredit`           |
 | Spindel                           |           `spindel`            |
 | Tempoross                         |          `tempoross`           |
 | The Gauntlet                      |           `gauntlet`           |
@@ -199,6 +202,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
     pvpArena: {},
     soulWarsZeal: {},
     riftsClosed: {},
+    colosseumGlory: {},
     bosses: {}
   }
 }

@@ -96,6 +96,7 @@ export type Boss =
   | 'kraken'
   | 'kreeArra'
   | 'krilTsutsaroth'
+  | 'lunarChests'
   | 'mimic'
   | 'nex'
   | 'nightmare'
@@ -106,6 +107,7 @@ export type Boss =
   | 'scorpia'
   | 'scurrius'
   | 'skotizo'
+  | 'solHeredit'
   | 'spindel'
   | 'tempoross'
   | 'gauntlet'
@@ -140,6 +142,7 @@ export type ActivityName =
   | 'pvpArena'
   | 'soulWarsZeal'
   | 'riftsClosed'
+  | 'colosseumGlory'
   | 'allClues'
   | 'beginnerClues'
   | 'easyClues'
@@ -165,6 +168,7 @@ export interface Stats {
   pvpArena: Activity;
   soulWarsZeal: Activity;
   riftsClosed: Activity;
+  colosseumGlory: Activity;
   bosses: Bosses;
 }
 export type Modes = { [M in Gamemode]?: Stats };
