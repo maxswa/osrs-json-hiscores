@@ -103,6 +103,7 @@ export const BOSSES: Boss[] = [
   'kraken',
   'kreeArra',
   'krilTsutsaroth',
+  'lunarChests',
   'mimic',
   'nex',
   'nightmare',
@@ -113,6 +114,7 @@ export const BOSSES: Boss[] = [
   'scorpia',
   'scurrius',
   'skotizo',
+  'solHeredit',
   'spindel',
   'tempoross',
   'gauntlet',
@@ -152,6 +154,7 @@ export const ACTIVITIES: ActivityName[] = [
   'pvpArena',
   'soulWarsZeal',
   'riftsClosed',
+  'colosseumGlory',
   ...BOSSES
 ];
 
@@ -189,6 +192,7 @@ export const FORMATTED_BOSS_NAMES: FormattedBossNames = {
   kraken: 'Kraken',
   kreeArra: "Kree'Arra",
   krilTsutsaroth: "K'ril Tsutsaroth",
+  lunarChests: 'Lunar Chests',
   mimic: 'Mimic',
   nex: 'Nex',
   nightmare: 'Nightmare',
@@ -199,6 +203,7 @@ export const FORMATTED_BOSS_NAMES: FormattedBossNames = {
   scorpia: 'Scorpia',
   scurrius: 'Scurrius',
   skotizo: 'Skotizo',
+  solHeredit: 'Sol Heredit',
   spindel: 'Spindel',
   tempoross: 'Tempoross',
   gauntlet: 'The Gauntlet',
@@ -283,6 +288,7 @@ export const FORMATTED_SOUL_WARS = 'Soul Wars Zeal';
 export const FORMATTED_LEAGUE_POINTS = 'League Points';
 export const FORMATTED_DEADMAN_POINTS = 'Deadman Points';
 export const FORMATTED_RIFTS_CLOSED = 'Rifts closed';
+export const FORMATTED_COLOSSEUM_GLORY = 'Colosseum Glory';
 
 export const INVALID_FORMAT_ERROR = 'Invalid hiscores format';
 export const PLAYER_NOT_FOUND_ERROR = 'Player not found';
