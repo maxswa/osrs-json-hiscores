@@ -117,6 +117,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | --------------------------------- | :----------------------------: |
 | Abyssal Sire                      |         `abyssalSire`          |
 | Alchemical Hydra                  |       `alchemicalHydra`        |
+| Araxxor                           |           `araxxor`            |
 | Artio                             |            `artio`             |
 | Barrows Chests                    |           `barrows`            |
 | Bryophyta                         |          `bryophyta`           |

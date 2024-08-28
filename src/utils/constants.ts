@@ -76,6 +76,7 @@ export const GAMEMODES: Gamemode[] = [
 export const BOSSES: Boss[] = [
   'abyssalSire',
   'alchemicalHydra',
+  'araxxor',
   'artio',
   'barrows',
   'bryophyta',
@@ -165,6 +166,7 @@ export type FormattedBossNames = {
 export const FORMATTED_BOSS_NAMES: FormattedBossNames = {
   abyssalSire: 'Abyssal Sire',
   alchemicalHydra: 'Alchemical Hydra',
+  araxxor: 'Araxxor',
   artio: 'Artio',
   barrows: 'Barrows Chests',
   bryophyta: 'Bryophyta',

@@ -105,6 +105,7 @@ test('Parse CSV to json', () => {
   7827,43249
   382,2780
   944,3000
+  37,111
   704,892
   1981,1452
   4981,23
@@ -217,6 +218,7 @@ test('Parse CSV to json', () => {
     bosses: {
       abyssalSire: { rank: 382, score: 2780 },
       alchemicalHydra: { rank: 944, score: 3000 },
+      araxxor: { rank: 37, score: 111 },
       artio: { rank: 704, score: 892 },
       barrows: { rank: 1981, score: 1452 },
       bryophyta: { rank: 4981, score: 23 },

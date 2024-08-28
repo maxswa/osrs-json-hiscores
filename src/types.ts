@@ -69,6 +69,7 @@ export type BH = { [Type in BHType]: Activity };
 export type Boss =
   | 'abyssalSire'
   | 'alchemicalHydra'
+  | 'araxxor'
   | 'artio'
   | 'barrows'
   | 'bryophyta'
