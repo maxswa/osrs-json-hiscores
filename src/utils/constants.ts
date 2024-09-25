@@ -76,6 +76,7 @@ export const GAMEMODES: Gamemode[] = [
 export const BOSSES: Boss[] = [
   'abyssalSire',
   'alchemicalHydra',
+  'amoxliatl',
   'araxxor',
   'artio',
   'barrows',
@@ -120,6 +121,7 @@ export const BOSSES: Boss[] = [
   'tempoross',
   'gauntlet',
   'corruptedGauntlet',
+  'hueycoatl',
   'leviathan',
   'whisperer',
   'theatreOfBlood',
@@ -166,6 +168,7 @@ export type FormattedBossNames = {
 export const FORMATTED_BOSS_NAMES: FormattedBossNames = {
   abyssalSire: 'Abyssal Sire',
   alchemicalHydra: 'Alchemical Hydra',
+  amoxliatl: 'Amoxliatl',
   araxxor: 'Araxxor',
   artio: 'Artio',
   barrows: 'Barrows Chests',
@@ -210,6 +213,7 @@ export const FORMATTED_BOSS_NAMES: FormattedBossNames = {
   tempoross: 'Tempoross',
   gauntlet: 'The Gauntlet',
   corruptedGauntlet: 'The Corrupted Gauntlet',
+  hueycoatl: 'The Hueycoatl',
   leviathan: 'The Leviathan',
   whisperer: 'The Whisperer',
   theatreOfBlood: 'Theatre of Blood',

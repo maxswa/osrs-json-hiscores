@@ -69,6 +69,7 @@ export type BH = { [Type in BHType]: Activity };
 export type Boss =
   | 'abyssalSire'
   | 'alchemicalHydra'
+  | 'amoxliatl'
   | 'araxxor'
   | 'artio'
   | 'barrows'
@@ -113,6 +114,7 @@ export type Boss =
   | 'tempoross'
   | 'gauntlet'
   | 'corruptedGauntlet'
+  | 'hueycoatl'
   | 'leviathan'
   | 'whisperer'
   | 'theatreOfBlood'

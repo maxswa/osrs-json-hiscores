@@ -105,6 +105,7 @@ test('Parse CSV to json', () => {
   7827,43249
   382,2780
   944,3000
+  561,398429
   37,111
   704,892
   1981,1452
@@ -149,6 +150,7 @@ test('Parse CSV to json', () => {
   18823,23
   63,375
   2870,6
+  891,9102
   2871,7
   2872,8
   6984,138
@@ -218,6 +220,7 @@ test('Parse CSV to json', () => {
     bosses: {
       abyssalSire: { rank: 382, score: 2780 },
       alchemicalHydra: { rank: 944, score: 3000 },
+      amoxliatl: { rank: 561, score: 398429 },
       araxxor: { rank: 37, score: 111 },
       artio: { rank: 704, score: 892 },
       barrows: { rank: 1981, score: 1452 },
@@ -262,6 +265,7 @@ test('Parse CSV to json', () => {
       tempoross: { rank: 18823, score: 23 },
       gauntlet: { rank: 63, score: 375 },
       corruptedGauntlet: { rank: 2870, score: 6 },
+      hueycoatl: { rank: 891, score: 9102 },
       leviathan: { rank: 2871, score: 7 },
       whisperer: { rank: 2872, score: 8 },
       theatreOfBlood: { rank: 6984, score: 138 },
