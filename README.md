@@ -117,6 +117,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | --------------------------------- | :----------------------------: |
 | Abyssal Sire                      |         `abyssalSire`          |
 | Alchemical Hydra                  |       `alchemicalHydra`        |
+| Amoxliatl                         |          `amoxliatl`           |
 | Araxxor                           |           `araxxor`            |
 | Artio                             |            `artio`             |
 | Barrows Chests                    |           `barrows`            |
@@ -161,6 +162,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | Tempoross                         |          `tempoross`           |
 | The Gauntlet                      |           `gauntlet`           |
 | The Corrupted Gauntlet            |      `corruptedGauntlet`       |
+| The Hueycoatl                     |          `hueycoatl`           |
 | The Leviathan                     |          `leviathan`           |
 | The Whisperer                     |          `whisperer`           |
 | Theatre Of Blood                  |        `theatreOfBlood`        |
