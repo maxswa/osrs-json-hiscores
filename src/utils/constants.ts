@@ -215,6 +215,7 @@ export const FORMATTED_BOSS_NAMES: FormattedBossNames = {
   corruptedGauntlet: 'The Corrupted Gauntlet',
   hueycoatl: 'The Hueycoatl',
   leviathan: 'The Leviathan',
+  royalTitans: 'The Royal Titans',
   whisperer: 'The Whisperer',
   theatreOfBlood: 'Theatre of Blood',
   theatreOfBloodHardMode: 'Theatre of Blood: Hard Mode',
@@ -295,6 +296,7 @@ export const FORMATTED_LEAGUE_POINTS = 'League Points';
 export const FORMATTED_DEADMAN_POINTS = 'Deadman Points';
 export const FORMATTED_RIFTS_CLOSED = 'Rifts closed';
 export const FORMATTED_COLOSSEUM_GLORY = 'Colosseum Glory';
+export const FORMATTED_COLLECTIONS_LOGGED = 'Collections Logged';
 
 export const INVALID_FORMAT_ERROR = 'Invalid hiscores format';
 export const PLAYER_NOT_FOUND_ERROR = 'Player not found';

@@ -116,6 +116,7 @@ export type Boss =
   | 'corruptedGauntlet'
   | 'hueycoatl'
   | 'leviathan'
+  | 'royalTitans'
   | 'whisperer'
   | 'theatreOfBlood'
   | 'theatreOfBloodHardMode'
@@ -153,6 +154,7 @@ export type ActivityName =
   | 'eliteClues'
   | 'masterClues'
   | 'colosseumGlory'
+  | 'collectionsLogged'
   | Boss;
 
 export interface Stats {
@@ -172,6 +174,7 @@ export interface Stats {
   soulWarsZeal: Activity;
   riftsClosed: Activity;
   colosseumGlory: Activity;
+  collectionsLogged: Activity;
   bosses: Bosses;
 }
 export type Modes = { [M in Gamemode]?: Stats };

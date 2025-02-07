@@ -92,17 +92,18 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 
 ### Minigames
 
-| Minigame                        |       Param       |
-| ------------------------------- | :---------------: |
-| Bounty Hunter (Legacy - Rogue)  |     `rogueBH`     |
-| Bounty Hunter (Legacy - Hunter) |    `hunterBH`     |
-| Bounty Hunter (Rogue)           |    `rogueBHV2`    |
-| Bounty Hunter (Hunter)          |   `hunterBHV2`    |
-| LMS - Rank                      | `lastManStanding` |
-| PvP Arena - Rank                |    `pvpArena`     |
-| Soul Wars Zeal                  |  `soulWarsZeal`   |
-| Rifts closed                    |   `riftsClosed`   |
-| Colosseum Glory                 | `colosseumGlory`  |
+| Minigame                        |        Param        |
+| ------------------------------- | :-----------------: |
+| Bounty Hunter (Legacy - Rogue)  |      `rogueBH`      |
+| Bounty Hunter (Legacy - Hunter) |     `hunterBH`      |
+| Bounty Hunter (Rogue)           |     `rogueBHV2`     |
+| Bounty Hunter (Hunter)          |    `hunterBHV2`     |
+| LMS - Rank                      |  `lastManStanding`  |
+| PvP Arena - Rank                |     `pvpArena`      |
+| Soul Wars Zeal                  |   `soulWarsZeal`    |
+| Rifts closed                    |    `riftsClosed`    |
+| Colosseum Glory                 |  `colosseumGlory`   |
+| Collections Logged              | `collectionsLogged` |
 
 ### Points
 
@@ -164,6 +165,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | The Corrupted Gauntlet            |      `corruptedGauntlet`       |
 | The Hueycoatl                     |          `hueycoatl`           |
 | The Leviathan                     |          `leviathan`           |
+| The Royal Titans                  |         `royalTitans`          |
 | The Whisperer                     |          `whisperer`           |
 | Theatre Of Blood                  |        `theatreOfBlood`        |
 | Theatre Of Blood: Hard Mode       |    `theatreOfBloodHardMode`    |
@@ -205,6 +207,8 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
     pvpArena: {},
     soulWarsZeal: {},
     riftsClosed: {},
+    colosseumGlory: {},
+    collectionsLogged: {},
     bosses: {}
   }
 }

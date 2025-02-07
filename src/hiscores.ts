@@ -45,7 +45,8 @@ import {
   FORMATTED_SOUL_WARS,
   FORMATTED_RIFTS_CLOSED,
   FORMATTED_DEADMAN_POINTS,
-  FORMATTED_COLOSSEUM_GLORY
+  FORMATTED_COLOSSEUM_GLORY,
+  FORMATTED_COLLECTIONS_LOGGED
 } from './utils';
 
 /**
@@ -164,6 +165,7 @@ export function parseJsonStats(json: HiscoresResponse): Stats {
   const soulWarsZeal = getActivity(FORMATTED_SOUL_WARS);
   const riftsClosed = getActivity(FORMATTED_RIFTS_CLOSED);
   const colosseumGlory = getActivity(FORMATTED_COLOSSEUM_GLORY);
+  const collectionsLogged = getActivity(FORMATTED_COLLECTIONS_LOGGED);
 
   const stats: Stats = {
     skills,
@@ -175,6 +177,7 @@ export function parseJsonStats(json: HiscoresResponse): Stats {
     soulWarsZeal,
     riftsClosed,
     colosseumGlory,
+    collectionsLogged,
     clues,
     bosses
   };
@@ -224,8 +227,8 @@ export function parseStats(csv: string): Stats {
   const [leaguePoints, deadmanPoints] = activityObjects.splice(0, 2);
   const bhObjects = activityObjects.splice(0, BH_MODES.length);
   const clueObjects = activityObjects.splice(0, CLUES.length);
-  const [lastManStanding, pvpArena, soulWarsZeal, riftsClosed, colosseumGlory] =
-    activityObjects.splice(0, 5);
+  const [lastManStanding, pvpArena, soulWarsZeal, riftsClosed, colosseumGlory, collectionsLogged] =
+    activityObjects.splice(0, 6);
   const bossObjects = activityObjects.splice(0, BOSSES.length);
 
   const skills: Skills = skillObjects.reduce<Skills>((prev, curr, index) => {
@@ -262,6 +265,7 @@ export function parseStats(csv: string): Stats {
     soulWarsZeal,
     riftsClosed,
     colosseumGlory,
+    collectionsLogged,
     clues,
     bosses
   };
