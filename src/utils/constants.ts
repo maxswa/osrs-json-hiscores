@@ -123,6 +123,7 @@ export const BOSSES: Boss[] = [
   'corruptedGauntlet',
   'hueycoatl',
   'leviathan',
+  'royalTitans',
   'whisperer',
   'theatreOfBlood',
   'theatreOfBloodHardMode',
@@ -158,6 +159,7 @@ export const ACTIVITIES: ActivityName[] = [
   'soulWarsZeal',
   'riftsClosed',
   'colosseumGlory',
+  'collectionsLogged',
   ...BOSSES
 ];
 
