@@ -86,11 +86,12 @@ export async function getOfficialStats(
  */
 export async function getRSNFormat(
   rsn: string,
-  config?: AxiosRequestConfig
+  config?: AxiosRequestConfig,
+  mode: Gamemode = 'main'
 ): Promise<string> {
   validateRSN(rsn);
 
-  const url = getPlayerTableURL('main', rsn);
+  const url = getPlayerTableURL(mode, rsn);
   try {
     const response = await httpGet<string | Buffer | BinaryData | undefined>(
       url,
@@ -103,10 +104,10 @@ export async function getRSNFormat(
     if (anchor) {
       return rsnFromElement(anchor);
     }
-    throw new PlayerNotFoundError();
   } catch {
     throw new HiScoresError();
   }
+  throw new PlayerNotFoundError();
 }
 
 /**
