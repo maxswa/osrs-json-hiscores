@@ -103,6 +103,7 @@ test('Parse CSV to json', () => {
   37,225
   25,1110
   7827,43249
+  1114,1155
   382,2780
   944,3000
   561,398429
@@ -152,6 +153,7 @@ test('Parse CSV to json', () => {
   2870,6
   891,9102
   2871,7
+  5606,149
   2872,8
   6984,138
   23,923141
@@ -208,6 +210,7 @@ test('Parse CSV to json', () => {
     soulWarsZeal: { rank: 37, score: 225 },
     riftsClosed: { rank: 25, score: 1110 },
     colosseumGlory: { rank: 7827, score: 43249 },
+    collectionsLogged: { rank: 1114, score: 1155 },
     clues: {
       all: { rank: 32, score: 12148 },
       beginner: { rank: 3105, score: 76 },
@@ -267,6 +270,7 @@ test('Parse CSV to json', () => {
       corruptedGauntlet: { rank: 2870, score: 6 },
       hueycoatl: { rank: 891, score: 9102 },
       leviathan: { rank: 2871, score: 7 },
+      royalTitans: { rank: 5606, score: 149 },
       whisperer: { rank: 2872, score: 8 },
       theatreOfBlood: { rank: 6984, score: 138 },
       theatreOfBloodHardMode: { rank: 23, score: 923141 },
