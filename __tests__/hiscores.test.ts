@@ -15,7 +15,10 @@ import {
   InvalidFormatError,
   BH_MODES,
   parseJsonStats,
-  HiscoresResponse
+  HiscoresResponse,
+  InvalidRSNError,
+  PlayerNotFoundError,
+  HiScoresError
 } from '../src/index';
 
 const B0ATY_NAME = 'B0ATY';
@@ -24,6 +27,8 @@ const LYNX_TITAN_SPACE_NAME = 'lYnX tiTaN';
 const LYNX_TITAN_UNDERSCORE_NAME = 'lYnX_tiTaN';
 const LYNX_TITAN_HYPHEN_NAME = 'lYnX-tiTaN';
 const LYNX_TITAN_FORMATTED_NAME = 'Lynx Titan';
+const NON_EXISTENT_NAME = 'nonExistent';
+const ERROR_NAME = 'errorName';
 
 const attackTopPage = readFileSync(`${__dirname}/attackTopPage.html`, 'utf8');
 const b0atyNamePage = readFileSync(`${__dirname}/b0atyNamePage.html`, 'utf8');
@@ -56,6 +61,12 @@ jest.spyOn(axios, 'get').mockImplementation((url) => {
   }
   if (getStatsURL('main', LYNX_TITAN_FORMATTED_NAME, true) === url) {
     return Promise.resolve({ status: 200, data: lynxTitanStats });
+  }
+  if (getPlayerTableURL('main', NON_EXISTENT_NAME) === url) {
+    return Promise.resolve({ data: '<html></html>' });
+  }
+  if (getPlayerTableURL('main', ERROR_NAME)) {
+    return Promise.reject();
   }
   throw new Error(`No mock response for URL: ${url}`);
 });
@@ -322,7 +333,15 @@ describe('Get name format', () => {
     expect(data).toBe(B0ATY_FORMATTED_NAME);
   });
   it('throws an error for a name with invalid characters', async () => {
-    await expect(getRSNFormat('b&aty')).rejects.toBeTruthy();
+    await expect(getRSNFormat('b&aty')).rejects.toThrow(InvalidRSNError);
+  });
+  it('throws an error for a non-existent player', async () => {
+    await expect(getRSNFormat(NON_EXISTENT_NAME)).rejects.toThrow(
+      PlayerNotFoundError
+    );
+  });
+  it('throws an error for a hiscores issue', async () => {
+    await expect(getRSNFormat(ERROR_NAME)).rejects.toThrow(HiScoresError);
   });
 });
 
@@ -509,7 +528,7 @@ test('Get attack top page', async () => {
 
 test('Get non-existent player', async () => {
   getStats('fishy').catch((err) => {
-    if (err.response) {
+    if (err?.response) {
       expect(err.response.status).toBe(404);
     }
   });
