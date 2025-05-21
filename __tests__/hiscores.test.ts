@@ -178,6 +178,7 @@ test('Parse CSV to json', () => {
   1940,272
   8623,1340
   605,1694
+  15233,245
   -1,-1
   3867,4583`;
 
@@ -295,6 +296,7 @@ test('Parse CSV to json', () => {
       vetion: { rank: 1940, score: 272 },
       vorkath: { rank: 8623, score: 1340 },
       wintertodt: { rank: 605, score: 1694 },
+      yama: { rank: 15233, score: 245 },
       zalcano: { rank: -1, score: -1 },
       zulrah: { rank: 3867, score: 4583 }
     }

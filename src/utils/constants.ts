@@ -137,6 +137,7 @@ export const BOSSES: Boss[] = [
   'vetion',
   'vorkath',
   'wintertodt',
+  'yama',
   'zalcano',
   'zulrah'
 ];
@@ -231,6 +232,7 @@ export const FORMATTED_BOSS_NAMES: FormattedBossNames = {
   vetion: "Vet'ion",
   vorkath: 'Vorkath',
   wintertodt: 'Wintertodt',
+  yama: 'Yama',
   zalcano: 'Zalcano',
   zulrah: 'Zulrah'
 };
