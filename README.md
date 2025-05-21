@@ -179,6 +179,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | Vetion                            |            `vetion`            |
 | Vorkath                           |           `vorkath`            |
 | Wintertodt                        |          `wintertodt`          |
+| Yama                              |             `yama`             |
 | Zalcano                           |           `zalcano`            |
 | Zulrah                            |            `zulrah`            |
 

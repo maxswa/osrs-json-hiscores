@@ -130,6 +130,7 @@ export type Boss =
   | 'vetion'
   | 'vorkath'
   | 'wintertodt'
+  | 'yama'
   | 'zalcano'
   | 'zulrah';
 
