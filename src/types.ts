@@ -88,6 +88,7 @@ export type Boss =
   | 'dagannothRex'
   | 'dagannothSupreme'
   | 'derangedArchaeologist'
+  | 'doomOfMokhaiotl'
   | 'dukeSucellus'
   | 'generalGraardor'
   | 'giantMole'

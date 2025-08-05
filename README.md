@@ -137,6 +137,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | Dagannoth Rex                     |         `dagannothRex`         |
 | Dagannoth Supreme                 |       `dagannothSupreme`       |
 | Deranged Archaeologist            |    `derangedArchaeologist`     |
+| Doom of Mokhaiotl                 |       `doomOfMokhaiotl`        |
 | Duke Sucellus                     |         `dukeSucellus`         |
 | General Graardor                  |       `generalGraardor`        |
 | Giant Mole                        |          `giantMole`           |

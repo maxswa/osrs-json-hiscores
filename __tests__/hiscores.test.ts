@@ -136,6 +136,7 @@ test('Parse CSV to json', () => {
   4342,1655
   966,2951
   10151,1
+  100,735
   1289,2477
   1288,2407
   377,4669
@@ -254,6 +255,7 @@ test('Parse CSV to json', () => {
       dagannothRex: { rank: 4342, score: 1655 },
       dagannothSupreme: { rank: 966, score: 2951 },
       derangedArchaeologist: { rank: 10151, score: 1 },
+      doomOfMokhaiotl: { rank: 100, score: 735 },
       dukeSucellus: { rank: 1289, score: 2477 },
       generalGraardor: { rank: 1288, score: 2407 },
       giantMole: { rank: 377, score: 4669 },
