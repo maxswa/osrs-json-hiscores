@@ -1,12 +1,3 @@
-import {
-  BHType,
-  Boss,
-  ClueType,
-  Gamemode,
-  SkillName,
-  ActivityName
-} from '../types';
-
 export const BASE_URL = 'https://secure.runescape.com/m=hiscore_oldschool';
 export const STATS_URL = 'index_lite.ws?player=';
 export const JSON_STATS_URL = 'index_lite.json?player=';
@@ -28,7 +19,7 @@ export const GAMEMODE_URL: GamemodeUrl = {
   oneDefence: `${BASE_URL}_skiller_defence/`,
   freshStart: `${BASE_URL}_fresh_start/`
 };
-export const SKILLS: SkillName[] = [
+export const SKILLS = [
   'overall',
   'attack',
   'defence',
@@ -52,9 +43,11 @@ export const SKILLS: SkillName[] = [
   'farming',
   'runecraft',
   'hunter',
-  'construction'
-];
-export const CLUES: ClueType[] = [
+  'construction',
+  'sailing'
+] as const;
+export type SkillName = (typeof SKILLS)[number];
+export const CLUES = [
   'all',
   'beginner',
   'easy',
@@ -62,18 +55,24 @@ export const CLUES: ClueType[] = [
   'hard',
   'elite',
   'master'
-];
-export const BH_MODES: BHType[] = ['hunterV2', 'rogueV2', 'hunter', 'rogue'];
-export const GAMEMODES: Gamemode[] = [
+] as const;
+export type ClueType = (typeof CLUES)[number];
+export const BH_MODES = ['hunterV2', 'rogueV2', 'hunter', 'rogue'] as const;
+export type BHType = (typeof BH_MODES)[number];
+export const GAMEMODES = [
   'main',
   'ironman',
   'hardcore',
   'ultimate',
   'deadman',
   'seasonal',
-  'tournament'
-];
-export const BOSSES: Boss[] = [
+  'tournament',
+  'skiller',
+  'oneDefence',
+  'freshStart'
+] as const;
+export type Gamemode = (typeof GAMEMODES)[number];
+export const BOSSES = [
   'abyssalSire',
   'alchemicalHydra',
   'amoxliatl',
@@ -116,6 +115,7 @@ export const BOSSES: Boss[] = [
   'sarachnis',
   'scorpia',
   'scurrius',
+  'shellbaneGryphon',
   'skotizo',
   'solHeredit',
   'spindel',
@@ -141,8 +141,9 @@ export const BOSSES: Boss[] = [
   'yama',
   'zalcano',
   'zulrah'
-];
-export const ACTIVITIES: ActivityName[] = [
+] as const;
+export type Boss = (typeof BOSSES)[number];
+export const ACTIVITIES = [
   'leaguePoints',
   'deadmanPoints',
   'hunterBHV2',
@@ -163,7 +164,8 @@ export const ACTIVITIES: ActivityName[] = [
   'colosseumGlory',
   'collectionsLogged',
   ...BOSSES
-];
+] as const;
+export type ActivityName = (typeof ACTIVITIES)[number];
 
 export type FormattedBossNames = {
   [key in Boss]: string;
@@ -212,6 +214,7 @@ export const FORMATTED_BOSS_NAMES: FormattedBossNames = {
   sarachnis: 'Sarachnis',
   scorpia: 'Scorpia',
   scurrius: 'Scurrius',
+  shellbaneGryphon: 'Shellbane Gryphon',
   skotizo: 'Skotizo',
   solHeredit: 'Sol Heredit',
   spindel: 'Spindel',
@@ -267,7 +270,8 @@ export const FORMATTED_SKILL_NAMES: FormattedSkillNames = {
   farming: 'Farming',
   runecraft: 'Runecraft',
   hunter: 'Hunter',
-  construction: 'Construction'
+  construction: 'Construction',
+  sailing: 'Sailing'
 };
 
 export type FormattedClueNames = {

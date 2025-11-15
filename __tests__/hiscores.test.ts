@@ -96,6 +96,7 @@ test('Parse CSV to json', () => {
   169,99,43127930
   810,99,37688883
   92,99,32005622
+  234,99,45645668
   23423,478
   89554,301
   89914,35
@@ -157,6 +158,7 @@ test('Parse CSV to json', () => {
   201,1101
   82,3404
   555,7079
+  789,1049
   5085,61
   8731,1423
   678,903
@@ -208,7 +210,8 @@ test('Parse CSV to json', () => {
       farming: { rank: 821, level: 99, xp: 62123353 },
       runecraft: { rank: 169, level: 99, xp: 43127930 },
       hunter: { rank: 810, level: 99, xp: 37688883 },
-      construction: { rank: 92, level: 99, xp: 32005622 }
+      construction: { rank: 92, level: 99, xp: 32005622 },
+      sailing: { rank: 234, level: 99, xp: 45645668 }
     },
     leaguePoints: { rank: 23423, score: 478 },
     deadmanPoints: { rank: 89554, score: 301 },
@@ -276,6 +279,7 @@ test('Parse CSV to json', () => {
       sarachnis: { rank: 201, score: 1101 },
       scorpia: { rank: 82, score: 3404 },
       scurrius: { rank: 555, score: 7079 },
+      shellbaneGryphon: { rank: 789, score: 1049 },
       skotizo: { rank: 5085, score: 61 },
       solHeredit: { rank: 8731, score: 1423 },
       spindel: { rank: 678, score: 903 },
@@ -567,7 +571,8 @@ test('Get stats by gamemode', async () => {
     farming: { rank: expect.any(Number), level: 99, xp: 200000000 },
     runecraft: { rank: expect.any(Number), level: 99, xp: 200000000 },
     hunter: { rank: expect.any(Number), level: 99, xp: 200000000 },
-    construction: { rank: expect.any(Number), level: 99, xp: 200000000 }
+    construction: { rank: expect.any(Number), level: 99, xp: 200000000 },
+    sailing: { rank: expect.any(Number), level: 99, xp: 200000000 }
   });
 
   const bossKeys = Object.keys(bosses);

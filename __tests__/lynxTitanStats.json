@@ -167,6 +167,13 @@
       "rank": 4,
       "level": 99,
       "xp": 200000000
+    },
+    {
+      "id": 24,
+      "name": "Sailing",
+      "rank": 4,
+      "level": 99,
+      "xp": 200000000
     }
   ],
   "activities": [
@@ -532,144 +539,150 @@
     },
     {
       "id": 60,
-      "name": "Skotizo",
+      "name": "Shellbane Gryphon",
       "rank": -1,
       "score": -1
     },
     {
       "id": 61,
-      "name": "Sol Heredit",
+      "name": "Skotizo",
       "rank": -1,
       "score": -1
     },
     {
       "id": 62,
-      "name": "Spindel",
+      "name": "Sol Heredit",
       "rank": -1,
       "score": -1
     },
     {
       "id": 63,
-      "name": "Tempoross",
+      "name": "Spindel",
       "rank": -1,
       "score": -1
     },
     {
       "id": 64,
-      "name": "The Gauntlet",
+      "name": "Tempoross",
       "rank": -1,
       "score": -1
     },
     {
       "id": 65,
-      "name": "The Corrupted Gauntlet",
+      "name": "The Gauntlet",
       "rank": -1,
       "score": -1
     },
     {
       "id": 66,
-      "name": "The Hueycoatl",
+      "name": "The Corrupted Gauntlet",
       "rank": -1,
       "score": -1
     },
     {
       "id": 67,
-      "name": "The Leviathan",
+      "name": "The Hueycoatl",
       "rank": -1,
       "score": -1
     },
     {
       "id": 68,
-      "name": "The Royal Titans",
+      "name": "The Leviathan",
       "rank": -1,
       "score": -1
     },
     {
       "id": 69,
-      "name": "The Whisperer",
+      "name": "The Royal Titans",
       "rank": -1,
       "score": -1
     },
     {
       "id": 70,
-      "name": "Theatre of Blood",
+      "name": "The Whisperer",
       "rank": -1,
       "score": -1
     },
     {
       "id": 71,
-      "name": "Theatre of Blood: Hard Mode",
+      "name": "Theatre of Blood",
       "rank": -1,
       "score": -1
     },
     {
       "id": 72,
-      "name": "Thermonuclear Smoke Devil",
+      "name": "Theatre of Blood: Hard Mode",
       "rank": -1,
       "score": -1
     },
     {
       "id": 73,
-      "name": "Tombs of Amascut",
+      "name": "Thermonuclear Smoke Devil",
       "rank": -1,
       "score": -1
     },
     {
       "id": 74,
-      "name": "Tombs of Amascut: Expert Mode",
+      "name": "Tombs of Amascut",
       "rank": -1,
       "score": -1
     },
     {
       "id": 75,
-      "name": "TzKal-Zuk",
+      "name": "Tombs of Amascut: Expert Mode",
       "rank": -1,
       "score": -1
     },
     {
       "id": 76,
+      "name": "TzKal-Zuk",
+      "rank": -1,
+      "score": -1
+    },
+    {
+      "id": 77,
       "name": "TzTok-Jad",
       "rank": 317,
       "score": 186
     },
     {
-      "id": 77,
+      "id": 78,
       "name": "Vardorvis",
       "rank": -1,
       "score": -1
     },
     {
-      "id": 78,
+      "id": 79,
       "name": "Venenatis",
       "rank": -1,
       "score": -1
     },
     {
-      "id": 79,
+      "id": 80,
       "name": "Vet'ion",
       "rank": -1,
       "score": -1
     },
     {
-      "id": 80,
+      "id": 81,
       "name": "Vorkath",
       "rank": -1,
       "score": -1
     },
     {
-      "id": 81,
+      "id": 82,
       "name": "Wintertodt",
       "rank": -1,
       "score": -1
     },
     {
-      "id": 82,
+      "id": 83,
       "name": "Zalcano",
       "rank": -1,
       "score": -1
     },
     {
-      "id": 83,
+      "id": 84,
       "name": "Zulrah",
       "rank": -1,
       "score": -1

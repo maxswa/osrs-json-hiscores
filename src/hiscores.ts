@@ -8,10 +8,7 @@ import {
   Skills,
   BH,
   Clues,
-  Gamemode,
-  SkillName,
   PlayerSkillRow,
-  ActivityName,
   PlayerActivityRow,
   Bosses,
   GetStatsOptions,
@@ -46,7 +43,10 @@ import {
   FORMATTED_RIFTS_CLOSED,
   FORMATTED_DEADMAN_POINTS,
   FORMATTED_COLOSSEUM_GLORY,
-  FORMATTED_COLLECTIONS_LOGGED
+  FORMATTED_COLLECTIONS_LOGGED,
+  Gamemode,
+  SkillName,
+  ActivityName
 } from './utils';
 
 /**
@@ -128,7 +128,7 @@ export function parseJsonStats(json: HiscoresResponse): Stats {
     };
   };
   const reduceActivity = <Key extends string, Reduced = Record<Key, Activity>>(
-    keys: Key[],
+    keys: readonly Key[],
     formattedNames: Record<Key, string>
   ): Reduced =>
     keys.reduce<Reduced>(

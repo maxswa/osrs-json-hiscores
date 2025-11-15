@@ -1,7 +1,9 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import * as ua from 'useragent-generator';
-import { Gamemode, SkillName, ActivityName } from '../types';
 import {
+  Gamemode,
+  SkillName,
+  ActivityName,
   GAMEMODE_URL,
   STATS_URL,
   SCORES_URL,
