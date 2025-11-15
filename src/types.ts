@@ -1,16 +1,5 @@
 import { AxiosRequestConfig } from 'axios';
-
-export type Gamemode =
-  | 'main'
-  | 'ironman'
-  | 'ultimate'
-  | 'hardcore'
-  | 'deadman'
-  | 'seasonal'
-  | 'tournament'
-  | 'skiller'
-  | 'oneDefence'
-  | 'freshStart';
+import { BHType, Boss, ClueType, Gamemode, SkillName } from './utils';
 
 export interface Skill {
   rank: number;
@@ -23,141 +12,13 @@ export interface Activity {
   score: number;
 }
 
-export type SkillName =
-  | 'overall'
-  | 'attack'
-  | 'defence'
-  | 'strength'
-  | 'hitpoints'
-  | 'ranged'
-  | 'prayer'
-  | 'magic'
-  | 'cooking'
-  | 'woodcutting'
-  | 'fletching'
-  | 'fishing'
-  | 'firemaking'
-  | 'crafting'
-  | 'smithing'
-  | 'mining'
-  | 'herblore'
-  | 'agility'
-  | 'thieving'
-  | 'slayer'
-  | 'farming'
-  | 'runecraft'
-  | 'hunter'
-  | 'construction';
-
 export type Skills = { [Name in SkillName]: Skill };
-
-export type ClueType =
-  | 'all'
-  | 'beginner'
-  | 'easy'
-  | 'medium'
-  | 'hard'
-  | 'elite'
-  | 'master';
 
 export type Clues = { [Type in ClueType]: Activity };
 
-export type BHType = 'rogue' | 'hunter' | 'rogueV2' | 'hunterV2';
-
 export type BH = { [Type in BHType]: Activity };
 
-export type Boss =
-  | 'abyssalSire'
-  | 'alchemicalHydra'
-  | 'amoxliatl'
-  | 'araxxor'
-  | 'artio'
-  | 'barrows'
-  | 'bryophyta'
-  | 'callisto'
-  | 'calvarion'
-  | 'cerberus'
-  | 'chambersOfXeric'
-  | 'chambersOfXericChallengeMode'
-  | 'chaosElemental'
-  | 'chaosFanatic'
-  | 'commanderZilyana'
-  | 'corporealBeast'
-  | 'crazyArchaeologist'
-  | 'dagannothPrime'
-  | 'dagannothRex'
-  | 'dagannothSupreme'
-  | 'derangedArchaeologist'
-  | 'doomOfMokhaiotl'
-  | 'dukeSucellus'
-  | 'generalGraardor'
-  | 'giantMole'
-  | 'grotesqueGuardians'
-  | 'hespori'
-  | 'kalphiteQueen'
-  | 'kingBlackDragon'
-  | 'kraken'
-  | 'kreeArra'
-  | 'krilTsutsaroth'
-  | 'lunarChests'
-  | 'mimic'
-  | 'nex'
-  | 'nightmare'
-  | 'phosanisNightmare'
-  | 'obor'
-  | 'phantomMuspah'
-  | 'sarachnis'
-  | 'scorpia'
-  | 'scurrius'
-  | 'skotizo'
-  | 'solHeredit'
-  | 'spindel'
-  | 'tempoross'
-  | 'gauntlet'
-  | 'corruptedGauntlet'
-  | 'hueycoatl'
-  | 'leviathan'
-  | 'royalTitans'
-  | 'whisperer'
-  | 'theatreOfBlood'
-  | 'theatreOfBloodHardMode'
-  | 'thermonuclearSmokeDevil'
-  | 'tombsOfAmascut'
-  | 'tombsOfAmascutExpertMode'
-  | 'tzKalZuk'
-  | 'tzTokJad'
-  | 'vardorvis'
-  | 'venenatis'
-  | 'vetion'
-  | 'vorkath'
-  | 'wintertodt'
-  | 'yama'
-  | 'zalcano'
-  | 'zulrah';
-
 export type Bosses = { [Type in Boss]: Activity };
-
-export type ActivityName =
-  | 'leaguePoints'
-  | 'deadmanPoints'
-  | 'hunterBHV2'
-  | 'rogueBHV2'
-  | 'hunterBH'
-  | 'rogueBH'
-  | 'lastManStanding'
-  | 'pvpArena'
-  | 'soulWarsZeal'
-  | 'riftsClosed'
-  | 'allClues'
-  | 'beginnerClues'
-  | 'easyClues'
-  | 'mediumClues'
-  | 'hardClues'
-  | 'eliteClues'
-  | 'masterClues'
-  | 'colosseumGlory'
-  | 'collectionsLogged'
-  | Boss;
 
 export interface Stats {
   skills: Skills;
@@ -181,7 +42,8 @@ export interface Stats {
 }
 export type Modes = { [M in Gamemode]?: Stats };
 
-export interface Player extends Modes {
+export interface Player
+  extends Pick<Modes, 'main' | 'ironman' | 'hardcore' | 'ultimate'> {
   name: string;
   mode: Gamemode;
   dead: boolean;
