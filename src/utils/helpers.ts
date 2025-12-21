@@ -92,7 +92,7 @@ export const numberFromElement = (el: Element | null) => {
  * @param el OSRS hiscores table cell element.
  * @returns RSN parsed from cell text.
  */
-export const rsnFromElement = (el: Element | null) => {
+export const rsnFromElement = (el: HTMLAnchorElement | null) => {
   const { innerHTML } = el ?? {};
   return innerHTML?.replace(/\uFFFD/g, ' ') ?? '';
 };

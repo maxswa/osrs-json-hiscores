@@ -46,7 +46,9 @@ import {
   FORMATTED_COLLECTIONS_LOGGED,
   Gamemode,
   SkillName,
-  ActivityName
+  ActivityName,
+  WHITESPACE_REGEX,
+  WHITESPACE_REGEX_STRING
 } from './utils';
 
 /**
@@ -98,11 +100,19 @@ export async function getRSNFormat(
       config
     );
     const dom = new JSDOM(response.data);
-    const anchor = dom.window.document.querySelector(
-      '.personal-hiscores__row.personal-hiscores__row--type-highlight a'
+    const row = dom.window.document.querySelector<HTMLTableRowElement>(
+      'tr.personal-hiscores__row.personal-hiscores__row--type-highlight'
     );
-    if (anchor) {
-      return rsnFromElement(anchor);
+    if (row) {
+      const { innerHTML } = row ?? {};
+      return (
+        innerHTML?.match(
+          new RegExp(
+            rsn.replace(WHITESPACE_REGEX, WHITESPACE_REGEX_STRING),
+            'gi'
+          )
+        )?.[0] ?? rsn
+      );
     }
   } catch {
     throw new HiScoresError();
@@ -410,23 +420,22 @@ export async function getSkillPage(
     config
   );
   const dom = new JSDOM(response.data);
-  const playersHTML = dom.window.document.querySelectorAll(
-    '.personal-hiscores__row'
+  const playersHTML = dom.window.document.querySelectorAll<HTMLTableRowElement>(
+    'tr.personal-hiscores__row'
   );
 
   const players: PlayerSkillRow[] = [];
   playersHTML.forEach((row) => {
-    const rankEl = row.querySelector('td');
-    const nameEl = row.querySelector('td a');
-    const levelEl = row.querySelector('td.left + td');
-    const xpEl = row.querySelector('td.left + td + td');
-    const isDead = !!row.querySelector('td img');
+    // Omit first cell (pre-sailing link)
+    const [, rankCell, nameCell, levelCell, xpCell] = Array.from(row.cells);
+    const isDead = !!nameCell.querySelector('img');
+    const nameElement = nameCell.querySelector('a');
 
     players.push({
-      name: rsnFromElement(nameEl),
-      rank: numberFromElement(rankEl),
-      level: numberFromElement(levelEl),
-      xp: numberFromElement(xpEl),
+      name: rsnFromElement(nameElement),
+      rank: numberFromElement(rankCell),
+      level: numberFromElement(levelCell),
+      xp: numberFromElement(xpCell),
       dead: isDead
     });
   });
@@ -463,21 +472,20 @@ export async function getActivityPage(
     config
   );
   const dom = new JSDOM(response.data);
-  const playersHTML = dom.window.document.querySelectorAll(
-    '.personal-hiscores__row'
+  const playersHTML = dom.window.document.querySelectorAll<HTMLTableRowElement>(
+    'tr.personal-hiscores__row'
   );
 
   const players: PlayerActivityRow[] = [];
   playersHTML.forEach((row) => {
-    const rankEl = row.querySelector('td');
-    const nameEl = row.querySelector('td a');
-    const scoreEl = row.querySelector('td.left + td');
-    const isDead = !!row.querySelector('td img');
+    const [rankCell, nameCell, scoreCell] = Array.from(row.cells);
+    const isDead = !!nameCell.querySelector('img');
+    const nameElement = nameCell.querySelector('a');
 
     players.push({
-      name: rsnFromElement(nameEl),
-      rank: numberFromElement(rankEl),
-      score: numberFromElement(scoreEl),
+      name: rsnFromElement(nameElement),
+      rank: numberFromElement(rankCell),
+      score: numberFromElement(scoreCell),
       dead: isDead
     });
   });
