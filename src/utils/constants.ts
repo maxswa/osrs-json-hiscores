@@ -2,6 +2,8 @@ export const BASE_URL = 'https://secure.runescape.com/m=hiscore_oldschool';
 export const STATS_URL = 'index_lite.ws?player=';
 export const JSON_STATS_URL = 'index_lite.json?player=';
 export const SCORES_URL = 'overall.ws?';
+export const WHITESPACE_REGEX_STRING = '( |-|_)';
+export const WHITESPACE_REGEX = new RegExp(WHITESPACE_REGEX_STRING, 'g');
 
 export type GamemodeUrl = {
   [key in Gamemode]: string;
