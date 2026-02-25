@@ -122,6 +122,7 @@ test('Parse CSV to json', () => {
   37,111
   704,892
   1981,1452
+  -1,-1
   4981,23
   888,1046
   444,792
@@ -243,6 +244,7 @@ test('Parse CSV to json', () => {
       araxxor: { rank: 37, score: 111 },
       artio: { rank: 704, score: 892 },
       barrows: { rank: 1981, score: 1452 },
+      brutus: { rank: -1, score: -1 },
       bryophyta: { rank: 4981, score: 23 },
       callisto: { rank: 888, score: 1046 },
       calvarion: { rank: 444, score: 792 },
