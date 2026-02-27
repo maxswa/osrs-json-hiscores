@@ -122,6 +122,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | Araxxor                           |           `araxxor`            |
 | Artio                             |            `artio`             |
 | Barrows Chests                    |           `barrows`            |
+| Brutus                            |            `brutus`            |
 | Bryophyta                         |          `bryophyta`           |
 | Callisto                          |           `callisto`           |
 | Calvar'ion                        |          `calvarion`           |
