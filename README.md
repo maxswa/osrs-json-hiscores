@@ -151,6 +151,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | K'ril Tsutsaroth                  |        `krilTsutsaroth`        |
 | Lunar Chests                      |         `lunarChests`          |
 | Mimic                             |            `mimic`             |
+| Maggot King                       |          `maggotKing`          |
 | Nex                               |             `nex`              |
 | Nightmare                         |          `nightmare`           |
 | Phosani's Nightmare               |      `phosanisNightmare`       |
