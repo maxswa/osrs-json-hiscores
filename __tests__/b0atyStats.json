@@ -497,21 +497,21 @@
     },
     {
       "id": 53,
-      "name": "Mimic",
-      "rank": 540,
-      "score": 53
-    },
-    {
-      "id": 54,
       "name": "Mad Angel",
       "rank": 1982,
       "score": 412
     },
     {
-      "id": 55,
+      "id": 54,
       "name": "Maggot King",
       "rank": 1286,
       "score": 600
+    },
+    {
+      "id": 55,
+      "name": "Mimic",
+      "rank": 540,
+      "score": 53
     },
     {
       "id": 56,

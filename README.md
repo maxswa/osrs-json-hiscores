@@ -150,9 +150,9 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | Kreearra                          |           `kreeArra`           |
 | K'ril Tsutsaroth                  |        `krilTsutsaroth`        |
 | Lunar Chests                      |         `lunarChests`          |
-| Mimic                             |            `mimic`             |
 | Mad Angel                         |           `madAngel`           |
 | Maggot King                       |          `maggotKing`          |
+| Mimic                             |            `mimic`             |
 | Nex                               |             `nex`              |
 | Nightmare                         |          `nightmare`           |
 | Phosani's Nightmare               |      `phosanisNightmare`       |
