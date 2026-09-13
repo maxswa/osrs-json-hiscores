@@ -9,20 +9,21 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # must include the engines floor from package.json
+        node-version:
+          - 20.19.0
+          - lts/*
     steps:
       - uses: actions/checkout@v3.3.0
-      - uses: borales/actions-yarn@v4.2.0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
-          cmd: install
-      - uses: borales/actions-yarn@v4.2.0
-        with:
-          cmd: lint
-      - uses: borales/actions-yarn@v4.2.0
-        with:
-          cmd: format
-      - uses: borales/actions-yarn@v4.2.0
-        with:
-          cmd: build
-      - uses: borales/actions-yarn@v4.2.0
-        with:
-          cmd: test
+          node-version: ${{ matrix.node-version }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec eslint "{src,__tests__}/**/*.ts"
+      - run: pnpm exec prettier --check "{src,__tests__}/**/*.ts"
+      - run: pnpm build
+      - run: pnpm test

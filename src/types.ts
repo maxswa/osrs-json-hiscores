@@ -1,5 +1,4 @@
-import { AxiosRequestConfig } from 'axios';
-import { BHType, Boss, ClueType, Gamemode, SkillName } from './utils';
+import { BHType, Boss, ClueType, Gamemode, SkillName } from './utils/index.js';
 
 export interface Skill {
   rank: number;
@@ -42,8 +41,10 @@ export interface Stats {
 }
 export type Modes = { [M in Gamemode]?: Stats };
 
-export interface Player
-  extends Pick<Modes, 'main' | 'ironman' | 'hardcore' | 'ultimate'> {
+export interface Player extends Pick<
+  Modes,
+  'main' | 'ironman' | 'hardcore' | 'ultimate'
+> {
   name: string;
   mode: Gamemode;
   dead: boolean;
@@ -75,11 +76,11 @@ export interface GetStatsOptions {
   /**
    * Map of configs for each requests that can take place in the `getStats` function.
    */
-  axiosConfigs?: Partial<Record<Gamemode, AxiosRequestConfig>> & {
+  requestConfigs?: Partial<Record<Gamemode, RequestInit>> & {
     /**
-     * The axios request config object to use for the RSN format request.
+     * The fetch request config object to use for the RSN format request.
      */
-    rsn?: AxiosRequestConfig;
+    rsn?: RequestInit;
   };
 }
 

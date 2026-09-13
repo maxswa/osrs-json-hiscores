@@ -1,9 +1,6 @@
 export const BASE_URL = 'https://secure.runescape.com/m=hiscore_oldschool';
-export const STATS_URL = 'index_lite.ws?player=';
 export const JSON_STATS_URL = 'index_lite.json?player=';
 export const SCORES_URL = 'overall.ws?';
-export const WHITESPACE_REGEX_STRING = '( |-|_)';
-export const WHITESPACE_REGEX = new RegExp(WHITESPACE_REGEX_STRING, 'g');
 
 export type GamemodeUrl = {
   [key in Gamemode]: string;
@@ -149,6 +146,7 @@ export const BOSSES = [
 ] as const;
 export type Boss = (typeof BOSSES)[number];
 export const ACTIVITIES = [
+  'gridPoints',
   'leaguePoints',
   'deadmanPoints',
   'hunterBHV2',
@@ -316,42 +314,19 @@ export const FORMATTED_RIFTS_CLOSED = 'Rifts closed';
 export const FORMATTED_COLOSSEUM_GLORY = 'Colosseum Glory';
 export const FORMATTED_COLLECTIONS_LOGGED = 'Collections Logged';
 
-export const INVALID_FORMAT_ERROR = 'Invalid hiscores format';
-export const PLAYER_NOT_FOUND_ERROR = 'Player not found';
-export const HISCORES_ERROR = 'HiScores not responding';
+const PLAYER_NOT_FOUND_ERROR = 'Player not found';
+const HISCORES_ERROR = 'HiScores not responding';
 
-export class InvalidFormatError extends Error {
-  __proto__ = Error;
-
-  constructor() {
-    super(INVALID_FORMAT_ERROR);
-    Object.setPrototypeOf(this, InvalidFormatError.prototype);
-  }
-}
-
-export class InvalidRSNError extends Error {
-  __proto__ = Error;
-
-  constructor(message: string) {
-    super(message);
-    Object.setPrototypeOf(this, InvalidRSNError.prototype);
-  }
-}
+export class InvalidRSNError extends Error {}
 
 export class PlayerNotFoundError extends Error {
-  __proto__ = Error;
-
   constructor() {
     super(PLAYER_NOT_FOUND_ERROR);
-    Object.setPrototypeOf(this, PlayerNotFoundError.prototype);
   }
 }
 
 export class HiScoresError extends Error {
-  __proto__ = Error;
-
   constructor() {
     super(HISCORES_ERROR);
-    Object.setPrototypeOf(this, HiScoresError.prototype);
   }
 }

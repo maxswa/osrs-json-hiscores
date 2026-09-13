@@ -1,19 +1,14 @@
-import axios, { AxiosRequestConfig } from 'axios';
-import { BinaryData, JSDOM } from 'jsdom';
+import { ELEMENT_NODE, ElementNode, Node, TEXT_NODE, parse } from 'ultrahtml';
 import {
   Player,
   Activity,
-  Skill,
   Stats,
   Skills,
-  BH,
-  Clues,
   PlayerSkillRow,
   PlayerActivityRow,
-  Bosses,
   GetStatsOptions,
   HiscoresResponse
-} from './types';
+} from './types.js';
 import {
   getStatsURL,
   SKILLS,
@@ -23,12 +18,8 @@ import {
   getSkillPageURL,
   GAMEMODES,
   ACTIVITIES,
-  numberFromElement,
-  rsnFromElement,
   getActivityPageURL,
-  httpGet,
   BOSSES,
-  InvalidFormatError,
   PlayerNotFoundError,
   HiScoresError,
   validateRSN,
@@ -47,33 +38,91 @@ import {
   Gamemode,
   SkillName,
   ActivityName,
-  WHITESPACE_REGEX,
-  WHITESPACE_REGEX_STRING
-} from './utils';
+  HttpError
+} from './utils/index.js';
+import { httpGet } from './utils/helpers.js';
+
+/** Direct children only, so a nested table cannot add cells. */
+const rowCells = (row: Node) =>
+  (row.type === ELEMENT_NODE ? row.children : []).filter(
+    (n): n is ElementNode =>
+      n.type === ELEMENT_NODE && (n.name === 'td' || n.name === 'th')
+  );
+
+const hasClass = (el: ElementNode, cls: string) =>
+  (el.attributes.class ?? '').split(/\s+/).includes(cls);
+
+const findAll = (
+  node: Node | undefined,
+  pred: (el: ElementNode) => boolean
+): ElementNode[] =>
+  ((node?.children ?? []) as Node[])
+    .filter((n): n is ElementNode => n.type === ELEMENT_NODE)
+    .flatMap((el) => [...(pred(el) ? [el] : []), ...findAll(el, pred)]);
+
+const find = (node: Node | undefined, pred: (el: ElementNode) => boolean) =>
+  findAll(node, pred)[0] ?? null;
+
+const byTag = (name: string) => (el: ElementNode) => el.name === name;
+
+const textFromNode = (node: Node | undefined): string =>
+  node?.type === TEXT_NODE
+    ? String(node.value)
+    : ((node?.children ?? []) as Node[]).map(textFromNode).join('');
+
+/**
+ * Extracts a number from an OSRS hiscores table cell element.
+ *
+ * @param el OSRS hiscores table cell element.
+ * @returns Number parsed from cell text.
+ */
+const numberFromElement = (el: Node | null) => {
+  const number = el ? textFromNode(el).replace(/[\n|,]/g, '') : '-1';
+  return parseInt(number, 10);
+};
+
+/**
+ * Extracts a RSN from an OSRS hiscores table cell element.
+ *
+ * @param el OSRS hiscores table cell element.
+ * @returns RSN parsed from cell text.
+ */
+const rsnFromElement = (el: Node | null) =>
+  el ? textFromNode(el).replace(/\uFFFD/g, ' ') : '';
+
+/** Jagex spells a name with spaces. Callers may pass -, _ or stray whitespace. */
+const normalizeName = (name: string) =>
+  name
+    .replace(/[ _-]+/g, ' ')
+    .trim()
+    .toLowerCase();
+
+const sameName = (a: string, b: string) =>
+  normalizeName(a) === normalizeName(b);
 
 /**
  * Gets a player's stats from the official OSRS JSON endpoint.
  *
  * @param rsn Username of the player.
  * @param mode Gamemode to fetch ranks for.
- * @param config Optional axios request config object.
+ * @param config Optional fetch request config object.
  * @returns Official JSON stats object.
  */
 export async function getOfficialStats(
   rsn: string,
   mode: Gamemode = 'main',
-  config?: AxiosRequestConfig
+  config?: RequestInit
 ): Promise<HiscoresResponse> {
   validateRSN(rsn);
 
-  const url = getStatsURL(mode, rsn, true);
+  const url = getStatsURL(mode, rsn);
   try {
-    const response = await httpGet<HiscoresResponse>(url, config);
-    return response.data;
+    const response = await httpGet(url, config);
+    return (await response.json()) as HiscoresResponse;
   } catch (err) {
-    if (!axios.isAxiosError(err)) throw err;
-
-    if (err.response?.status === 404) throw new PlayerNotFoundError();
+    if (err instanceof HttpError && err.status === 404) {
+      throw new PlayerNotFoundError();
+    }
 
     throw new HiScoresError();
   }
@@ -83,36 +132,32 @@ export async function getOfficialStats(
  * Screen scrapes the hiscores to get the formatted rsn of a player.
  *
  * @param rsn Username of the player.
- * @param config Optional axios request config object.
+ * @param config Optional fetch request config object.
  * @returns Formatted version of the rsn.
  */
 export async function getRSNFormat(
   rsn: string,
-  config?: AxiosRequestConfig,
-  mode: Gamemode = 'main'
+  config?: RequestInit
 ): Promise<string> {
   validateRSN(rsn);
 
-  const url = getPlayerTableURL(mode, rsn);
+  const url = getPlayerTableURL('main', rsn);
   try {
-    const response = await httpGet<string | Buffer | BinaryData | undefined>(
-      url,
-      config
-    );
-    const dom = new JSDOM(response.data);
-    const row = dom.window.document.querySelector<HTMLTableRowElement>(
-      'tr.personal-hiscores__row.personal-hiscores__row--type-highlight'
+    const response = await httpGet(url, config);
+    const root = parse(await response.text());
+    const row = find(
+      root,
+      (el) =>
+        el.name === 'tr' &&
+        hasClass(el, 'personal-hiscores__row--type-highlight')
     );
     if (row) {
-      const { innerHTML } = row ?? {};
-      return (
-        innerHTML?.match(
-          new RegExp(
-            rsn.replace(WHITESPACE_REGEX, WHITESPACE_REGEX_STRING),
-            'gi'
-          )
-        )?.[0] ?? rsn
+      const nameAnchor = find(
+        row,
+        (el) => el.name === 'a' && (el.attributes.href ?? '').includes('user1=')
       );
+      const name = rsnFromElement(nameAnchor);
+      return name && sameName(name, rsn) ? name : rsn;
     }
   } catch {
     throw new HiScoresError();
@@ -123,7 +168,7 @@ export async function getRSNFormat(
 /**
  * Parses official JSON object of raw stats and returns a stats object.
  *
- * @param csv Raw JSON from the official OSRS API.
+ * @param json Raw JSON from the official OSRS API.
  * @returns Parsed stats object.
  */
 export function parseJsonStats(json: HiscoresResponse): Stats {
@@ -197,100 +242,6 @@ export function parseJsonStats(json: HiscoresResponse): Stats {
 }
 
 /**
- * Parses CSV string of raw stats and returns a stats object.
- *
- * @param csv Raw CSV from the official OSRS API.
- * @returns Parsed stats object.
- */
-export function parseStats(csv: string): Stats {
-  const splitCSV = csv
-    .split('\n')
-    .filter((entry) => !!entry)
-    .map((stat) => stat.split(','));
-
-  if (splitCSV.length !== SKILLS.length + ACTIVITIES.length) {
-    throw new InvalidFormatError();
-  }
-
-  const skillObjects: Skill[] = splitCSV
-    .filter((stat) => stat.length === 3)
-    .map((stat) => {
-      const [rank, level, xp] = stat;
-      const skill: Skill = {
-        rank: parseInt(rank, 10),
-        level: parseInt(level, 10),
-        xp: parseInt(xp, 10)
-      };
-      return skill;
-    });
-
-  const activityObjects: Activity[] = splitCSV
-    .filter((stat) => stat.length === 2)
-    .map((stat) => {
-      const [rank, score] = stat;
-      const activity: Activity = {
-        rank: parseInt(rank, 10),
-        score: parseInt(score, 10)
-      };
-      return activity;
-    });
-
-  const [leaguePoints, deadmanPoints] = activityObjects.splice(0, 2);
-  const bhObjects = activityObjects.splice(0, BH_MODES.length);
-  const clueObjects = activityObjects.splice(0, CLUES.length);
-  const [
-    lastManStanding,
-    pvpArena,
-    soulWarsZeal,
-    riftsClosed,
-    colosseumGlory,
-    collectionsLogged
-  ] = activityObjects.splice(0, 6);
-  const bossObjects = activityObjects.splice(0, BOSSES.length);
-
-  const skills: Skills = skillObjects.reduce<Skills>((prev, curr, index) => {
-    const newSkills = { ...prev };
-    newSkills[SKILLS[index]] = curr;
-    return newSkills;
-  }, {} as Skills);
-
-  const bountyHunter: BH = bhObjects.reduce<BH>((prev, curr, index) => {
-    const newBH = { ...prev };
-    newBH[BH_MODES[index]] = curr;
-    return newBH;
-  }, {} as BH);
-
-  const clues: Clues = clueObjects.reduce<Clues>((prev, curr, index) => {
-    const newClues = { ...prev };
-    newClues[CLUES[index]] = curr;
-    return newClues;
-  }, {} as Clues);
-
-  const bosses: Bosses = bossObjects.reduce<Bosses>((prev, curr, index) => {
-    const newBosses = { ...prev };
-    newBosses[BOSSES[index]] = curr;
-    return newBosses;
-  }, {} as Bosses);
-
-  const stats: Stats = {
-    skills,
-    leaguePoints,
-    deadmanPoints,
-    bountyHunter,
-    lastManStanding,
-    pvpArena,
-    soulWarsZeal,
-    riftsClosed,
-    colosseumGlory,
-    collectionsLogged,
-    clues,
-    bosses
-  };
-
-  return stats;
-}
-
-/**
  * Fetches stats from the OSRS API and consolidates the info into a player object.
  *
  * **Note:** This function will make up to 5 separate network requests.
@@ -311,18 +262,24 @@ export async function getStats(
   ];
   const shouldGetFormattedRsn = options?.shouldGetFormattedRsn ?? true;
 
-  const main = await getOfficialStats(rsn, 'main', options?.axiosConfigs?.main);
+  const main = await getOfficialStats(
+    rsn,
+    'main',
+    options?.requestConfigs?.main
+  );
 
   const getModeStats = async (
     mode: Extract<Gamemode, 'ironman' | 'hardcore' | 'ultimate'>
   ): Promise<HiscoresResponse | undefined> =>
     otherGamemodes.includes(mode)
-      ? getOfficialStats(rsn, mode, options?.axiosConfigs?.[mode]).catch(
+      ? getOfficialStats(rsn, mode, options?.requestConfigs?.[mode]).catch(
           () => undefined
         )
       : undefined;
   const formattedName = shouldGetFormattedRsn
-    ? await getRSNFormat(rsn, options?.axiosConfigs?.rsn).catch(() => undefined)
+    ? await getRSNFormat(rsn, options?.requestConfigs?.rsn).catch(
+        () => undefined
+      )
     : undefined;
 
   const player: Player = {
@@ -382,13 +339,13 @@ export async function getStats(
  *
  * @param rsn Username of the player.
  * @param mode Gamemode to fetch ranks for.
- * @param config Optional axios request config object.
+ * @param config Optional fetch request config object.
  * @returns Stats object.
  */
 export async function getStatsByGamemode(
   rsn: string,
   mode: Gamemode = 'main',
-  config?: AxiosRequestConfig
+  config?: RequestInit
 ): Promise<Stats> {
   validateRSN(rsn);
   if (!GAMEMODES.includes(mode)) {
@@ -404,7 +361,7 @@ export async function getSkillPage(
   skill: SkillName,
   mode: Gamemode = 'main',
   page: number = 1,
-  config?: AxiosRequestConfig
+  config?: RequestInit
 ): Promise<PlayerSkillRow[]> {
   if (!GAMEMODES.includes(mode)) {
     throw Error('Invalid game mode');
@@ -415,21 +372,19 @@ export async function getSkillPage(
   }
   const url = getSkillPageURL(mode, skill, page);
 
-  const response = await httpGet<string | Buffer | BinaryData | undefined>(
-    url,
-    config
-  );
-  const dom = new JSDOM(response.data);
-  const playersHTML = dom.window.document.querySelectorAll<HTMLTableRowElement>(
-    'tr.personal-hiscores__row'
+  const response = await httpGet(url, config);
+  const root = parse(await response.text());
+  const rows = findAll(
+    root,
+    (el) => el.name === 'tr' && hasClass(el, 'personal-hiscores__row')
   );
 
   const players: PlayerSkillRow[] = [];
-  playersHTML.forEach((row) => {
+  rows.forEach((row) => {
     // Omit first cell (pre-sailing link)
-    const [, rankCell, nameCell, levelCell, xpCell] = Array.from(row.cells);
-    const isDead = !!nameCell.querySelector('img');
-    const nameElement = nameCell.querySelector('a');
+    const [, rankCell, nameCell, levelCell, xpCell] = rowCells(row);
+    const isDead = !!find(nameCell, byTag('img'));
+    const nameElement = find(nameCell, byTag('a'));
 
     players.push({
       name: rsnFromElement(nameElement),
@@ -449,14 +404,14 @@ export async function getSkillPage(
  * @param activity Name of the activity or boss to fetch hiscores for.
  * @param mode Gamemode to fetch ranks for.
  * @param page Page number.
- * @param config Optional axios request config object.
+ * @param config Optional fetch request config object.
  * @returns Array of `PlayerActivityRow` objects.
  */
 export async function getActivityPage(
   activity: ActivityName,
   mode: Gamemode = 'main',
   page: number = 1,
-  config?: AxiosRequestConfig
+  config?: RequestInit
 ): Promise<PlayerActivityRow[]> {
   if (!GAMEMODES.includes(mode)) {
     throw Error('Invalid game mode');
@@ -467,20 +422,18 @@ export async function getActivityPage(
   }
   const url = getActivityPageURL(mode, activity, page);
 
-  const response = await httpGet<string | Buffer | BinaryData | undefined>(
-    url,
-    config
-  );
-  const dom = new JSDOM(response.data);
-  const playersHTML = dom.window.document.querySelectorAll<HTMLTableRowElement>(
-    'tr.personal-hiscores__row'
+  const response = await httpGet(url, config);
+  const root = parse(await response.text());
+  const rows = findAll(
+    root,
+    (el) => el.name === 'tr' && hasClass(el, 'personal-hiscores__row')
   );
 
   const players: PlayerActivityRow[] = [];
-  playersHTML.forEach((row) => {
-    const [rankCell, nameCell, scoreCell] = Array.from(row.cells);
-    const isDead = !!nameCell.querySelector('img');
-    const nameElement = nameCell.querySelector('a');
+  rows.forEach((row) => {
+    const [rankCell, nameCell, scoreCell] = rowCells(row);
+    const isDead = !!find(nameCell, byTag('img'));
+    const nameElement = find(nameCell, byTag('a'));
 
     players.push({
       name: rsnFromElement(nameElement),

@@ -1,7 +1,7 @@
-import * as hiscores from './hiscores';
+import * as hiscores from './hiscores.js';
 
-export * from './hiscores';
-export * from './types';
-export * from './utils';
+export * from './hiscores.js';
+export * from './types.js';
+export * from './utils/index.js';
 
 export default hiscores;
