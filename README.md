@@ -173,6 +173,7 @@ Activities consist of all levels of clue scrolls as well as minigames and bosses
 | The Whisperer                     |          `whisperer`           |
 | Theatre Of Blood                  |        `theatreOfBlood`        |
 | Theatre Of Blood: Hard Mode       |    `theatreOfBloodHardMode`    |
+| The Fractured Archive             |       `fracturedArchive`       |
 | Thermonuclear Smoke Devil         |   `thermonuclearSmokeDevil`    |
 | Tombs of Amascut                  |        `tombsOfAmascut`        |
 | Tombs of Amascut: Expert Mode     |   `tombsOfAmascutExpertMode`   |
