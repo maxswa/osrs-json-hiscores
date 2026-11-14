@@ -19,7 +19,8 @@ export const GAMEMODE_URL: GamemodeUrl = {
   tournament: `${BASE_URL}_tournament/`,
   skiller: `${BASE_URL}_skiller/`,
   oneDefence: `${BASE_URL}_skiller_defence/`,
-  freshStart: `${BASE_URL}_fresh_start/`
+  freshStart: `${BASE_URL}_fresh_start/`,
+  hardcoreMains: `${BASE_URL}_hardcore_mains/`
 };
 export const SKILLS = [
   'overall',
@@ -71,7 +72,8 @@ export const GAMEMODES = [
   'tournament',
   'skiller',
   'oneDefence',
-  'freshStart'
+  'freshStart',
+  'hardcoreMains'
 ] as const;
 export type Gamemode = (typeof GAMEMODES)[number];
 export const BOSSES = [

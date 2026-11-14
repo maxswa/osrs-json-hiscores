@@ -58,15 +58,21 @@ const topPage = await getSkillPage('overall');
 `getStats` will return a full player object with gamemode.  
 `getStatsByGameMode` will return a stats object and accepts a gamemode parameter:
 
-| Game mode        |    Param     |
-| ---------------- | :----------: |
-| Regular          |    `main`    |
-| Ironman          |  `ironman`   |
-| Hardcore Ironman |  `hardcore`  |
-| Ultimate Ironman |  `ultimate`  |
-| Deadman Mode     |  `deadman`   |
-| Tournament       | `tournament` |
-| Leagues          |  `seasonal`  |
+| Game mode          |      Param      |
+| ------------------ | :-------------: |
+| Regular            |     `main`      |
+| Ironman            |    `ironman`    |
+| Hardcore Ironman   |   `hardcore`    |
+| Ultimate Ironman   |   `ultimate`    |
+| Deadman Mode       |    `deadman`    |
+| Tournament         |  `tournament`   |
+| Leagues            |   `seasonal`    |
+| Skillers           |    `skiller`    |
+| 1 Defence          |  `oneDefence`   |
+| Fresh Start Worlds |  `freshStart`   |
+| Hardcore Mains     | `hardcoreMains` |
+
+Hardcore Mains accounts live on a separate server, so `getStats` does not check them. Use `getStatsByGamemode(rsn, 'hardcoreMains')` instead.
 
 `getSkillPage` and `getActivityPage` require a skill / activity and optionally a gamemode and page:
 
